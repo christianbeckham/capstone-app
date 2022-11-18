@@ -19,5 +19,5 @@ class Exercise(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(30)])
     rest_time = models.PositiveIntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(60)])
-    time_interval = models.CharField(
-        choices=TimeInterval.choices, default=TimeInterval.SECONDS)
+    time_interval = models.CharField(max_length=15,
+                                     choices=TimeInterval.choices, default=TimeInterval.SECONDS)
