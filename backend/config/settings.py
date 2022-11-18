@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'authentication',
+    'check_ins',
+    'exercises',
+    'requests',
+    'training_plans',
+    'workouts'
 ]
 
 MIDDLEWARE = [
