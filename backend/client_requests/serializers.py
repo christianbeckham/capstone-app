@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Request
+from .models import ClientRequest
 
 
-class RequestSerializer(serializers.ModelSerializer):
+class ClientRequestSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Request
+        model = ClientRequest
         fields = ('user_id', 'id', 'type', 'description', 'created_date')
