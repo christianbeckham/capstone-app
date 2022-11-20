@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'exercises',
     'client_requests',
     'training_plans',
-    'workouts'
+    'workouts',
+    'checkin_images',
 ]
 
 MIDDLEWARE = [
@@ -164,5 +165,5 @@ try:
 except ImportError:
     pass
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
