@@ -11,6 +11,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Dashboard from "@mui/icons-material/Dashboard";
 import FactCheck from "@mui/icons-material/FactCheck";
 import FitnessCenter from "@mui/icons-material/FitnessCenter";
+import HelpCenter from "@mui/icons-material/HelpCenter";
 
 const DashboardNav = () => {
 	return (
@@ -37,7 +38,7 @@ const DashboardNav = () => {
 						</ListItemButton>
 					</ListItem>
 					<ListItem disablePadding>
-						<ListItemButton component={Link} to="/dashboard/checkins">
+						<ListItemButton component={Link} to="/checkins">
 							<ListItemIcon>
 								<FactCheck />
 							</ListItemIcon>
@@ -45,11 +46,19 @@ const DashboardNav = () => {
 						</ListItemButton>
 					</ListItem>
 					<ListItem disablePadding>
-						<ListItemButton component={Link} to="/dashboard/workouts">
+						<ListItemButton component={Link} to="/workouts">
 							<ListItemIcon>
 								<FitnessCenter />
 							</ListItemIcon>
 							<ListItemText primary={"Workouts"} />
+						</ListItemButton>
+					</ListItem>
+					<ListItem disablePadding>
+						<ListItemButton component={Link} to="/requests">
+							<ListItemIcon>
+								<HelpCenter />
+							</ListItemIcon>
+							<ListItemText primary={"Requests"} />
 						</ListItemButton>
 					</ListItem>
 				</List>
