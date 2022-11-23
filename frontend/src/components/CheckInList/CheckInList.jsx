@@ -16,28 +16,28 @@ const CheckInList = () => {
 	const [checkins, setCheckins] = useState([]);
 	const [user, token] = useAuth();
 
-		useEffect(() => {
-			const fetchCheckIns = async () => {
-				try {
-					const response = await axios.get(
-						"http://localhost:8000/api/checkins/",
-						{
-							headers: {
-								Authorization: `Bearer ${token}`,
-							},
-						}
-					);
-					if (response.status === 200) {
-						const data = await response.data;
-						setCheckins(data);
+	useEffect(() => {
+		const fetchCheckIns = async () => {
+			try {
+				const response = await axios.get(
+					"http://localhost:8000/api/checkins/",
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
 					}
-				} catch (e) {
-					console.log({ error: e });
+				);
+				if (response.status === 200) {
+					const data = await response.data;
+					setCheckins(data);
 				}
-			};
+			} catch (e) {
+				console.log({ error: e });
+			}
+		};
 
-			fetchCheckIns();
-		}, []);
+		fetchCheckIns();
+	}, []);
 
 	return (
 		<div>
