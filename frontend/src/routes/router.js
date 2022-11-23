@@ -12,7 +12,6 @@ import CheckInItemPage from "../pages/CheckInItemPage/CheckInItemPage";
 
 import MyOverview from "../views/MyOverview/MyOverview";
 import MyCheckIns from "../views/MyCheckIns/MyCheckIns";
-import CheckInForm from "../components/CheckInForm/CheckInForm";
 import MyWorkouts from "../views/MyWorkouts/MyWorkouts";
 import MyRequests from "../views/MyRequests/MyRequests";
 
@@ -32,7 +31,6 @@ const router = createBrowserRouter([
 				children: [
 					{ path: "", element: <MyCheckIns /> },
 					{ path: ":checkinId", element: <CheckInItemPage /> },
-					{ path: "new", element: <CheckInForm /> },
 				],
 			},
 			{
