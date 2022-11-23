@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
@@ -8,9 +9,36 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Paper from "@mui/material/Paper";
 
+import useAuth from "../../hooks/useAuth";
 import CheckInListItem from "../CheckInListItem/CheckInListItem";
 
-const CheckInList = ({ checkins }) => {
+const CheckInList = () => {
+	const [checkins, setCheckins] = useState([]);
+	const [user, token] = useAuth();
+
+		useEffect(() => {
+			const fetchCheckIns = async () => {
+				try {
+					const response = await axios.get(
+						"http://localhost:8000/api/checkins/",
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
+							},
+						}
+					);
+					if (response.status === 200) {
+						const data = await response.data;
+						setCheckins(data);
+					}
+				} catch (e) {
+					console.log({ error: e });
+				}
+			};
+
+			fetchCheckIns();
+		}, []);
+
 	return (
 		<div>
 			<TableContainer component={Paper}>
