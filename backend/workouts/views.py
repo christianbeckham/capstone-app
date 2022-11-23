@@ -13,9 +13,11 @@ from .serializers import WorkoutSerializer
 @permission_classes([IsAuthenticated])
 def client_workouts_list(request):
     if request.method == 'GET':
-        workouts = get_list_or_404(Workout, training_plan_id=request.data.get('training_plan_id'))
-        serializer = WorkoutSerializer(workouts, many=True)
-        return Response(serializer.data)
+        plan_id = request.query_params.get('plan_id')
+        if plan_id is not None:
+            workouts = get_list_or_404(Workout, training_plan_id=plan_id)
+            serializer = WorkoutSerializer(workouts, many=True)
+            return Response(serializer.data)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
