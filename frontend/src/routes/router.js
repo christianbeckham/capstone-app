@@ -14,6 +14,7 @@ import MyOverview from "../views/MyOverview/MyOverview";
 import MyCheckIns from "../views/MyCheckIns/MyCheckIns";
 import CheckInForm from "../components/CheckInForm/CheckInForm";
 import MyWorkouts from "../views/MyWorkouts/MyWorkouts";
+import MyRequests from "../views/MyRequests/MyRequests";
 
 const router = createBrowserRouter([
 	{
@@ -40,7 +41,11 @@ const router = createBrowserRouter([
 				children: [{ path: "", element: <MyWorkouts /> }],
 			},
 			{ path: "exercise/:exerciseId", element: <ExercisePage /> },
-			{ path: "requests", element: <RequestPage /> },
+			{
+				path: "requests",
+				element: <RequestPage />,
+				children: [{ path: "", element: <MyRequests /> }],
+			},
 		],
 	},
 ]);
