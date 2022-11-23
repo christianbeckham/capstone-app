@@ -8,6 +8,7 @@ import CheckInPage from "../pages/CheckInPage/CheckInPage";
 import WorkoutPage from "../pages/WorkoutPage/WorkoutPage";
 import RequestPage from "../pages/RequestPage/RequestPage";
 import ExercisePage from "../pages/ExercisePage/ExercisePage";
+import CheckInItemPage from "../pages/CheckInItemPage/CheckInItemPage";
 
 import MyOverview from "../views/MyOverview/MyOverview";
 import MyCheckIns from "../views/MyCheckIns/MyCheckIns";
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
 				element: <CheckInPage />,
 				children: [
 					{ path: "", element: <MyCheckIns /> },
+					{ path: ":checkinId", element: <CheckInItemPage /> },
 					{ path: "new", element: <CheckInForm /> },
 				],
 			},
