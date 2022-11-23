@@ -1,12 +1,11 @@
 import React from "react";
-
+import { Outlet } from "react-router-dom";
 import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
 
 const RequestPage = () => {
 	return (
 		<DashboardLayout>
-			<h1>Request Page</h1>
-			<p>list of requests...</p>
+			<Outlet />
 		</DashboardLayout>
 	);
 };
