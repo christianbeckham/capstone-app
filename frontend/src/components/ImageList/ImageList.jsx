@@ -22,8 +22,8 @@ const ImageList = ({ images }) => {
 			>
 				{images &&
 					Object.values(images).map((img, index) => (
-						<>
-							<ListItem key={index}>
+						<div key={img.name}>
+							<ListItem>
 								<ListItemAvatar>
 									<Avatar
 										src={URL.createObjectURL(img)}
@@ -36,7 +36,7 @@ const ImageList = ({ images }) => {
 							{images.length !== index && (
 								<Divider variant="inset" component="li" />
 							)}
-						</>
+						</div>
 					))}
 			</List>
 		</div>
