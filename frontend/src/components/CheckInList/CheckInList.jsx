@@ -13,8 +13,6 @@ import CheckInListItem from "../CheckInListItem/CheckInListItem";
 const CheckInList = ({ checkins }) => {
 	return (
 		<div>
-			<p>Check-In List</p>
-			<p>Check-In List Items...</p>
 			<TableContainer component={Paper}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
 					<TableHead>
