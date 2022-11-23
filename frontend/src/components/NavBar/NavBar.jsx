@@ -53,7 +53,7 @@ const Navbar = () => {
 
 	return (
 		<Box sx={{ flexGrow: 1, margin: 0 }}>
-			<AppBar position="static" sx={{ position: "relative", zIndex: 1500 }}>
+			<AppBar position="relative" sx={{ zIndex: 1500 }}>
 				<Toolbar>
 					<WifiTethering sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
 					<Typography
