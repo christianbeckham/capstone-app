@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
+import Add from "@mui/icons-material/Add";
 
 import useAuth from "../../hooks/useAuth";
+import CheckInForm from "../../components/CheckInForm/CheckInForm";
 import CheckInList from "../../components/CheckInList/CheckInList";
 
 const MyCheckIns = () => {
 	const [user, token] = useAuth();
 	const [checkins, setCheckins] = useState([]);
+	const [showForm, setShowForm] = useState(false);
+
+	const toggleForm = () => setShowForm(!showForm);
 
 	useEffect(() => {
 		const fetchCheckIns = async () => {
@@ -36,9 +40,13 @@ const MyCheckIns = () => {
 	return (
 		<div>
 			<h1>My Check-Ins</h1>
-			<Button variant="outlined" component={Link} to="new">
-				New Check-in
+			<br />
+			<Button variant="outlined" startIcon={<Add />} onClick={toggleForm}>
+				New
 			</Button>
+			{showForm && <CheckInForm showForm={showForm} toggleForm={toggleForm} />}
+			<br />
+			<br />
 			<CheckInList checkins={checkins} />
 		</div>
 	);
