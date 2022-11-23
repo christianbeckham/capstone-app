@@ -57,14 +57,14 @@ export const AuthProvider = ({ children }) => {
 				const loggedInUser = jwtDecode(response.data.access);
 				setUser(setUserObject(loggedInUser));
 				setIsServerError(false);
-				navigate("/");
+				navigate("/dashboard");
 			} else {
 				navigate("/register");
 			}
 		} catch (error) {
 			console.log(error.response.data);
 			setIsServerError(true);
-			navigate("/register");
+			// navigate("/register");
 		}
 	};
 
