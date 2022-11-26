@@ -12,6 +12,9 @@ const setUserObject = (user) => {
 		username: user.username,
 		id: user.user_id,
 		first_name: user.first_name,
+		last_name: user.last_name,
+		is_client: user.is_client,
+		is_admin: user.is_admin,
 	};
 };
 
@@ -39,9 +42,9 @@ export const AuthProvider = ({ children }) => {
 			if (response.status === 201) {
 				console.log("Successful registration! Log in to access token");
 				setIsServerError(false);
-				navigate("/login");
+				navigate("/login", { replace: true });
 			} else {
-				navigate("/register");
+				navigate("/register", { replace: true });
 			}
 		} catch (error) {
 			console.log(error.response.data);
@@ -57,9 +60,9 @@ export const AuthProvider = ({ children }) => {
 				const loggedInUser = jwtDecode(response.data.access);
 				setUser(setUserObject(loggedInUser));
 				setIsServerError(false);
-				navigate("/dashboard");
+				// navigate("/dashboard", { replace: true });
 			} else {
-				navigate("/register");
+				// navigate("/register", { replace: true });
 			}
 		} catch (error) {
 			console.log(error.response.data);
@@ -73,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 			localStorage.removeItem("token");
 			setUser(null);
 			setToken(null);
-			navigate("/");
+			navigate("/", { replace: true });
 		}
 	};
 
