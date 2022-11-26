@@ -1,13 +1,19 @@
 import React from "react";
-import useAuth from "../../hooks/useAuth";
+import Container from "@mui/material/Container";
 
 const HomePage = () => {
-	const [user, token] = useAuth();
-
 	return (
-		<div className="container">
-			<h1>Home Page for {user.username}!</h1>
-		</div>
+		<Container
+			maxWidth="lg"
+			sx={{
+				height: "100vh",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
+			<h1>Home page</h1>
+		</Container>
 	);
 };
 
