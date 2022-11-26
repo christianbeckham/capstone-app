@@ -20,7 +20,7 @@ import MyWorkouts from "../views/MyWorkouts/MyWorkouts";
 import MyRequests from "../views/MyRequests/MyRequests";
 
 import PublicRoute from "./PublicRoute/PublicRoute";
-import PrivateRoute from "./UserRoute/UserRoute";
+import UserRoute from "./UserRoute/UserRoute";
 import AdminRoute from "./AdminRoute/AdminRoute";
 import AdminPage from "../pages/AdminPage/AdminPage";
 
@@ -34,7 +34,7 @@ const router = createBrowserRouter(
 				<Route path="/register" element={<RegisterPage />} />
 			</Route>
 
-			<Route path="/" element={<PrivateRoute />}>
+			<Route path="/" element={<UserRoute />}>
 				<Route path="dashboard" element={<MyOverview />} />
 				<Route path="checkins" element={<CheckInPage />}>
 					<Route path="" element={<MyCheckIns />} />
