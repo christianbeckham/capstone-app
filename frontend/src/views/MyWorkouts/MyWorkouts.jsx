@@ -25,7 +25,6 @@ const MyWorkouts = () => {
 									Authorization: `Bearer ${token}`,
 									"Content-Type": "application/json",
 								},
-								params: { plan_id: 3 },
 							}
 						);
 						return response;
