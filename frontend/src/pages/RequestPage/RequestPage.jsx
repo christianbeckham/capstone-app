@@ -4,9 +4,9 @@ import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
 
 const RequestPage = () => {
 	return (
-		<DashboardLayout>
+		<>
 			<Outlet />
-		</DashboardLayout>
+		</>
 	);
 };
 

@@ -4,9 +4,9 @@ import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
 
 const WorkoutPage = () => {
 	return (
-		<DashboardLayout>
+		<>
 			<Outlet />
-		</DashboardLayout>
+		</>
 	);
 };
 

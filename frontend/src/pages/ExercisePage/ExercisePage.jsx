@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
 
 import { exercises } from "../../utils/exercisedata";
 
@@ -31,9 +30,8 @@ const ExercisePage = () => {
 	}, []);
 
 	return (
-		<DashboardLayout>
+		<>
 			<h1>Exercise Details</h1>
-			{/* <p>exercise id: {exerciseId}</p> */}
 			<p>Name: {exercise.name}</p>
 			<p>Sets: {exercise.sets}</p>
 			<p>Reps: {exercise.reps}</p>
@@ -41,7 +39,7 @@ const ExercisePage = () => {
 			<p>Body Part: {exercise.bodyPart}</p>
 			<p>Equipment: {exercise.equipment}</p>
 			<img height={350} width={350} src={exercise.gifUrl} alt={exercise.name} />
-		</DashboardLayout>
+		</>
 	);
 };
 

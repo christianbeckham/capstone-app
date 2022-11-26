@@ -8,10 +8,10 @@ const MyOverview = () => {
 	const [user, token] = useAuth();
 
 	return (
-		<DashboardLayout>
-			<h1>Welcome, {user.first_name}!</h1>
-			<TrainingPlan token={token} />
-		</DashboardLayout>
+		<>
+			<h1>Welcome, {user && user.first_name}!</h1>
+			<TrainingPlan />
+		</>
 	);
 };
 

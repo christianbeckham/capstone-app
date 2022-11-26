@@ -4,9 +4,9 @@ import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
 
 const CheckInPage = () => {
 	return (
-		<DashboardLayout>
+		<>
 			<Outlet />
-		</DashboardLayout>
+		</>
 	);
 };
 
