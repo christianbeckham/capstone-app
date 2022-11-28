@@ -12,7 +12,7 @@ class CheckInImage(models.Model):
         created_date = instance.check_in.created_date.strftime('%Y-%m')
         return os.path.join(f"clients/{user.first_name}-{user.last_name}/{created_date}/{filename}")
 
-    check_in = models.ForeignKey(CheckIn, on_delete=models.CASCADE)
+    check_in = models.ForeignKey('check_ins.CheckIn', on_delete=models.CASCADE)
     title = models.CharField(max_length=100, blank=True)
     image = models.ImageField(upload_to=set_upload_path, blank=True, null=True)
     uploaded_date = models.DateTimeField(auto_now_add=True)
