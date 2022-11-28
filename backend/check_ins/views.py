@@ -7,6 +7,10 @@ from .models import CheckIn
 from .serializers import CheckInSerializer
 from checkin_images.serializers import CheckInImageSerializer
 
+from django.core.mail import send_mail
+import os
+from datetime import datetime
+
 # Create your views here.
 
 
@@ -41,9 +45,24 @@ def client_checkins_list(request):
                     image_serializer = CheckInImageSerializer(data=image_data)
                     image_serializer.is_valid(raise_exception=True)
                     image_serializer.save()
-            new_checkin = get_object_or_404(CheckIn, pk=serializer.data.get('id'), user_id=request.user.id)
+            new_checkin = get_object_or_404(
+                CheckIn, pk=serializer.data.get('id'), user_id=request.user.id)
             serializer = CheckInSerializer(new_checkin)
-        
+
+        cr_date = serializer.data.get("created_date")
+        cr_date_converted = datetime.strptime(
+            cr_date, "%Y-%m-%dT%H:%M:%S.%f%z")
+        cr_date_formatted = cr_date_converted.strftime('%x')
+
+        subject = f'New check-in from {request.user.first_name} {request.user.last_name}'
+        message = f'Date: {cr_date_formatted}'
+        message = message + f'\n\nWeight: {serializer.data.get("weight")}'
+        message = message + f'\n\nFeedback: {serializer.data.get("feedback")}.'
+        message = message + f'\n\nImages: {len(serializer.data.get("images"))}'
+        email_from = os.environ.get("EMAIL_HOST_USER")
+        email_to = [os.environ.get("EMAIL_ADMIN_USER"), ]
+        send_mail(subject, message, email_from, email_to, False)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
