@@ -3,6 +3,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.password_validation import validate_password
 from .models import User
+from training_plans.serializers import TrainingPlanSerializer
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -47,10 +48,19 @@ class RegistrationSerializer(serializers.ModelSerializer):
             # If added new columns through the User model, add them in this
             # create method. Example below:
 
-            is_client=validated_data['is_client']
+            # is_client=validated_data['is_client']
         )
 
         user.set_password(validated_data['password'])
         user.save()
 
         return user
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    training_plan = TrainingPlanSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name',
+                  'last_name', 'date_joined', 'training_plan')
