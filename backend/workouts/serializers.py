@@ -4,10 +4,12 @@ from exercises.serializers import ExerciseSerializer
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
-    exercise_set = ExerciseSerializer(read_only=True, many=True)
+    exercises = ExerciseSerializer(read_only=True, many=True, source="exercise_set")
+    week_day = serializers.ReadOnlyField()
 
     class Meta:
         model = Workout
-        fields = ('id', 'assigned_day', 'training_plan_id', 'exercise_set')
+        fields = ('id', 'assigned_day', 'training_plan_id',
+                  'week_day', 'exercises')
 
     training_plan_id = serializers.IntegerField()
