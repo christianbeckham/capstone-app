@@ -47,8 +47,9 @@ const CheckInList = () => {
 						<TableRow>
 							<TableCell>Date</TableCell>
 							<TableCell>Weight</TableCell>
-							<TableCell>Feeback</TableCell>
+							<TableCell>Weekly Review</TableCell>
 							<TableCell>Images</TableCell>
+							<TableCell>Trainer Feedback</TableCell>
 							<TableCell></TableCell>
 						</TableRow>
 					</TableHead>
