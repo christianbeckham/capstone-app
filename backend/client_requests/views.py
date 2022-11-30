@@ -6,9 +6,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from .models import ClientRequest
 from .serializers import ClientRequestSerializer
 
-from django.core.mail import send_mail
-import os
-from datetime import datetime
+from .services import email_user, email_admin
 
 # Create your views here.
 
@@ -22,7 +20,7 @@ def admin_requests_list(request):
         return Response(serializer.data)
 
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 @permission_classes([IsAdminUser])
 def admin_requests_detail(request, pk):
     req = get_object_or_404(ClientRequest, pk=pk)
@@ -30,10 +28,12 @@ def admin_requests_detail(request, pk):
     if request.method == 'GET':
         serializer = ClientRequestSerializer(req)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT':
-        serializer = ClientRequestSerializer(req, data=request.data)
+    elif request.method == 'PATCH':
+        serializer = ClientRequestSerializer(
+            req, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        serializer.save(user=request.user)
+        serializer.save()
+        email_user(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'DELETE':
         req.delete()
@@ -51,36 +51,18 @@ def requests_list(request):
         serializer = ClientRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
-
-        cr_date = serializer.data.get("created_date")
-        cr_date_converted = datetime.strptime(
-            cr_date, "%Y-%m-%dT%H:%M:%S.%f%z")
-        cr_date_formatted = cr_date_converted.strftime('%x')
-
-        subject = f'New request from {request.user.first_name} {request.user.last_name}'
-        message = f'Date: {cr_date_formatted}'
-        message += f'\n\nType: {serializer.data.get("type")}'
-        message += f'\n\nMessage: {serializer.data.get("description")}'
-        email_from = os.environ.get("EMAIL_HOST_USER")
-        email_to = [os.environ.get("EMAIL_ADMIN_USER"), ]
-        send_mail(subject, message, email_from, email_to, False)
-
+        email_admin(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def requests_detail(request, pk):
     req = get_object_or_404(ClientRequest, pk=pk, user_id=request.user.id)
 
     if request.method == 'GET':
         serializer = ClientRequestSerializer(req)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT':
-        serializer = ClientRequestSerializer(req, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'DELETE':
         req.delete()
