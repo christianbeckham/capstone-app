@@ -14,6 +14,7 @@ const RequestListItem = ({request}) => {
 			</TableCell>
 			<TableCell align="left">{request.type}</TableCell>
 			<TableCell align="left">{request.description}</TableCell>
+			<TableCell align="left">{request.status_text}</TableCell>
 		</TableRow>
 	);
 };
