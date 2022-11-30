@@ -16,10 +16,16 @@ const CheckInListItem = ({ checkin }) => {
 				{new Date(checkin.created_date).toLocaleDateString()}
 			</TableCell>
 			<TableCell align="left">{checkin.weight}</TableCell>
-			<TableCell align="left">{checkin.feedback}</TableCell>
-			<TableCell align="left">{checkin.checkinimage_set.length}</TableCell>
+			<TableCell align="left">{checkin.weekly_review}</TableCell>
+			<TableCell align="left">{checkin.images.length}</TableCell>
+			<TableCell align="left">{checkin.trainer_feedback}</TableCell>
 			<TableCell>
-				<IconButton component={Link} to={`${checkin.id}`} aria-label="fingerprint" color="primary">
+				<IconButton
+					component={Link}
+					to={`${checkin.id}`}
+					aria-label="fingerprint"
+					color="primary"
+				>
 					<ExitToApp />
 				</IconButton>
 			</TableCell>
