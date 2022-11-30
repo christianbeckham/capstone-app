@@ -19,3 +19,7 @@ class User(AbstractUser):
     # Example (note import of models above that is commented out)
     # this will add a column to the user table
     is_client = models.BooleanField('client status', default=True)
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
