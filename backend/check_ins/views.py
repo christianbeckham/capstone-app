@@ -7,9 +7,7 @@ from .models import CheckIn
 from .serializers import CheckInSerializer
 from checkin_images.serializers import CheckInImageSerializer
 
-from django.core.mail import send_mail
-import os
-from datetime import datetime
+from .services import email_admin, email_user
 
 # Create your views here.
 
@@ -22,13 +20,19 @@ def admin_checkins_list(request):
     return Response(serializer.data)
 
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 @permission_classes([IsAdminUser])
 def admin_checkin_detail(request, pk):
     check = get_object_or_404(CheckIn, pk=pk)
 
     if request.method == 'GET':
         serializer = CheckInSerializer(check)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'PATCH':
+        serializer = CheckInSerializer(check, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        email_user(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'DELETE':
         check.delete()
@@ -62,20 +66,7 @@ def client_checkins_list(request):
                 CheckIn, pk=serializer.data.get('id'), user_id=request.user.id)
             serializer = CheckInSerializer(new_checkin)
 
-        cr_date = serializer.data.get("created_date")
-        cr_date_converted = datetime.strptime(
-            cr_date, "%Y-%m-%dT%H:%M:%S.%f%z")
-        cr_date_formatted = cr_date_converted.strftime('%x')
-
-        subject = f'New check-in from {request.user.first_name} {request.user.last_name}'
-        message = f'Date: {cr_date_formatted}'
-        message = message + f'\n\nWeight: {serializer.data.get("weight")}'
-        message = message + f'\n\nFeedback: {serializer.data.get("feedback")}.'
-        message = message + f'\n\nImages: {len(serializer.data.get("images"))}'
-        email_from = os.environ.get("EMAIL_HOST_USER")
-        email_to = [os.environ.get("EMAIL_ADMIN_USER"), ]
-        send_mail(subject, message, email_from, email_to, False)
-
+        email_admin(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
