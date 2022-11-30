@@ -22,6 +22,19 @@ def admin_checkins_list(request):
     return Response(serializer.data)
 
 
+@api_view(['GET', 'DELETE'])
+@permission_classes([IsAdminUser])
+def admin_checkin_detail(request, pk):
+    check = get_object_or_404(CheckIn, pk=pk)
+
+    if request.method == 'GET':
+        serializer = CheckInSerializer(check)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'DELETE':
+        check.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def client_checkins_list(request):
