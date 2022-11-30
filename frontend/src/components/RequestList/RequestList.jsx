@@ -44,6 +44,7 @@ const RequestList = () => {
 							<TableCell>Date</TableCell>
 							<TableCell>Request Type</TableCell>
 							<TableCell>Description</TableCell>
+							<TableCell>Status</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -53,7 +54,7 @@ const RequestList = () => {
 							))
 						) : (
 							<TableRow scope="row">
-								<TableCell>No entries...</TableCell>
+								<TableCell>No requests</TableCell>
 							</TableRow>
 						)}
 					</TableBody>
