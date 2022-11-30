@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -6,30 +7,28 @@ import Typography from "@mui/material/Typography";
 
 import useAuth from "../../hooks/useAuth";
 
-const TrainingPlan = ({ token }) => {
-	// const [user, token] = useAuth();
+const TrainingPlan = () => {
+	const [user, token] = useAuth();
 	const [plan, setPlan] = useState({});
 
 	useEffect(() => {
-		const abortController = new AbortController();
 		const fetchData = async () => {
 			try {
-				const response = await fetch("http://localhost:8000/api/plans/", {
-					signal: abortController.signal,
+				const response = await axios.get("http://localhost:8000/api/plans/", {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
 				});
-				const data = await response.json();
-				setPlan(data[0]);
+				if (response.status === 200) {
+					const data = await response.data;
+					setPlan(data[0]);
+				}
 			} catch (e) {
-				if (e.name === "AbortError") return;
 				console.log({ error: e.message });
 			}
 		};
 
 		fetchData();
-		return () => abortController.abort();
 	}, []);
 
 	return (
