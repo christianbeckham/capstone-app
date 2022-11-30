@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
+import UserLayout from "../../layouts/UserLayout/UserLayout";
 
 const UserRoute = () => {
 	const [user] = useAuth();
 	return user?.is_client ? (
-		<DashboardLayout>
+		<UserLayout>
 			<Outlet />
-		</DashboardLayout>
+		</UserLayout>
 	) : (
 		<Navigate to="/login" replace />
 	);
