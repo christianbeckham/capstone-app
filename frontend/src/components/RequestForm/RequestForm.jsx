@@ -110,16 +110,24 @@ const RequestForm = ({ showForm, toggleForm }) => {
 							}}
 						/>
 					</Stack>
-					<Stack sx={{ display: "block", my: 2 }}>
+					<Stack
+						direction="row"
+						sx={{ my: 2, position: "absolute", bottom: 0 }}
+					>
 						<Button
 							type="submit"
 							variant="outlined"
 							color="success"
-							sx={{ mr: 1 }}
+							sx={{ my: 2, mr: 1 }}
 						>
 							Submit
 						</Button>
-						<Button variant="outlined" color="error" onClick={handleClose}>
+						<Button
+							onClick={handleClose}
+							variant="outlined"
+							color="error"
+							sx={{ my: 2 }}
+						>
 							Cancel
 						</Button>
 					</Stack>
