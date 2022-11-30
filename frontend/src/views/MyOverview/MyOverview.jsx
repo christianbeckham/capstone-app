@@ -1,7 +1,6 @@
 import React from "react";
-import useAuth from "../../hooks/useAuth";
 
-import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
+import useAuth from "../../hooks/useAuth";
 import TrainingPlan from "../../components/TrainingPlan/TrainingPlan";
 
 const MyOverview = () => {
