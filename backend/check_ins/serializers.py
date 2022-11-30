@@ -7,7 +7,7 @@ from authentication.models import User
 class ReadOnlyUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'full_name', 'first_name', 'last_name')
+        fields = ('id', 'email', 'full_name', 'first_name', 'last_name')
 
 
 class ImageSerializer(serializers.ModelSerializer):
