@@ -59,8 +59,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class ClientSerializer(serializers.ModelSerializer):
     training_plan = TrainingPlanSerializer(read_only=True)
+    full_name = serializers.ReadOnlyField()
 
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'first_name',
-                  'last_name', 'date_joined', 'training_plan')
+                  'last_name', 'full_name', 'date_joined', 'training_plan')
