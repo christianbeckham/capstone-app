@@ -15,30 +15,29 @@ import ImageList from "../ImageList/ImageList";
 const CheckInForm = ({ showForm, toggleForm }) => {
 	const [user, token] = useAuth();
 	const [images, setImages] = useState(null);
-	const [formData, setFormData] = useState({ weight: "", feedback: "" });
+	const [formData, setFormData] = useState({ weight: "", weekly_review: "" });
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
-		console.log(formData);
 		setFormData((prevState) => ({ ...prevState, [name]: value }));
 	};
 
-	const handleImageChange = (e) => {
+	const handleImageUpload = (e) => {
 		setImages(e.target.files);
 	};
 
-	const handleClose = () => {
-		setFormData({ weight: "", feedback: "" });
+	const handleFormClose = () => {
+		setFormData({ weight: "", weekly_review: "" });
 		setImages(null);
 		toggleForm();
 	};
 
-	const handleSubmit = (e) => {
+	const handleFormSubmit = (e) => {
 		e.preventDefault();
 		const url = "http://localhost:8000/api/checkins/";
 		const form_data = new FormData();
 		form_data.append("weight", formData.weight);
-		form_data.append("feedback", formData.feedback);
+		form_data.append("weekly_review", formData.weekly_review);
 
 		if (images != null) {
 			Object.values(images).forEach((img) => {
@@ -55,6 +54,7 @@ const CheckInForm = ({ showForm, toggleForm }) => {
 
 			if (response === 201) {
 				console.log("Response", response.data);
+				handleFormClose();
 			}
 		} catch (error) {
 			console.log(error);
@@ -70,7 +70,7 @@ const CheckInForm = ({ showForm, toggleForm }) => {
 		>
 			<Box
 				component="form"
-				onSubmit={handleSubmit}
+				onSubmit={handleFormSubmit}
 				sx={{
 					minWidth: 650,
 					display: "flex",
@@ -100,10 +100,10 @@ const CheckInForm = ({ showForm, toggleForm }) => {
 					}}
 				/>
 				<TextField
-					label="Feedback"
+					label="Weekly Review"
 					type="text"
-					name="feedback"
-					value={formData.feedback}
+					name="weekly_review"
+					value={formData.weekly_review}
 					onChange={handleInputChange}
 					variant="standard"
 					margin="normal"
@@ -125,7 +125,7 @@ const CheckInForm = ({ showForm, toggleForm }) => {
 						accept="image/png, image/jpeg"
 						multiple
 						type="file"
-						onChange={handleImageChange}
+						onChange={handleImageUpload}
 					/>
 				</Button>
 				{images && <ImageList images={images} />}
@@ -139,7 +139,7 @@ const CheckInForm = ({ showForm, toggleForm }) => {
 						Submit
 					</Button>
 					<Button
-						onClick={handleClose}
+						onClick={handleFormClose}
 						variant="outlined"
 						color="error"
 						sx={{ my: 2 }}
