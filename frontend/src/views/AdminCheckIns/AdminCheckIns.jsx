@@ -90,9 +90,13 @@ const AdminCheckIns = () => {
 									</TableCell>
 									<TableCell align="left">{check.user.full_name}</TableCell>
 									<TableCell align="left">{check.weight}</TableCell>
-									<TableCell align="left">{check.weekly_review}</TableCell>
+									<TableCell align="left">
+										{check.weekly_review ? check.weekly_review : "n/a"}
+									</TableCell>
 									<TableCell align="left">{check.images.length}</TableCell>
-									<TableCell align="left">{check.trainer_feedback}</TableCell>
+									<TableCell align="left">
+										{check.trainer_feedback ? check.trainer_feedback : "n/a"}
+									</TableCell>
 									<TableCell align="left" sx={{ display: "flex" }}>
 										<Button size="small" component={Link} to={`${check.id}`}>
 											View
