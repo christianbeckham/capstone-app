@@ -3,7 +3,7 @@ import axios from "axios";
 import Typography from "@mui/material/Typography";
 
 import useAuth from "../../hooks/useAuth";
-import AdminClientList from "../../components/AdminClientList/AdminClientList";
+import AdminClientList from "../../components/admin/AdminClientList/AdminClientList";
 
 const AdminClients = () => {
 	const [clients, setClients] = useState([]);
