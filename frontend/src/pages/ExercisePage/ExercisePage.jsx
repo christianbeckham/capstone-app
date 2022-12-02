@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-import { exercises } from "../../utils/exercisedata";
+import { apiExercises } from "../../utils/exercisedata";
 
 const ExercisePage = () => {
 	const [user, token] = useAuth();
@@ -17,7 +17,9 @@ const ExercisePage = () => {
 					headers: { Authorization: `Bearer ${token}` },
 				})
 				.then((res) => {
-					const exercise = exercises.filter((ex) => ex.name === res.data.name);
+					const exercise = apiExercises.filter(
+						(ex) => ex.name === res.data.name
+					);
 					if (res.status === 200) setExercise({ ...exercise[0], ...res.data });
 					console.log({ ...exercise[0], ...res.data });
 				});
