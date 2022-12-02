@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -41,9 +41,15 @@ def api_exercise_detail(request, pk):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAdminUser])
-def exercise_list(request):
+def admin_exercise_list(request):
+    if request.method == 'GET':
+        workout_id = request.query_params.get('workout_id')
+        if workout_id is not None:
+            exercises = Workout.objects.get(pk=workout_id).exercise_set.all()
+            serializer = ExerciseSerializer(exercises, many=True)
+            return Response(serializer.data)
     if request.method == 'POST':
         workout_id = request.data.pop('workouts_id')
         serializer = ExerciseSerializer(data=request.data)
@@ -63,7 +69,7 @@ def exercise_list(request):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def exercise_detail(request, pk):
     exercise = get_object_or_404(Exercise, pk=pk)
@@ -71,8 +77,9 @@ def exercise_detail(request, pk):
     if request.method == 'GET':
         serializer = ExerciseSerializer(exercise)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT' and request.user.is_staff:
-        serializer = ExerciseSerializer(exercise, data=request.data)
+    elif request.method == 'PATCH' and request.user.is_staff:
+        serializer = ExerciseSerializer(
+            exercise, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
