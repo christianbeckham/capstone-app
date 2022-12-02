@@ -1,6 +1,6 @@
 import React from "react";
 import Container from "@mui/material/Container";
-import SignInForm from "../../components/SignInForm/SignInForm";
+import SignInForm from "../../components/app/SignInForm/SignInForm";
 
 const LoginPage = () => {
 	return (
