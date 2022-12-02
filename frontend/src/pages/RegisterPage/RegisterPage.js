@@ -1,6 +1,6 @@
 import React from "react";
 import Container from "@mui/material/Container";
-import SignUpForm from "../../components/SignUpForm/SignUpForm";
+import SignUpForm from "../../components/app/SignUpForm/SignUpForm";
 
 const RegisterPage = () => {
 	return (
