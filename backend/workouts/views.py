@@ -61,16 +61,17 @@ def admin_workouts_list(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-# @permission_classes([IsAdminUser])
+@api_view(['GET', 'PATCH', 'DELETE'])
+@permission_classes([IsAdminUser])
 def admin_workout_detail(request, pk):
     workout = get_object_or_404(Workout, pk=pk)
 
     if request.method == 'GET':
         serializer = WorkoutSerializer(workout)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT':
-        serializer = WorkoutSerializer(workout, data=request.data)
+    elif request.method == 'PATCH':
+        serializer = WorkoutSerializer(
+            workout, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
