@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 
-import RequestForm from "../../components/RequestForm/RequestForm";
-import RequestList from "../../components/RequestList/RequestList";
+import RequestForm from "../../components/user/RequestForm/RequestForm";
+import RequestList from "../../components/user/RequestList/RequestList";
 
 const MyRequests = () => {
 	const [showForm, setShowForm] = useState(false);

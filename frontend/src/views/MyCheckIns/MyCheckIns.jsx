@@ -1,7 +1,7 @@
 import React from "react";
 
-import CheckInForm from "../../components/CheckInForm/CheckInForm";
-import CheckInList from "../../components/CheckInList/CheckInList";
+import CheckInForm from "../../components/user/CheckInForm/CheckInForm";
+import CheckInList from "../../components/user/CheckInList/CheckInList";
 
 const MyCheckIns = () => {
 	return (
