@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 
 import useAuth from "../../hooks/useAuth";
-import AdminRequestForm from "../../components/AdminRequestForm/AdminRequestForm";
+import AdminRequestForm from "../../components/admin/AdminRequestForm/AdminRequestForm";
 
 const AdminRequests = () => {
 	const [requests, setRequests] = useState([]);
