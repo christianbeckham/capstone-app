@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import CssBaseline from "@mui/material/CssBaseline";
-import DashboardNav from "../../components/DashboardNav/DashboardNav";
+import DashboardNav from "../../components/user/DashboardNav/DashboardNav";
 
 const UserLayout = ({ children }) => {
 	return (
