@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import AdminNav from "../../components/AdminNav/AdminNav";
+import AdminNav from "../../components/admin/AdminNav/AdminNav";
 
 const AdminLayout = () => {
 	const outlet = useOutlet();
