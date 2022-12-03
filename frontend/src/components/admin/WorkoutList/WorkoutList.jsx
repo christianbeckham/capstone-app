@@ -3,17 +3,15 @@ import axios from "axios";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import Avatar from "@mui/material/Avatar";
 
 import useAuth from "../../../hooks/useAuth";
 import NewWorkoutForm from "../NewWorkoutForm/NewWorkoutForm";
-import EditWorkoutForm from "../EditWorkoutForm/EditWorkoutForm";
+import EditWorkoutOptions from "../EditWorkoutOptions/EditWorkoutOptions";
 
 const WorkoutList = ({ planId }) => {
 	const [user, token] = useAuth();
@@ -42,7 +40,7 @@ const WorkoutList = ({ planId }) => {
 
 	return (
 		<div>
-			<Grid item xs={12} md={6}>
+			<Grid item xs={12}>
 				<Box>
 					<Typography
 						variant="h5"
@@ -61,18 +59,25 @@ const WorkoutList = ({ planId }) => {
 				<Divider />
 				<List dense>
 					{workouts?.map((w) => (
-						<ListItem
-							key={w.id}
-							secondaryAction={<EditWorkoutForm workoutId={w.id} />}
-						>
-							<ListItemAvatar>
-								<Avatar>{w.assigned_day}</Avatar>
-							</ListItemAvatar>
-							<ListItemText
-								primary={w.week_day}
-								secondary={`Day ${w.assigned_day}`}
-							/>
-						</ListItem>
+						<Card key={w.id} sx={{ p: 1, my: 1 }}>
+							<Box
+								sx={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "space-between",
+								}}
+							>
+								<Stack direction={"row"}>
+									<p>
+										Day {w.assigned_day} - {w.week_day}
+									</p>
+								</Stack>
+								<EditWorkoutOptions
+									workoutId={w.id}
+									fetchWorkoutsByPlan={fetchWorkoutsByPlan}
+								/>
+							</Box>
+						</Card>
 					))}
 				</List>
 			</Grid>
