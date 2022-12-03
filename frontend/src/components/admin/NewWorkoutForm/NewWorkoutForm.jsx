@@ -20,18 +20,18 @@ import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-
 import DateRange from "@mui/icons-material/DateRange";
 import Add from "@mui/icons-material/Add";
 import Alarm from "@mui/icons-material/Alarm";
 
 import useAuth from "../../../hooks/useAuth";
 import { apiExercises } from "../../../utils/exercisedata";
+import { weekdays } from "../../../utils/weekdays";
 
 const NewWorkoutForm = ({ planId }) => {
 	const [user, token] = useAuth();
 	const [open, setOpen] = useState(false);
-	const [workoutDay, setWorkoutDay] = useState({ assigned_day: 1 });
+	const [workoutDay, setWorkoutDay] = useState(weekdays[0]?.value);
 	const [exercises, setExercises] = useState([]);
 	const [newExercise, setNewExercise] = useState({});
 	const [validExercise, setValidExercise] = useState(false);
@@ -43,26 +43,15 @@ const NewWorkoutForm = ({ planId }) => {
 	const [allTargets, setAllTargets] = useState([]);
 	const [selectedTarget, setSelectedTarget] = useState("");
 
-	const weekdays = [
-		{ value: 1, label: "monday" },
-		{ value: 2, label: "tuesday" },
-		{ value: 3, label: "wednesday" },
-		{ value: 4, label: "thursday" },
-		{ value: 5, label: "friday" },
-		{ value: 6, label: "saturday" },
-		{ value: 7, label: "sunday" },
-	];
-
 	const handleFormOpen = () => setOpen(true);
 
 	const handleFormClose = () => {
 		setOpen(false);
 		clearExerciseFields();
+		setExercises([]);
 	};
 
-	const handleWorkoutDayChange = (e) => {
-		setWorkoutDay({ [e.target.name]: e.target.value });
-	};
+	const handleWorkoutDayChange = (e) => setWorkoutDay(e.target.value);
 
 	const handleNewExercise = (e) => {
 		const name = e.target.name;
@@ -186,7 +175,6 @@ const NewWorkoutForm = ({ planId }) => {
 					<Add fontSize="inherit" />
 				</IconButton>
 			</Tooltip>
-
 			<Dialog open={open} onClose={handleFormClose} maxWidth="md" fullWidth>
 				<Box component={"form"} onSubmit={handleSubmit}>
 					<DialogTitle>New Workout</DialogTitle>
@@ -201,7 +189,7 @@ const NewWorkoutForm = ({ planId }) => {
 									variant="standard"
 									label="Day"
 									name="assigned_day"
-									value={workoutDay.assigned_day}
+									value={workoutDay || weekdays[0]?.value}
 									onChange={handleWorkoutDayChange}
 									InputProps={{
 										startAdornment: (
@@ -232,7 +220,7 @@ const NewWorkoutForm = ({ planId }) => {
 									borderRadius: 2,
 								}}
 							>
-								<Grid item xs={8}>
+								<Grid item xs={6}>
 									{/* FILTER BODY PART & TARGET */}
 									<Box sx={{ mb: 4 }}>
 										<DialogContentText color={"text.primary"}>
@@ -292,7 +280,6 @@ const NewWorkoutForm = ({ planId }) => {
 												<p>{filteredExercises.length} exercises available</p>
 											)}
 										</Box>
-
 										{/* ADD EXERCISE */}
 										<DialogContentText color={"text.primary"}>
 											Add exercise
@@ -336,7 +323,6 @@ const NewWorkoutForm = ({ planId }) => {
 													))}
 												</Select>
 											</FormControl>
-
 											{/* SET EXERCISE FIELDS */}
 											<Stack direction="row" spacing={2}>
 												<TextField
@@ -360,7 +346,6 @@ const NewWorkoutForm = ({ planId }) => {
 														shrink: true,
 													}}
 												/>
-
 												<TextField
 													fullWidth
 													required
@@ -382,7 +367,6 @@ const NewWorkoutForm = ({ planId }) => {
 														shrink: true,
 													}}
 												/>
-
 												<TextField
 													fullWidth
 													required
@@ -453,7 +437,6 @@ const NewWorkoutForm = ({ planId }) => {
 										</Stack>
 									</Box>
 								</Grid>
-
 								<Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 								<Grid item xs={3}>
 									<DialogContentText color={"text.primary"}>
