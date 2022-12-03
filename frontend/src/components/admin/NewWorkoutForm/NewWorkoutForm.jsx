@@ -100,7 +100,7 @@ const NewWorkoutForm = ({ planId }) => {
 
 		const finalData = {
 			training_plan_id: planId,
-			...workoutDay,
+			assigned_day: workoutDay,
 			exercises,
 		};
 
