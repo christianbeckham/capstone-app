@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
-from rest_framework import generics, viewsets
-from rest_framework.permissions import AllowAny, IsAdminUser
+from django.shortcuts import get_object_or_404, get_list_or_404
+from rest_framework import generics
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import MyTokenObtainPairSerializer, RegistrationSerializer, ClientSerializer
 
@@ -19,7 +22,31 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegistrationSerializer
 
 
-class ClientViewList(viewsets.ModelViewSet):
-    queryset = User.objects.filter(is_client=True)
-    serializer_class = ClientSerializer
-    permission_classes = (IsAdminUser,)
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def admin_client_list(request):
+    clients = get_list_or_404(User, is_client=True)
+
+    if request.method == 'GET':
+        serializer = ClientSerializer(clients, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def admin_client_detail(request, pk):
+    client = get_object_or_404(User, pk=pk, is_client=True)
+
+    if request.method == 'GET':
+        serializer = ClientSerializer(client)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_detail(request):
+    user = get_object_or_404(User, id=request.user.id, is_client=True)
+
+    if request.method == 'GET':
+        serializer = ClientSerializer(user)
+        return Response(serializer.data)
