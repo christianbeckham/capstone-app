@@ -32,13 +32,18 @@ def admin_client_list(request):
         return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PATCH'])
 @permission_classes([IsAdminUser])
 def admin_client_detail(request, pk):
     client = get_object_or_404(User, pk=pk, is_client=True)
 
     if request.method == 'GET':
         serializer = ClientSerializer(client)
+        return Response(serializer.data)
+    elif request.method == 'PATCH':
+        serializer = ClientSerializer(client, request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data)
 
 
