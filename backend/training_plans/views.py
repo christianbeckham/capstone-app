@@ -34,7 +34,7 @@ def admin_training_plans_list(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 @permission_classes([IsAdminUser])
 def admin_training_plan_detail(request, pk):
     training_plan = get_object_or_404(TrainingPlan, pk=pk)
@@ -42,8 +42,9 @@ def admin_training_plan_detail(request, pk):
     if request.method == 'GET':
         serializer = TrainingPlanSerializer(training_plan)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT':
-        serializer = TrainingPlanSerializer(training_plan, data=request.data)
+    elif request.method == 'PATCH':
+        serializer = TrainingPlanSerializer(
+            training_plan, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
