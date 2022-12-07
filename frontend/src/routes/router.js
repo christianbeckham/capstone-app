@@ -12,17 +12,22 @@ import CheckInPage from "../pages/CheckInPage/CheckInPage";
 import WorkoutPage from "../pages/WorkoutPage/WorkoutPage";
 import RequestPage from "../pages/RequestPage/RequestPage";
 import ExercisePage from "../pages/ExercisePage/ExercisePage";
-import CheckInItemPage from "../pages/CheckInItemPage/CheckInItemPage";
+import UserCheckInPage from "../pages/UserCheckInPage/UserCheckInPage";
+import AdminUserPage from "../pages/AdminUserPage/AdminUserPage";
+import AdminUserCheckInPage from "../pages/AdminUserCheckInPage/AdminUserCheckInPage";
 
 import MyOverview from "../views/MyOverview/MyOverview";
 import MyCheckIns from "../views/MyCheckIns/MyCheckIns";
 import MyWorkouts from "../views/MyWorkouts/MyWorkouts";
 import MyRequests from "../views/MyRequests/MyRequests";
+import AdminDashboard from "../views/AdminDashboard/AdminDashboard";
+import AdminClients from "../views/AdminClients/AdminClients";
+import AdminCheckIns from "../views/AdminCheckIns/AdminCheckIns";
+import AdminRequests from "../views/AdminRequests/AdminRequests";
 
 import PublicRoute from "./PublicRoute/PublicRoute";
 import UserRoute from "./UserRoute/UserRoute";
 import AdminRoute from "./AdminRoute/AdminRoute";
-import AdminPage from "../pages/AdminPage/AdminPage";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -38,7 +43,7 @@ const router = createBrowserRouter(
 				<Route path="dashboard" element={<MyOverview />} />
 				<Route path="checkins" element={<CheckInPage />}>
 					<Route path="" element={<MyCheckIns />} />
-					<Route path=":checkinId" element={<CheckInItemPage />} />
+					<Route path=":checkinId" element={<UserCheckInPage />} />
 				</Route>
 				<Route path="workouts" element={<WorkoutPage />}>
 					<Route path="" element={<MyWorkouts />} />
@@ -49,10 +54,13 @@ const router = createBrowserRouter(
 				</Route>
 			</Route>
 
-			<Route path="/" element={<AdminRoute />}>
-				<Route path="admin" element={<AdminPage />} />
-				{/* <Route path="clients" element={<ClientsPage />} /> */}
-				{/* <Route path="requests" element={<AdminRequestPage />} /> */}
+			<Route path="/admin" element={<AdminRoute />}>
+				<Route path="/admin" element={<AdminDashboard />} />
+				<Route path="clients" element={<AdminClients />} />
+				<Route path="clients/:clientId" element={<AdminUserPage />} />
+				<Route path="checkins" element={<AdminCheckIns />} />
+				<Route path="checkins/:checkinId" element={<AdminUserCheckInPage />} />
+				<Route path="requests" element={<AdminRequests />} />
 			</Route>
 		</Route>
 	)
