@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import LocalDining from "@mui/icons-material/LocalDining";
 
 import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import EditPlanModal from "../EditPlanModal/EditPlanModal";
@@ -103,6 +104,10 @@ const EditProfileOptions = ({ client, fetchClientUser }) => {
 					handleClose={handleClose}
 					disableRipple
 				/>
+				<MenuItem>
+					<LocalDining />
+					Macros
+				</MenuItem>
 			</StyledMenu>
 		</div>
 	);
