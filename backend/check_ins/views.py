@@ -15,9 +15,20 @@ from .services import email_admin, email_user
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def admin_checkins_list(request):
-    checkins = CheckIn.objects.all()
-    serializer = CheckInSerializer(checkins, many=True)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        user_id = request.query_params.get('user_id')
+        limit = request.query_params.get('limit')
+
+        if user_id is not None:
+            checkins = get_list_or_404(CheckIn, user__id=user_id)
+        else:
+            checkins = CheckIn.objects.all()
+
+        if limit is not None and int(limit) > 0:
+            checkins = checkins[:int(limit)]
+
+        serializer = CheckInSerializer(checkins, many=True)
+        return Response(serializer.data)
 
 
 @api_view(['GET', 'PATCH', 'DELETE'])
@@ -86,3 +97,12 @@ def checkin_detail(request, pk):
     elif request.method == 'DELETE':
         checkin.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def checkins_total_count(request):
+    if request.method == 'GET':
+        total_count = CheckIn.objects.filter(user__id=request.user.id).count()
+        return Response(total_count)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
