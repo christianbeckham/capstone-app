@@ -18,6 +18,9 @@ class Workout(models.Model):
     training_plan = models.ForeignKey(TrainingPlan, on_delete=models.CASCADE)
     assigned_day = models.IntegerField(choices=Weekdays.choices)
 
+    class Meta:
+        ordering = ['assigned_day']
+
     @property
     def week_day(self):
         return self.Weekdays(self.assigned_day).name.lower()
