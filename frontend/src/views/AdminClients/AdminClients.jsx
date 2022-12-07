@@ -3,21 +3,23 @@ import axios from "axios";
 import Typography from "@mui/material/Typography";
 
 import useAuth from "../../hooks/useAuth";
-import AdminClientList from "../../components/admin/AdminClientList/AdminClientList";
+import ClientsTable from "../../components/admin/ClientsTable/ClientsTable";
 
 const AdminClients = () => {
-	const [clients, setClients] = useState([]);
 	const [user, token] = useAuth();
+	const [clients, setClients] = useState([]);
 
 	useEffect(() => {
 		try {
 			const fetchClients = async () => {
-				const response = await axios.get("http://localhost:8000/api/clients/", {
-					headers: { Authorization: `Bearer ${token}` },
-				});
+				const response = await axios.get(
+					"http://localhost:8000/api/auth/clients/",
+					{
+						headers: { Authorization: `Bearer ${token}` },
+					}
+				);
 				if (response.status === 200) {
 					setClients(response.data);
-					console.log(response.data);
 				}
 			};
 			fetchClients();
@@ -31,7 +33,7 @@ const AdminClients = () => {
 			</Typography>
 			<br />
 			{clients.length > 0 ? (
-				<AdminClientList clients={clients} />
+				<ClientsTable clients={clients} />
 			) : (
 				<p>No clients</p>
 			)}
