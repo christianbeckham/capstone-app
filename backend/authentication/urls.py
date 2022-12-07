@@ -1,16 +1,14 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
-from .views import RegisterView, MyTokenObtainPairView, ClientViewList
+from . import views
 
-from rest_framework import routers
-
-router = routers.SimpleRouter()
-router.register(r'clients', ClientViewList)
 
 urlpatterns = [
-    path('auth/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('auth/register/', RegisterView.as_view(), name='register'),
+    path('login/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register/', views.RegisterView.as_view(), name='register'),
+    path('clients/', views.admin_client_list),
+    path('clients/<int:pk>/', views.admin_client_detail),
+    path('clients/total/', views.admin_client_totals),
+    path('me/', views.user_detail),
 ]
-
-urlpatterns += router.urls
