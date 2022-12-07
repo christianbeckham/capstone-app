@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, get_list_or_404
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -45,6 +45,20 @@ def admin_client_detail(request, pk):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def admin_client_totals(request):
+    if request.method == 'GET':
+        results = {'total': 0, 'active': 0, 'inactive': 0}
+        results['total'] = User.objects.filter(is_client=True).count()
+        results['active'] = User.objects.filter(
+            is_client=True).filter(is_active=True).count()
+        results['inactive'] = User.objects.filter(
+            is_client=True).filter(is_active=False).count()
+        return Response(results)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
