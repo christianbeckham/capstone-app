@@ -124,14 +124,12 @@ const Navbar = () => {
 							aria-label="account of current user"
 							aria-controls={menuId}
 							aria-haspopup="true"
-							sx={{ bgcolor: "ButtonShadow" }}
 						/>
 					) : (
 						<Chip
 							icon={<AccountCircle />}
 							label="Sign in"
 							color="primary"
-							sx={{ bgcolor: "ButtonShadow" }}
 							onClick={() => navigate("/login")}
 							aria-label="user sign in"
 						/>
