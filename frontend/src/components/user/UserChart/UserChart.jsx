@@ -21,7 +21,7 @@ const chartOptions = {
 	pointSize: 10,
 };
 
-const chartRange = [1, 2, 3, "all"];
+const chartRange = [4, 8, 12, "all"];
 
 const UserChart = ({ userCheckIns }) => {
 	const [chartData, setChartData] = useState([]);
@@ -33,10 +33,16 @@ const UserChart = ({ userCheckIns }) => {
 		const data = ["Date", "Weight"];
 		return [
 			data,
-			...checkInData.map((c) => [
-				new Date(c.created_date).toLocaleDateString(),
-				Number(c.weight),
-			]),
+			...checkInData
+				.reverse()
+				.map((c) => [
+					new Date(c.created_date).toLocaleDateString("en-US", {
+						year: "2-digit",
+						month: "2-digit",
+						day: "2-digit",
+					}),
+					Number(c.weight),
+				]),
 		];
 	};
 
@@ -44,7 +50,7 @@ const UserChart = ({ userCheckIns }) => {
 		let dataRange = userCheckIns;
 
 		if (userCheckIns.length > range) {
-			dataRange = userCheckIns.slice(-range);
+			dataRange = userCheckIns.slice(0, range);
 		} else {
 			dataRange = userCheckIns;
 		}
@@ -56,7 +62,7 @@ const UserChart = ({ userCheckIns }) => {
 	return (
 		<div>
 			<Card sx={{ py: 2, px: 4 }}>
-				<Stack direction={"row"} justifyContent="space-between" sx={{mb: 1}}>
+				<Stack direction={"row"} justifyContent="space-between" sx={{ mb: 1 }}>
 					<Typography component="h1" variant="h5">
 						Check-In Trends
 					</Typography>
