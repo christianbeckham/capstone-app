@@ -69,7 +69,7 @@ const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
 						fullWidth
 						select
 						variant="standard"
-						label="Available Day(s)"
+						label="Day"
 						name="assigned_day"
 						value={day}
 						onChange={handleDateChange}
