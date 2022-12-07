@@ -45,7 +45,7 @@ const EditProfileModal = forwardRef(
 				email: client?.email,
 				first_name: client?.first_name,
 				last_name: client?.last_name,
-				is_client: client?.is_client,
+				is_active: client?.is_active,
 			});
 			setOpen(false);
 		};
@@ -74,7 +74,7 @@ const EditProfileModal = forwardRef(
 		const postUpdate = async (data) => {
 			try {
 				const response = await axios.patch(
-					`http://localhost:8000/api/clients/${client?.id}/`,
+					`http://localhost:8000/api/auth/clients/${client?.id}/`,
 					data,
 					{
 						headers: {
@@ -97,7 +97,7 @@ const EditProfileModal = forwardRef(
 				email: client?.email,
 				first_name: client?.first_name,
 				last_name: client?.last_name,
-				is_client: client?.is_client,
+				is_active: client?.is_active,
 			});
 		}, [client]);
 
@@ -169,10 +169,10 @@ const EditProfileModal = forwardRef(
 								<FormControlLabel
 									control={
 										<Switch
-											name="is_client"
-											checked={formData?.is_client}
+											name="is_active"
+											checked={formData?.is_active}
 											onChange={handleFieldChange}
-											color={formData?.is_client ? "success" : "error"}
+											color={formData?.is_active ? "success" : "error"}
 											inputProps={{ "aria-label": "controlled" }}
 										/>
 									}
