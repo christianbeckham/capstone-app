@@ -1,9 +1,10 @@
 import React, { createContext, useMemo } from "react";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { createAppTheme } from "../theme/theme";
+import { createAppTheme } from "../theme/index";
+import GlobalAppStyles from "../theme/globalStyles";
 
 export const SettingsContext = createContext();
 
@@ -40,10 +41,13 @@ export const SettingsProvider = ({ children }) => {
 				toggleMenu: navMode.toggleMenu,
 			}}
 		>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				{children}
-			</ThemeProvider>
+			<StyledEngineProvider injectFirst>
+				<ThemeProvider theme={theme}>
+					<CssBaseline />
+					<GlobalAppStyles />
+					{children}
+				</ThemeProvider>
+			</StyledEngineProvider>
 		</SettingsContext.Provider>
 	);
 };
