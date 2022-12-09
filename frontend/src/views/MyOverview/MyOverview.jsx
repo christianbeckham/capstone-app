@@ -11,6 +11,7 @@ import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import useAuth from "../../hooks/useAuth";
+import PageToolbar from "../../components/app/PageToolbar/PageToolbar";
 import UserChart from "../../components/user/UserChart/UserChart";
 
 const MyOverview = () => {
@@ -51,8 +52,9 @@ const MyOverview = () => {
 
 	return (
 		<Grid container spacing={2}>
+			<PageToolbar pageTitle={"Dashboard"} />
 			<Grid container item xs={12} sx={{ mb: 0 }}>
-				<Card sx={{ width: "100%", p: 2 }}>
+				<Card sx={{ width: "100%" }}>
 					<Typography component="h1" variant="h4">
 						Welcome, {user && user.first_name}!
 					</Typography>
@@ -60,7 +62,7 @@ const MyOverview = () => {
 			</Grid>
 			<Grid container item xs={12} spacing={2}>
 				<Grid item xs={4}>
-					<Card sx={{ p: 2 }}>
+					<Card>
 						<Stack rowGap={4}>
 							<Box>
 								<Typography variant="h6" color="text.primary">

@@ -1,13 +1,13 @@
 import React from "react";
 
+import PageToolbar from "../../components/app/PageToolbar/PageToolbar";
 import CheckInForm from "../../components/user/CheckInForm/CheckInForm";
 import CheckInList from "../../components/user/CheckInList/CheckInList";
 
 const MyCheckIns = () => {
 	return (
 		<div>
-			<h1>My Check-Ins</h1>
-			<br />
+			<PageToolbar pageTitle="My Check-Ins" />
 			<CheckInForm />
 			<br />
 			<br />

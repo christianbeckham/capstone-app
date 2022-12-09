@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import useAuth from "../../hooks/useAuth";
+import PageToolbar from "../../components/app/PageToolbar/PageToolbar";
 import WorkoutList from "../../components/user/WorkoutList/WorkoutList";
 
 const MyWorkouts = () => {
@@ -39,12 +40,14 @@ const MyWorkouts = () => {
 	}, []);
 
 	useEffect(() => {
-		fetchWorkouts(planId);
+		if (planId) fetchWorkouts(planId);
 	}, [planId]);
+
+	useEffect(() => {}, []);
 
 	return (
 		<div>
-			<h1>My Workouts</h1>
+			<PageToolbar pageTitle={"My Workouts"} />
 			<WorkoutList workouts={workouts} />
 		</div>
 	);
