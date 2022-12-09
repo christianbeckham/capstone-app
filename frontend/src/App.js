@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { SettingsProvider } from "./context/SettingsContext";
-import "./App.css";
 
 const App = () => {
 	return (
