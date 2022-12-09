@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import { useOutlet } from "react-router-dom";
+
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import CssBaseline from "@mui/material/CssBaseline";
-import DashboardNav from "../../components/user/DashboardNav/DashboardNav";
 
-const UserLayout = ({ children }) => {
+import SideNav from "../../components/app/SideNav/SideNav";
+import SettingsPanel from "../../components/app/SettingsPanel/SettingsPanel";
+import { userNavItems } from "../../routes/sideNavItems";
+
+const UserLayout = () => {
+	const outlet = useOutlet();
+	const [openSettings, setOpenSettings] = useState(false);
+
+	const handleSettingsToggle = () => setOpenSettings(!openSettings);
+
 	return (
 		<Box sx={{ display: "flex" }}>
-			<CssBaseline />
-			<DashboardNav />
-			<Stack component="main" sx={{ flexGrow: 1, p: 3 }} spacing={2}>
-				{children}
+			<SideNav
+				navItems={userNavItems}
+				toggleSettingsPanel={handleSettingsToggle}
+			/>
+			<Stack component="main" sx={{ flexGrow: 1, px: 6 }}>
+				{outlet}
 			</Stack>
+			<SettingsPanel
+				open={openSettings}
+				toggleSettingsPanel={handleSettingsToggle}
+			/>
 		</Box>
 	);
 };
