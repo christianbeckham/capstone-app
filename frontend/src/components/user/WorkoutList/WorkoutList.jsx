@@ -1,53 +1,104 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Card from "@mui/material/Card";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import ArrowRight from "@mui/icons-material/ArrowRight";
+
+import ExerciseDetails from "../ExerciseDetails/ExerciseDetails";
 
 const WorkoutList = ({ workouts }) => {
 	const [exercises, setExercises] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [selectDay, setSelectDay] = useState(0);
+	const [exercise, setExercise] = useState(null);
+
+	const handleTabChange = (e, newValue) => {
+		setSelectDay(newValue);
+		setExercises(workouts[newValue].exercises);
+	};
+
+	const handleSetExercise = (e, newValue) => {
+		setExercise(newValue);
+	};
 
 	useEffect(() => {
 		if (workouts !== undefined) {
-			const workout = workouts.sort((a, b) => a.assigned_day - b.assigned_day);
-
-			if (workout.length > 0) {
-				setExercises(workout[0].exercises);
+			if (workouts.length > 0) {
+				setExercises(workouts[0].exercises);
 				setLoading(false);
 			}
 		}
 	}, [workouts]);
-
-	const getWorkouts = (day) => {
-		console.log("day", day);
-		const exercises = workouts.filter((w) => w.assigned_day === day);
-		setExercises(exercises[0].exercises);
-		console.log(exercises[0].exercises);
-	};
 
 	return (
 		<div>
 			{loading ? (
 				<p>Loading...</p>
 			) : workouts ? (
-				<>
-					{workouts
-						.sort((a, b) => a.assigned_day - b.assigned_day)
-						.map((workout) => (
-							<button
-								key={workout.id}
-								onClick={() => getWorkouts(workout.assigned_day)}
-							>
-								Day {workout.assigned_day}
-							</button>
-						))}
-
-					<div>
-						{exercises.map((e) => (
-							<div key={e.id}>
-								<Link to={`/exercise/${e.id}`}>{e.name}</Link>
-							</div>
-						))}
-					</div>
-				</>
+				<Grid container spacing={2}>
+					<Grid item xs={12}>
+						<Tabs value={selectDay} onChange={handleTabChange}>
+							{workouts
+								.sort((a, b) => a.assigned_day - b.assigned_day)
+								.map((workout) => (
+									<Tab key={workout.id} label={`Day ${workout.assigned_day}`} />
+								))}
+						</Tabs>
+					</Grid>
+					<Grid item xs={6}>
+						<Card sx={{ p: 2 }}>
+							<Typography component="h2" variant="h2">
+								Exercises
+							</Typography>
+							{exercises.map((exercise) => (
+								<List key={exercise.id}>
+									<ListItem disablePadding component="div">
+										<ListItemButton
+											onClick={(_) => handleSetExercise(_, exercise)}
+										>
+											<ListItemIcon>
+												<ArrowRight />
+											</ListItemIcon>
+											<ListItemText>
+												<Typography component="p" variant="body1">
+													{exercise.name}
+												</Typography>
+												<Stack
+													direction="row"
+													divider={<Divider orientation="vertical" flexItem />}
+													spacing={2}
+												>
+													<Typography component="span" variant="caption">
+														{`Sets: ${exercise.sets}`}
+													</Typography>
+													<Typography component="span" variant="caption">
+														{`Reps: ${exercise.reps}`}
+													</Typography>
+													<Typography component="span" variant="caption">
+														{`Rest: ${exercise.rest_time} ${exercise.time_interval}`}
+													</Typography>
+												</Stack>
+											</ListItemText>
+										</ListItemButton>
+									</ListItem>
+								</List>
+							))}
+						</Card>
+					</Grid>
+					<Grid item xs={6}>
+						<ExerciseDetails exercise={exercise} />
+					</Grid>
+				</Grid>
 			) : (
 				<p>No workouts</p>
 			)}
