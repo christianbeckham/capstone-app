@@ -33,16 +33,14 @@ const UserChart = ({ userCheckIns }) => {
 		const data = ["Date", "Weight"];
 		return [
 			data,
-			...checkInData
-				.reverse()
-				.map((c) => [
-					new Date(c.created_date).toLocaleDateString("en-US", {
-						year: "2-digit",
-						month: "2-digit",
-						day: "2-digit",
-					}),
-					Number(c.weight),
-				]),
+			...checkInData.reverse().map((c) => [
+				new Date(c.created_date).toLocaleDateString("en-US", {
+					year: "2-digit",
+					month: "2-digit",
+					day: "2-digit",
+				}),
+				Number(c.weight),
+			]),
 		];
 	};
 
@@ -60,38 +58,36 @@ const UserChart = ({ userCheckIns }) => {
 	}, [userCheckIns, range]);
 
 	return (
-		<div>
-			<Card sx={{ py: 2, px: 4 }}>
-				<Stack direction={"row"} justifyContent="space-between" sx={{ mb: 1 }}>
-					<Typography component="h1" variant="h5">
-						Check-In Trends
-					</Typography>
-					<FormControl>
-						<Select
-							size="small"
-							name="chart_range"
-							value={range}
-							onChange={handleChartRange}
-							variant="outlined"
-						>
-							{chartRange.map((option) => (
-								<MenuItem key={option} value={option}>
-									{option}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-				</Stack>
-				<Divider />
-				<Chart
-					chartType="LineChart"
-					data={chartData}
-					options={chartOptions}
-					width="100%"
-					height="325px"
-				/>
-			</Card>
-		</div>
+		<Card>
+			<Stack direction={"row"} justifyContent="space-between" sx={{ mb: 1 }}>
+				<Typography component="h1" variant="h5">
+					Check-In Trends
+				</Typography>
+				<FormControl>
+					<Select
+						size="small"
+						name="chart_range"
+						value={range}
+						onChange={handleChartRange}
+						variant="outlined"
+					>
+						{chartRange.map((option) => (
+							<MenuItem key={option} value={option}>
+								{option}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+			</Stack>
+			<Divider />
+			<Chart
+				chartType="LineChart"
+				data={chartData}
+				options={chartOptions}
+				width="100%"
+				height="325px"
+			/>
+		</Card>
 	);
 };
 
