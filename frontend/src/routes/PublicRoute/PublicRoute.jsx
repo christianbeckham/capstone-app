@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const PublicRoute = () => {
-	const [user] = useAuth();
+	const { user } = useAuth();
 
 	if (user?.is_client) {
 		return <Navigate to="/dashboard" replace />;

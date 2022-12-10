@@ -3,7 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import UserLayout from "../../layouts/UserLayout/UserLayout";
 
 const UserRoute = () => {
-	const [user] = useAuth();
+	const { user } = useAuth();
 	return user?.is_client ? (
 		<UserLayout>
 			<Outlet />

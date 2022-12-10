@@ -4,7 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
 
 const AdminRoute = () => {
-	const [user] = useAuth();
+	const { user } = useAuth();
 	return user?.is_admin ? (
 		<AdminLayout>
 			<Outlet />
