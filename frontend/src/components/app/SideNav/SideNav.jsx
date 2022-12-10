@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink as RouterLink } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -10,15 +10,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import OfflineBolt from "@mui/icons-material/OfflineBolt";
 import Logout from "@mui/icons-material/Logout";
-import Settings from "@mui/icons-material/Settings";
 
 import AuthContext from "../../../context/AuthContext";
 import useSettings from "../../../hooks/useSettings";
 
-const SideNav = ({ navItems, toggleSettingsPanel }) => {
+const SideNav = ({ navItems }) => {
 	const { logoutUser } = useContext(AuthContext);
 	const { collapsed } = useSettings();
-
 	const width = collapsed ? 100 : 280;
 
 	return (
@@ -59,46 +57,49 @@ const SideNav = ({ navItems, toggleSettingsPanel }) => {
 					>
 						<OfflineBolt sx={{ fontSize: 56 }} />
 					</Box>
-					<List component="nav">
-						{navItems.map((i, index) => (
-							<ListItem key={index}>
-								<ListItemButton component={NavLink} to={i.path}>
+					<Box sx={{ px: 2 }}>
+						<List component="nav">
+							{navItems.map((i, index) => (
+								<ListItem key={index}>
+									<ListItemButton
+										component={RouterLink}
+										to={i.path}
+										sx={{
+											"&.active": {
+												color: "text.primary",
+												bgcolor: "background.neutral",
+											},
+										}}
+									>
+										<ListItemIcon>
+											<i.icon />
+										</ListItemIcon>
+										<ListItemText
+											primary={i.key}
+											disableTypography
+											sx={{ opacity: !collapsed ? 1 : 0 }}
+										/>
+									</ListItemButton>
+								</ListItem>
+							))}
+						</List>
+					</Box>
+					<Box sx={{ flexGrow: 1 }} />
+					<Box sx={{ px: 2 }}>
+						<List component="nav">
+							<ListItem>
+								<ListItemButton onClick={logoutUser}>
 									<ListItemIcon>
-										<i.icon />
+										<Logout />
 									</ListItemIcon>
 									<ListItemText
-										primary={i.key}
+										primary={"Logout"}
 										sx={{ opacity: !collapsed ? 1 : 0 }}
 									/>
 								</ListItemButton>
 							</ListItem>
-						))}
-					</List>
-					<Box sx={{ flexGrow: 1 }} />
-					<List component="nav">
-						<ListItem>
-							<ListItemButton onClick={toggleSettingsPanel}>
-								<ListItemIcon>
-									<Settings />
-								</ListItemIcon>
-								<ListItemText
-									primary={"Settings"}
-									sx={{ opacity: !collapsed ? 1 : 0 }}
-								/>
-							</ListItemButton>
-						</ListItem>
-						<ListItem>
-							<ListItemButton onClick={logoutUser}>
-								<ListItemIcon>
-									<Logout />
-								</ListItemIcon>
-								<ListItemText
-									primary={"Logout"}
-									sx={{ opacity: !collapsed ? 1 : 0 }}
-								/>
-							</ListItemButton>
-						</ListItem>
-					</List>
+						</List>
+					</Box>
 				</Box>
 			</Drawer>
 		</Box>
