@@ -11,6 +11,8 @@ import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import CheckInPage from "../pages/CheckInPage/CheckInPage";
 import WorkoutPage from "../pages/WorkoutPage/WorkoutPage";
 import RequestPage from "../pages/RequestPage/RequestPage";
+import ProfilePage from "../pages/user/ProfilePage/ProfilePage";
+import SettingsPage from "../pages/user/SettingsPage/SettingsPage";
 import ExercisePage from "../pages/ExercisePage/ExercisePage";
 import UserCheckInPage from "../pages/UserCheckInPage/UserCheckInPage";
 import AdminUserPage from "../pages/AdminUserPage/AdminUserPage";
@@ -52,6 +54,8 @@ const router = createBrowserRouter(
 				<Route path="requests" element={<RequestPage />}>
 					<Route path="" element={<MyRequests />} />
 				</Route>
+				<Route path="profile" element={<ProfilePage />} />
+				<Route path="settings" element={<SettingsPage />} />
 			</Route>
 
 			<Route path="/admin" element={<AdminRoute />}>
