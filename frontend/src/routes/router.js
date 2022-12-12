@@ -3,29 +3,33 @@ import {
 	createRoutesFromElements,
 	Route,
 } from "react-router-dom";
+
+// App-Public route & pages
 import App from "../App";
 import ErrorPage from "../pages/app/ErrorPage/ErrorPage";
+import PublicRoute from "./PublicRoute/PublicRoute";
 import HomePage from "../pages/app/HomePage/HomePage";
 import LoginPage from "../pages/app/LoginPage/LoginPage";
 import RegisterPage from "../pages/app/RegisterPage/RegisterPage";
+
+// Admin route & pages
+import AdminRoute from "./AdminRoute/AdminRoute";
+import AdminDashboardPage from "../pages/admin/DashboardPage/DashboardPage";
+import ClientsPage from "../pages/admin/ClientsPage/ClientsPage";
+import UserProfilePage from "../pages/admin/UserProfilePage/UserProfilePage";
+import AdminCheckInsPage from "../pages/admin/CheckInsPage/CheckInsPage";
+import UserCheckInPage from "../pages/admin/UserCheckInPage/UserCheckInPage";
+import AdminRequestsPage from "../pages/admin/RequestsPage/RequestsPage";
+
+// User route & pages
+import UserRoute from "./UserRoute/UserRoute";
+import UserDashboardPage from "../pages/user/DashboardPage/DashboardPage";
+import UserCheckInsPage from "../pages/user/CheckInsPage/CheckInsPage";
+import CheckInDetailsPage from "../pages/user/CheckInDetailsPage/CheckInDetailsPage";
+import WorkoutsPage from "../pages/user/WorkoutsPage/WorkoutsPage";
+import UserRequestsPage from "../pages/user/RequestsPage/RequestsPage";
 import ProfilePage from "../pages/app/ProfilePage/ProfilePage";
 import SettingsPage from "../pages/app/SettingsPage/SettingsPage";
-import UserCheckInPage from "../pages/UserCheckInPage/UserCheckInPage";
-import AdminUserPage from "../pages/AdminUserPage/AdminUserPage";
-import AdminUserCheckInPage from "../pages/AdminUserCheckInPage/AdminUserCheckInPage";
-
-import MyOverview from "../views/MyOverview/MyOverview";
-import MyCheckIns from "../views/MyCheckIns/MyCheckIns";
-import MyWorkouts from "../views/MyWorkouts/MyWorkouts";
-import MyRequests from "../views/MyRequests/MyRequests";
-import AdminDashboard from "../views/AdminDashboard/AdminDashboard";
-import AdminClients from "../views/AdminClients/AdminClients";
-import AdminCheckIns from "../views/AdminCheckIns/AdminCheckIns";
-import AdminRequests from "../views/AdminRequests/AdminRequests";
-
-import PublicRoute from "./PublicRoute/PublicRoute";
-import UserRoute from "./UserRoute/UserRoute";
-import AdminRoute from "./AdminRoute/AdminRoute";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -36,23 +40,25 @@ const router = createBrowserRouter(
 				<Route path="/register" element={<RegisterPage />} />
 			</Route>
 
-			<Route path="/" element={<UserRoute />}>
-				<Route path="dashboard" element={<MyOverview />} />
-				<Route path="checkins" element={<MyCheckIns />} />
-				<Route path="checkins/:checkinId" element={<UserCheckInPage />} />
-				<Route path="workouts" element={<MyWorkouts />} />
-				<Route path="requests" element={<MyRequests />} />
+			<Route path="/u" element={<UserRoute />}>
+				<Route index element={<UserDashboardPage />} />
+				<Route path="checkins" element={<UserCheckInsPage />} />
+				<Route path="checkins/:checkinId" element={<CheckInDetailsPage />} />
+				<Route path="workouts" element={<WorkoutsPage />} />
+				<Route path="requests" element={<UserRequestsPage />} />
 				<Route path="profile" element={<ProfilePage />} />
 				<Route path="settings" element={<SettingsPage />} />
 			</Route>
 
-			<Route path="/admin" element={<AdminRoute />}>
-				<Route path="/admin" element={<AdminDashboard />} />
-				<Route path="clients" element={<AdminClients />} />
-				<Route path="clients/:clientId" element={<AdminUserPage />} />
-				<Route path="checkins" element={<AdminCheckIns />} />
-				<Route path="checkins/:checkinId" element={<AdminUserCheckInPage />} />
-				<Route path="requests" element={<AdminRequests />} />
+			<Route path="/a" element={<AdminRoute />}>
+				<Route index element={<AdminDashboardPage />} />
+				<Route path="clients" element={<ClientsPage />} />
+				<Route path="clients/:clientId" element={<UserProfilePage />} />
+				<Route path="checkins" element={<AdminCheckInsPage />} />
+				<Route path="checkins/:checkinId" element={<UserCheckInPage />} />
+				<Route path="requests" element={<AdminRequestsPage />} />
+				<Route path="profile" element={<ProfilePage />} />
+				<Route path="settings" element={<SettingsPage />} />
 			</Route>
 		</Route>
 	)
