@@ -10,14 +10,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 
-import useAuth from "../../hooks/useAuth";
-import ProfileCard from "../../components/admin/ProfileCard/ProfileCard";
-import ProfileCheckInList from "../../components/admin/ProfileCheckInList/ProfileCheckInList";
-import ProfileWorkoutList from "../../components/admin/ProfileWorkoutList/ProfileWorkoutList";
-import EditProfileOptions from "../../components/admin/EditProfileOptions/EditProfileOptions";
+import useAuth from "../../../hooks/useAuth";
+import ProfileCard from "../../../components/admin/ProfileCard/ProfileCard";
+import ProfileCheckInList from "../../../components/admin/ProfileCheckInList/ProfileCheckInList";
+import ProfileWorkoutList from "../../../components/admin/ProfileWorkoutList/ProfileWorkoutList";
+import EditProfileOptions from "../../../components/admin/EditProfileOptions/EditProfileOptions";
 
-const AdminUserPage = () => {
-	const [user, token] = useAuth();
+const UserProfilePage = () => {
+	const { token } = useAuth();
 	const { clientId } = useParams();
 	const [client, setClient] = useState(null);
 
@@ -239,4 +239,4 @@ const AdminUserPage = () => {
 	);
 };
 
-export default AdminUserPage;
+export default UserProfilePage;
