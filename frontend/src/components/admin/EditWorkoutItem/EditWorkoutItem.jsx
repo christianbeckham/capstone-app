@@ -99,12 +99,12 @@ const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
 							</MenuItem>
 						))}
 					</TextField>
-					<Box>
+					<Box sx={{ display: "flex" }}>
 						<IconButton onClick={patchUpdate}>
-							<CheckCircle fontSize="inherit" />
+							<CheckCircle color="success" fontSize="inherit" />
 						</IconButton>
 						<IconButton onClick={handleCancel}>
-							<Cancel fontSize="inherit" />
+							<Cancel color="error" fontSize="inherit" />
 						</IconButton>
 					</Box>
 				</Stack>
