@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import Menu from "@mui/material/Menu";
@@ -9,38 +9,38 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
-import AuthContext from "../../../context/AuthContext";
+import useAuth from "../../../hooks/useAuth";
 
 const AccountMenuList = ({ menuId, menuAnchor, handleMenuClose }) => {
 	const navigate = useNavigate();
-	const { logoutUser } = useContext(AuthContext);
+	const { logoutUser } = useAuth();
 	const isMenuOpen = Boolean(menuAnchor);
 
 	return (
 		<Menu
-			sx={{ mt: "45px", zIndex: 2000 }}
+			id={menuId}
+			open={isMenuOpen}
+			onClose={handleMenuClose}
 			anchorEl={menuAnchor}
 			anchorOrigin={{
-				vertical: "top",
+				vertical: "bottom",
 				horizontal: "right",
 			}}
-			id={menuId}
 			transformOrigin={{
 				vertical: "top",
 				horizontal: "right",
 			}}
-			open={isMenuOpen}
-			onClose={handleMenuClose}
+			sx={{ mt: 1 }}
 			PaperProps={{
 				elevation: 0,
 				sx: {
+					width: 160,
+					px: 1,
 					overflow: "visible",
-					filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-					"& .MuiAvatar-root": {
-						width: 24,
-						height: 24,
-						ml: -0.5,
-						mr: 1,
+					filter: "drop-shadow(0px 2px 2px rgba(0,0,0,0.25))",
+					"& .MuiMenuItem-root": {
+						typography: "body2",
+						borderRadius: 1,
 					},
 					"&:before": {
 						content: '""',
