@@ -9,7 +9,7 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
-import IconButton from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import ExitToApp from "@mui/icons-material/ExitToApp";
 import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
 import RemoveCircleOutline from "@mui/icons-material/RemoveCircleOutline";
