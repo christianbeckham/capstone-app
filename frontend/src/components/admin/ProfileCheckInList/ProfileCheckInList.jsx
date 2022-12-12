@@ -6,14 +6,15 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Card from "@mui/material/Card";
 import Pagination from "@mui/material/Pagination";
-import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import ExitToApp from "@mui/icons-material/ExitToApp";
 
 import useAuth from "../../../hooks/useAuth";
 
 const ProfileCheckInList = ({ userId }) => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [checkins, setCheckins] = useState([]);
 
 	const [page, setPage] = useState(1);
@@ -53,7 +54,7 @@ const ProfileCheckInList = ({ userId }) => {
 			{checkins
 				.slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage)
 				.map((c) => (
-					<Card key={c.id} sx={{ p: 1, my: 1 }}>
+					<Paper key={c.id} sx={{ p: 1, my: 1 }}>
 						<Box
 							sx={{
 								display: "flex",
@@ -62,15 +63,16 @@ const ProfileCheckInList = ({ userId }) => {
 							}}
 						>
 							<p>{new Date(c?.created_date).toLocaleDateString()}</p>
-							<Button
-								size="small"
+							<IconButton
 								component={Link}
-								to={`/admin/checkins/${c.id}`}
+								to={`/a/checkins/${c.id}`}
+								aria-label="view check-in"
+								color="primary"
 							>
-								View
-							</Button>
+								<ExitToApp />
+							</IconButton>
 						</Box>
-					</Card>
+					</Paper>
 				))}
 			<Stack
 				direction="row"
