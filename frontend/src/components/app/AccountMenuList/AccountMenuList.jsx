@@ -13,7 +13,7 @@ import useAuth from "../../../hooks/useAuth";
 
 const AccountMenuList = ({ menuId, menuAnchor, handleMenuClose }) => {
 	const navigate = useNavigate();
-	const { logoutUser } = useAuth();
+	const { urlPrefix, logoutUser } = useAuth();
 	const isMenuOpen = Boolean(menuAnchor);
 
 	return (
@@ -57,13 +57,13 @@ const AccountMenuList = ({ menuId, menuAnchor, handleMenuClose }) => {
 				},
 			}}
 		>
-			<MenuItem onClick={() => navigate("/profile")}>
+			<MenuItem onClick={() => navigate(`/${urlPrefix}/profile`)}>
 				<ListItemIcon>
 					<AccountCircle />
 				</ListItemIcon>
 				Profile
 			</MenuItem>
-			<MenuItem onClick={() => navigate("/settings")}>
+			<MenuItem onClick={() => navigate(`/${urlPrefix}/settings`)}>
 				<ListItemIcon>
 					<Settings />
 				</ListItemIcon>
