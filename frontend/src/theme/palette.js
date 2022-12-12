@@ -116,6 +116,7 @@ export const dark = {
 	background: {
 		paper: palette.grey[900],
 		default: palette.grey[800],
+		neutral: palette.grey[700],
 	},
 	text: {
 		primary: palette.grey[100],
