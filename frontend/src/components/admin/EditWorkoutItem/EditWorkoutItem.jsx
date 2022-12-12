@@ -17,7 +17,7 @@ import useAuth from "../../../hooks/useAuth";
 import { weekdays } from "../../../utils/weekdays";
 
 const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [editMode, setEditMode] = useState(false);
 	const [day, setDay] = useState(weekdays[0].value);
 
@@ -55,16 +55,20 @@ const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
 
 	return (
 		<div>
-			<Stack direction="row">
+			<Stack direction="row" spacing={1}>
 				<Typography variant="h6">Details</Typography>
 				{!editMode && (
-					<IconButton size="small" onClick={handleEditMode}>
+					<IconButton
+						size="small"
+						onClick={handleEditMode}
+						sx={{ bgcolor: "background.default" }}
+					>
 						<Edit fontSize="inherit" />
 					</IconButton>
 				)}
 			</Stack>
 			{editMode ? (
-				<Stack direction={"row"}>
+				<Stack direction={"row"} sx={{ mt: 2 }}>
 					<TextField
 						fullWidth
 						select
@@ -73,6 +77,7 @@ const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
 						name="assigned_day"
 						value={day}
 						onChange={handleDateChange}
+						sx={{ textTransform: "capitalize" }}
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
@@ -85,7 +90,11 @@ const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
 						}}
 					>
 						{weekdays.map((option) => (
-							<MenuItem key={option.value} value={option.value}>
+							<MenuItem
+								key={option.value}
+								value={option.value}
+								sx={{ textTransform: "capitalize" }}
+							>
 								{option.label}
 							</MenuItem>
 						))}
@@ -100,13 +109,12 @@ const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
 					</Box>
 				</Stack>
 			) : (
-				<>
-					<p>Id: {workoutInfo?.id}</p>
-					<Typography variant="body1">
-						Day {workoutInfo?.assigned_day}
+				<Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+					<Typography variant="body1">Set Day:</Typography>
+					<Typography variant="body1" sx={{ textTransform: "capitalize" }}>
+						{workoutInfo?.week_day}
 					</Typography>
-					<Typography variant="body1">{workoutInfo?.week_day}</Typography>
-				</>
+				</Stack>
 			)}
 		</div>
 	);
