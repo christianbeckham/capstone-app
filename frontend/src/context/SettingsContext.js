@@ -1,4 +1,4 @@
-import React, { createContext, useMemo } from "react";
+import React, { createContext, useMemo, useState } from "react";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -11,6 +11,7 @@ export const SettingsContext = createContext();
 export const SettingsProvider = ({ children }) => {
 	const [mode, setMode] = useLocalStorage("mode", "light");
 	const [collapsed, setCollapsed] = useLocalStorage("sidebarcollapsed", false);
+	const [openMobileMenu, setOpenMobileMenu] = useState(false);
 
 	const theme = useMemo(() => createAppTheme(mode), [mode]);
 
@@ -32,6 +33,10 @@ export const SettingsProvider = ({ children }) => {
 		[]
 	);
 
+	const toggleMobileMenu = () => {
+		setOpenMobileMenu(!openMobileMenu);
+	};
+
 	return (
 		<SettingsContext.Provider
 			value={{
@@ -39,6 +44,8 @@ export const SettingsProvider = ({ children }) => {
 				toggleMode: colorMode.toggleMode,
 				collapsed,
 				toggleMenu: navMode.toggleMenu,
+				openMobileMenu,
+				toggleMobileMenu,
 			}}
 		>
 			<StyledEngineProvider injectFirst>
