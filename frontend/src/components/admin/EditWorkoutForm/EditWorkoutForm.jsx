@@ -12,6 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import Launch from "@mui/icons-material/Launch";
 import Delete from "@mui/icons-material/Delete";
 
 import useAuth from "../../../hooks/useAuth";
@@ -96,7 +97,9 @@ const EditWorkoutForm = ({ workoutId, fetchWorkoutsByPlan }) => {
 
 	return (
 		<div>
-			<Button onClick={handleFormOpen}>View</Button>
+			<IconButton color="primary" size="small" onClick={handleFormOpen}>
+				<Launch fontSize="inherit" />
+			</IconButton>
 			<Dialog open={open} onClose={handleFormClose} maxWidth="md" fullWidth>
 				<Box component={"form"} onSubmit={handleFormSubmit}>
 					<DialogTitle
