@@ -64,7 +64,7 @@ def admin_client_totals(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_detail(request):
-    user = get_object_or_404(User, id=request.user.id, is_client=True)
+    user = get_object_or_404(User, id=request.user.id)
 
     if request.method == 'GET':
         serializer = ClientSerializer(user)
