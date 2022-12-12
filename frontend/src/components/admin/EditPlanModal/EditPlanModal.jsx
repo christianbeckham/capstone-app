@@ -20,7 +20,6 @@ const style = {
 	transform: "translate(-50%, -50%)",
 	width: 500,
 	bgcolor: "background.paper",
-	border: "1px solid #aeaeae",
 	borderRadius: "5px",
 	boxShadow: 24,
 	p: 4,
@@ -28,7 +27,7 @@ const style = {
 
 const EditPlanModal = forwardRef(
 	({ plan, fetchClientUser, handleClose }, ref) => {
-		const [user, token] = useAuth();
+		const { token } = useAuth();
 		const [open, setOpen] = useState(false);
 		const [formData, setFormData] = useState({});
 
@@ -92,7 +91,7 @@ const EditPlanModal = forwardRef(
 					aria-describedby="modal-modal-description"
 				>
 					<Box component={"form"} onSubmit={handleSubmit} sx={style}>
-						<h2>Edit Plan Modal</h2>
+						<h2>Edit Plan</h2>
 						<Divider />
 						<Stack rowGap={2} sx={{ my: 4 }}>
 							<TextField
@@ -127,14 +126,18 @@ const EditPlanModal = forwardRef(
 								variant="standard"
 							/>
 						</Stack>
-						<Box sx={{ float: "right" }}>
-							<Button type="submit" variant="contained">
+						<Stack direction="row" spacing={1} sx={{ float: "right" }}>
+							<Button type="submit" variant="contained" color="success">
 								Save
 							</Button>
-							<Button variant="contained" onClick={handleModalClose}>
+							<Button
+								variant="contained"
+								color="error"
+								onClick={handleModalClose}
+							>
 								Cancel
 							</Button>
-						</Box>
+						</Stack>
 					</Box>
 				</Modal>
 			</div>
