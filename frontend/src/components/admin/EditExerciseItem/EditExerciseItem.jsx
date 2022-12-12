@@ -194,12 +194,12 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 									</Select>
 								</FormControl>
 							</Stack>
-							<Box>
+							<Box sx={{ display: "flex" }}>
 								<IconButton aria-label="edit" onClick={handleUpdate}>
-									<CheckCircle fontSize="inherit" />
+									<CheckCircle color="success" />
 								</IconButton>
 								<IconButton aria-label="edit" onClick={handleCancel}>
-									<Cancel fontSize="inherit" />
+									<Cancel color="error" />
 								</IconButton>
 							</Box>
 						</>
