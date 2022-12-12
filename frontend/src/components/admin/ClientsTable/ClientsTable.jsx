@@ -8,13 +8,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
+import IconButton from "@mui/material/IconButton";
+import ExitToApp from "@mui/icons-material/ExitToApp";
 
 const ClientsTable = ({ clients }) => {
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
@@ -27,53 +27,45 @@ const ClientsTable = ({ clients }) => {
 
 	return (
 		<>
-			<TableContainer component={Paper} sx={{ px: 2, py: 1 }}>
-				<Table sx={{ minWidth: 650 }} size="small" aria-label="clients table">
+			<TableContainer>
+				<Table aria-label="clients table">
 					<TableHead>
 						<TableRow>
-							<TableCell sx={{ color: "text.secondary" }}>Id</TableCell>
-							<TableCell sx={{ color: "text.secondary" }} align="left">
-								Full Name
-							</TableCell>
-							<TableCell sx={{ color: "text.secondary" }} align="left">
-								Email
-							</TableCell>
-							<TableCell sx={{ color: "text.secondary" }} align="left">
-								Date Joined
-							</TableCell>
-							<TableCell sx={{ color: "text.secondary" }} align="left">
-								Status
-							</TableCell>
-							<TableCell align="left"></TableCell>
+							<TableCell>Id</TableCell>
+							<TableCell>Full Name</TableCell>
+							<TableCell>Email</TableCell>
+							<TableCell>Date Joined</TableCell>
+							<TableCell align="center">Status</TableCell>
+							<TableCell></TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{clients
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((row) => (
-								<TableRow
-									key={row.id}
-									sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-								>
-									<TableCell component="th" scope="row">
-										{row.id}
-									</TableCell>
-									<TableCell align="left">{row.full_name}</TableCell>
-									<TableCell align="left">{row.email}</TableCell>
-									<TableCell align="left">
+								<TableRow key={row.id}>
+									<TableCell>{row.id}</TableCell>
+									<TableCell>{row.full_name}</TableCell>
+									<TableCell>{row.email}</TableCell>
+									<TableCell>
 										{new Date(row?.date_joined).toLocaleDateString()}
 									</TableCell>
-									<TableCell align="left">
+									<TableCell align="center">
 										{row.is_active ? (
 											<Chip label="Active" color="success" />
 										) : (
 											<Chip label="Inactive" color="warning" />
 										)}
 									</TableCell>
-									<TableCell align="left" sx={{ display: "flex" }}>
-										<Button size="small" component={Link} to={`${row.id}`}>
-											View
-										</Button>
+									<TableCell align="center">
+										<IconButton
+											component={Link}
+											to={`${row.id}`}
+											aria-label="view client user"
+											color="primary"
+										>
+											<ExitToApp />
+										</IconButton>
 									</TableCell>
 								</TableRow>
 							))}
@@ -81,7 +73,7 @@ const ClientsTable = ({ clients }) => {
 				</Table>
 			</TableContainer>
 			<TablePagination
-				rowsPerPageOptions={[10, 15, 25]}
+				rowsPerPageOptions={[5, 10, 15]}
 				component="div"
 				count={clients.length}
 				rowsPerPage={rowsPerPage}
