@@ -68,8 +68,9 @@ const ProfileCheckInList = ({ userId }) => {
 								to={`/a/checkins/${c.id}`}
 								aria-label="view check-in"
 								color="primary"
+								size="small"
 							>
-								<ExitToApp />
+								<ExitToApp fontSize="inherit" />
 							</IconButton>
 						</Box>
 					</Paper>
