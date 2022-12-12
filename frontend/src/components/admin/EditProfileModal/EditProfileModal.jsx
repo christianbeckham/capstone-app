@@ -22,7 +22,6 @@ const style = {
 	transform: "translate(-50%, -50%)",
 	width: 500,
 	bgcolor: "background.paper",
-	border: "1px solid #aeaeae",
 	borderRadius: "5px",
 	boxShadow: 24,
 	p: 4,
@@ -30,7 +29,7 @@ const style = {
 
 const EditProfileModal = forwardRef(
 	({ client, fetchClientUser, handleClose }, ref) => {
-		const [user, token] = useAuth();
+		const { token } = useAuth();
 		const [open, setOpen] = useState(false);
 		const [formData, setFormData] = useState({});
 
@@ -114,7 +113,7 @@ const EditProfileModal = forwardRef(
 					aria-describedby="modal-modal-description"
 				>
 					<Box component={"form"} onSubmit={handleSubmit} sx={style}>
-						<h2>Edit Profile Modal</h2>
+						<h2>Edit Profile</h2>
 						<Divider />
 						<Stack rowGap={2} sx={{ my: 4 }}>
 							<Stack direction={"row"} columnGap={2}>
@@ -176,19 +175,24 @@ const EditProfileModal = forwardRef(
 											inputProps={{ "aria-label": "controlled" }}
 										/>
 									}
-									label="Status"
+									sx={{ m: 0 }}
+									label="Active"
 									labelPlacement="start"
 								/>
 							</FormGroup>
 						</Stack>
-						<Box sx={{ float: "right" }}>
-							<Button type="submit" variant="contained">
+						<Stack direction="row" spacing={1} sx={{ float: "right" }}>
+							<Button type="submit" variant="contained" color="success">
 								Save
 							</Button>
-							<Button variant="contained" onClick={handleModalClose}>
+							<Button
+								variant="contained"
+								color="error"
+								onClick={handleModalClose}
+							>
 								Cancel
 							</Button>
-						</Box>
+						</Stack>
 					</Box>
 				</Modal>
 			</div>
