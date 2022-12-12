@@ -9,6 +9,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
@@ -19,7 +20,7 @@ import EditExerciseItem from "../EditExerciseItem/EditExerciseItem";
 import AddExerciseModal from "../AddExerciseModal/AddExerciseModal";
 
 const EditWorkoutForm = ({ workoutId, fetchWorkoutsByPlan }) => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [workoutInfo, setWorkoutInfo] = useState(null);
 	const [exercises, setExercises] = useState([]);
 	const [open, setOpen] = useState(false);
@@ -98,7 +99,13 @@ const EditWorkoutForm = ({ workoutId, fetchWorkoutsByPlan }) => {
 			<Button onClick={handleFormOpen}>View</Button>
 			<Dialog open={open} onClose={handleFormClose} maxWidth="md" fullWidth>
 				<Box component={"form"} onSubmit={handleFormSubmit}>
-					<DialogTitle>
+					<DialogTitle
+						sx={{
+							display: "flex",
+							justifyContent: "space-between",
+							textTransform: "capitalize",
+						}}
+					>
 						Day {workoutInfo?.assigned_day} - {workoutInfo?.week_day}
 						<IconButton size="small" onClick={handleWorkoutDelete}>
 							<Delete fontSize="inherit" />
@@ -114,11 +121,15 @@ const EditWorkoutForm = ({ workoutId, fetchWorkoutsByPlan }) => {
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<h4>Exercises:</h4>
-								<AddExerciseModal
-									workoutId={workoutId}
-									fetchExercises={fetchExercises}
-								/>
+								<Stack direction={"row"} spacing={1} alignItems={"center"}>
+									<Typography variant="h6" color="text.primary" sx={{ my: 1 }}>
+										Exercises
+									</Typography>
+									<AddExerciseModal
+										workoutId={workoutId}
+										fetchExercises={fetchExercises}
+									/>
+								</Stack>
 								<Stack rowGap={2}>
 									{exercises?.map((ex) => (
 										<EditExerciseItem
