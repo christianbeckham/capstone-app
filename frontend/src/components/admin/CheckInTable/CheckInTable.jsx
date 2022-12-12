@@ -9,15 +9,17 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/Button";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
+import RemoveCircleOutline from "@mui/icons-material/RemoveCircleOutline";
 
 import useAuth from "../../../hooks/useAuth";
 
 const CheckInTable = ({ checkins, fetchCheckIns }) => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
@@ -46,18 +48,16 @@ const CheckInTable = ({ checkins, fetchCheckIns }) => {
 
 	return (
 		<div>
-			<TableContainer component={Paper} sx={{ px: 2, py: 1 }}>
-				<Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
+			<TableContainer>
+				<Table aria-label="check-ins table">
 					<TableHead>
 						<TableRow>
-							<TableCell sx={{ color: "text.secondary" }}>Date</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>By</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>Weight</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>
-								Client Review
-							</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>Images</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>Feedback</TableCell>
+							<TableCell>Date</TableCell>
+							<TableCell>By</TableCell>
+							<TableCell>Weight</TableCell>
+							<TableCell>Client Review</TableCell>
+							<TableCell align="center">Images</TableCell>
+							<TableCell align="center">Feedback</TableCell>
 							<TableCell></TableCell>
 						</TableRow>
 					</TableHead>
@@ -66,33 +66,38 @@ const CheckInTable = ({ checkins, fetchCheckIns }) => {
 							checkins
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((check) => (
-									<TableRow
-										key={check.id}
-										sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-									>
-										<TableCell align="left">
+									<TableRow key={check.id}>
+										<TableCell>
 											{new Date(check?.created_date).toLocaleDateString()}
 										</TableCell>
-										<TableCell align="left">{check.user.full_name}</TableCell>
-										<TableCell align="left">{check.weight}</TableCell>
-										<TableCell align="left">
+										<TableCell>{check.user.full_name}</TableCell>
+										<TableCell>{check.weight}</TableCell>
+										<TableCell>
 											{check.weekly_review ? check.weekly_review : "n/a"}
 										</TableCell>
-										<TableCell align="left">{check.images.length}</TableCell>
-										<TableCell align="left">
-											{check.trainer_feedback ? check.trainer_feedback : "n/a"}
+										<TableCell align="center">{check.images.length}</TableCell>
+										<TableCell align="center">
+											{check.trainer_feedback ? (
+												<CheckCircleOutline color="success" />
+											) : (
+												<RemoveCircleOutline color="warning" />
+											)}
 										</TableCell>
-										<TableCell align="left" sx={{ display: "flex" }}>
-											<Button size="small" component={Link} to={`${check.id}`}>
-												View
-											</Button>
-											<Button
-												size="small"
+										<TableCell align="center">
+											<IconButton
+												component={Link}
+												to={`${check.id}`}
+												aria-label="view check-in"
+												color="primary"
+											>
+												<ExitToApp />
+											</IconButton>
+											{/* <Button
 												color="error"
 												onClick={() => deleteCheckIn(check.id)}
 											>
 												Delete
-											</Button>
+											</Button> */}
 										</TableCell>
 									</TableRow>
 								))
@@ -105,7 +110,7 @@ const CheckInTable = ({ checkins, fetchCheckIns }) => {
 				</Table>
 			</TableContainer>
 			<TablePagination
-				rowsPerPageOptions={[10, 15, 25]}
+				rowsPerPageOptions={[5, 10, 15]}
 				component="div"
 				count={checkins.length}
 				rowsPerPage={rowsPerPage}
