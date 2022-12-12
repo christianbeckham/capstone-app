@@ -41,7 +41,7 @@ export const appComponents = (theme) => ({
 	MuiCard: {
 		styleOverrides: {
 			root: {
-				padding: theme.spacing(3),
+				padding: theme.spacing(2),
 				borderRadius: Number(theme.shape.borderRadius) * 2,
 				position: "relative",
 				zIndex: 0, // Fix Safari overflow: hidden with border radius
@@ -55,14 +55,14 @@ export const appComponents = (theme) => ({
 		},
 		styleOverrides: {
 			root: {
-				padding: theme.spacing(3, 3, 0),
+				padding: theme.spacing(2),
 			},
 		},
 	},
 	MuiCardContent: {
 		styleOverrides: {
 			root: {
-				padding: theme.spacing(3),
+				padding: theme.spacing(2),
 			},
 		},
 	},
@@ -70,7 +70,7 @@ export const appComponents = (theme) => ({
 		styleOverrides: {
 			root: {
 				justifyContent: "flex-end",
-				padding: "0 24px 24px 24px",
+				padding: theme.spacing(2),
 			},
 		},
 	},
@@ -102,6 +102,13 @@ export const appComponents = (theme) => ({
 		styleOverrides: {
 			paper: {
 				border: "none; !important",
+			},
+		},
+	},
+	MuiFab: {
+		styleOverrides: {
+			root: {
+				boxShadow: "none",
 			},
 		},
 	},
@@ -160,6 +167,9 @@ export const appComponents = (theme) => ({
 		},
 	},
 	MuiListItem: {
+		defaultProps: {
+			disablePadding: true,
+		},
 		styleOverrides: {
 			root: {
 				"&.Mui-selected": {
@@ -172,10 +182,9 @@ export const appComponents = (theme) => ({
 	MuiListItemButton: {
 		styleOverrides: {
 			root: {
-				height: 50,
+				height: 48,
 				borderRadius: 8,
 				justifyContent: "center",
-				// backgroundColor: "red",
 			},
 		},
 	},
@@ -245,6 +254,36 @@ export const appComponents = (theme) => ({
 				textTransform: "none",
 				"&.Mui-selected": {
 					color: theme.palette.text.primary,
+				},
+			},
+		},
+	},
+	MuiTable: {
+		defaultProps: {
+			size: "small",
+		},
+		styleOverrides: {
+			root: {
+				minWidth: 650,
+				borderCollapse: "separate",
+				borderSpacing: "0 1rem",
+				bgcolor: "transparent",
+			},
+		},
+	},
+	MuiTableRow: {
+		styleOverrides: {
+			root: {
+				radius: 8,
+				"& th": { border: 0 },
+				"& td": { backgroundColor: theme.palette.background.paper, border: 0 },
+				"& td:first-of-type": {
+					borderTopLeftRadius: 8,
+					borderBottomLeftRadius: 8,
+				},
+				"& td:last-child": {
+					borderTopRightRadius: 8,
+					borderBottomRightRadius: 8,
 				},
 			},
 		},
