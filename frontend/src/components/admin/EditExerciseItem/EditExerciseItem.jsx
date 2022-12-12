@@ -13,6 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 import FitnessCenter from "@mui/icons-material/FitnessCenter";
@@ -24,7 +25,7 @@ import Alarm from "@mui/icons-material/Alarm";
 import useAuth from "../../../hooks/useAuth";
 
 const EditExerciseItem = ({ exercise, fetchExercises }) => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [editMode, setEditMode] = useState(false);
 	const [data, setData] = useState(exercise);
 	const [error, setError] = useState(null);
@@ -101,7 +102,7 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 					p: 1,
 				}}
 			>
-				<Box sx={{ display: "flex", alignItems: "center" }}>
+				<Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
 					<Avatar sx={{ width: 24, height: 24, mx: 2 }}>
 						<FitnessCenter fontSize="inherit" />
 					</Avatar>
@@ -193,19 +194,27 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 									</Select>
 								</FormControl>
 							</Stack>
-							<span>
+							<Box>
 								<IconButton aria-label="edit" onClick={handleUpdate}>
 									<CheckCircle fontSize="inherit" />
 								</IconButton>
 								<IconButton aria-label="edit" onClick={handleCancel}>
 									<Cancel fontSize="inherit" />
 								</IconButton>
-							</span>
+							</Box>
 						</>
 					) : (
-						<>
+						<Box
+							sx={{
+								display: "flex",
+								justifyContent: "space-between",
+								flexGrow: 1,
+							}}
+						>
 							<Stack sx={{ mx: 1 }}>
-								<p>{exercise.name}</p>
+								<Typography sx={{ textTransform: "capitalize" }}>
+									{exercise.name}
+								</Typography>
 								<Stack direction={"row"} columnGap={2}>
 									<p>Sets: {exercise.sets}</p>
 									<p>Reps: {exercise.reps}</p>
@@ -214,25 +223,25 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 									</p>
 								</Stack>
 							</Stack>
-							<span>
+							<Stack direction="row" spacing={1} sx={{ my: "auto" }}>
 								<IconButton
 									aria-label="edit"
 									size="small"
 									onClick={handleEditMode}
+									sx={{ height: 28 }}
 								>
 									<Edit fontSize="inherit" />
 								</IconButton>
-							</span>
-							<span>
 								<IconButton
 									aria-label="delete"
 									size="small"
 									onClick={deleteExercise}
+									sx={{ height: 28 }}
 								>
 									<Delete fontSize="inherit" />
 								</IconButton>
-							</span>
-						</>
+							</Stack>
+						</Box>
 					)}
 				</Box>
 			</Card>
