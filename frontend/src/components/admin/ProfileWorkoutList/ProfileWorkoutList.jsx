@@ -3,7 +3,7 @@ import axios from "axios";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
+import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -13,7 +13,7 @@ import NewWorkoutForm from "../NewWorkoutForm/NewWorkoutForm";
 import EditWorkoutForm from "../EditWorkoutForm/EditWorkoutForm";
 
 const ProfileWorkoutList = ({ planId }) => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [workouts, setWorkouts] = useState([]);
 
 	const fetchWorkoutsByPlan = async () => {
@@ -52,7 +52,7 @@ const ProfileWorkoutList = ({ planId }) => {
 				</Stack>
 				<Divider />
 				{workouts?.map((w) => (
-					<Card key={w.id} sx={{ p: 1, my: 1 }}>
+					<Paper key={w.id} sx={{ p: 1, my: 1 }}>
 						<Box
 							sx={{
 								display: "flex",
@@ -60,15 +60,15 @@ const ProfileWorkoutList = ({ planId }) => {
 								justifyContent: "space-between",
 							}}
 						>
-							<p>
+							<Typography sx={{ textTransform: "capitalize" }}>
 								Day {w.assigned_day} - {w.week_day}
-							</p>
+							</Typography>
 							<EditWorkoutForm
 								workoutId={w.id}
 								fetchWorkoutsByPlan={fetchWorkoutsByPlan}
 							/>
 						</Box>
-					</Card>
+					</Paper>
 				))}
 			</Grid>
 		</div>
