@@ -16,10 +16,7 @@ const AdminLayout = () => {
 
 	return (
 		<Box sx={{ display: "flex" }}>
-			<SideNav
-				navItems={adminNavItems}
-				toggleSettingsPanel={handleSettingsToggle}
-			/>
+			<SideNav navItems={adminNavItems} />
 			<Stack component="main" sx={{ flexGrow: 1, px: 6 }}>
 				{outlet}
 			</Stack>

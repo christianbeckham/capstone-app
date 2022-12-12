@@ -16,10 +16,7 @@ const UserLayout = () => {
 
 	return (
 		<Box sx={{ display: "flex" }}>
-			<SideNav
-				navItems={userNavItems}
-				toggleSettingsPanel={handleSettingsToggle}
-			/>
+			<SideNav navItems={userNavItems} />
 			<Stack component="main" sx={{ flexGrow: 1, px: 6 }}>
 				{outlet}
 			</Stack>
