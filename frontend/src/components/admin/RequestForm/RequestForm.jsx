@@ -14,8 +14,9 @@ import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
-import Edit from "@mui/icons-material/Edit";
 import Menu from "@mui/material/Menu";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import Edit from "@mui/icons-material/Edit";
 
 import useAuth from "../../../hooks/useAuth";
 
@@ -72,7 +73,7 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 		response: requestInfo.response,
 		status: requestInfo.status,
 	};
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [editMode, setEditMode] = useState(false);
 	const [formData, setFormData] = useState(initialData);
 
@@ -157,9 +158,13 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 
 	return (
 		<div>
-			<Button variant="outlined" onClick={handleFormOpen}>
-				View
-			</Button>
+			<IconButton
+				onClick={handleFormOpen}
+				aria-label="open form button"
+				color="primary"
+			>
+				<ExitToApp />
+			</IconButton>
 			<Dialog open={open} onClose={handleFormClose} maxWidth="sm" fullWidth>
 				<Box component={"form"} onSubmit={handleSubmit}>
 					<Stack
