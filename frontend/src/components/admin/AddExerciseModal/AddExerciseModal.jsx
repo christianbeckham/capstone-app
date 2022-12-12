@@ -9,6 +9,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
@@ -24,16 +25,15 @@ const style = {
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	width: 500,
+	width: 550,
 	bgcolor: "background.paper",
-	border: "1px solid #aeaeae",
 	borderRadius: "5px",
 	boxShadow: 24,
 	p: 4,
 };
 
 const AddExerciseModal = ({ workoutId, fetchExercises }) => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [open, setOpen] = useState(false);
 	const [newExercise, setNewExercise] = useState({});
 	const [validExercise, setValidExercise] = useState(false);
@@ -145,7 +145,13 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 
 	return (
 		<div>
-			<Button onClick={handleOpen}>Add Exercise</Button>
+			<IconButton
+				size="small"
+				onClick={handleOpen}
+				sx={{ bgcolor: "background.default" }}
+			>
+				<Add fontSize="inherit" />
+			</IconButton>
 			<Modal
 				open={open}
 				onClose={handleClose}
@@ -173,9 +179,14 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 											value={selectedBodyPart || ""}
 											onChange={handleBodyPartChange}
 											variant="standard"
+											sx={{ textTransform: "capitalize" }}
 										>
 											{allBodyParts.map((option) => (
-												<MenuItem key={option} value={option}>
+												<MenuItem
+													key={option}
+													value={option}
+													sx={{ textTransform: "capitalize" }}
+												>
 													{option}
 												</MenuItem>
 											))}
@@ -193,9 +204,14 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 											onChange={handleTargetChange}
 											disabled={!Boolean(selectedBodyPart)}
 											variant="standard"
+											sx={{ textTransform: "capitalize" }}
 										>
 											{allTargets.map((option) => (
-												<MenuItem key={option} value={option}>
+												<MenuItem
+													key={option}
+													value={option}
+													sx={{ textTransform: "capitalize" }}
+												>
 													{option}
 												</MenuItem>
 											))}
@@ -228,7 +244,7 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 										onChange={handleNewExercise}
 										disabled={!Boolean(selectedTarget)}
 										variant="standard"
-										sx={{ mb: 4 }}
+										sx={{ mb: 4, textTransform: "capitalize" }}
 										MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
 									>
 										{filteredExercises.map((option, index) => (
@@ -237,6 +253,7 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 												value={option.name}
 												dense
 												sx={{
+													textTransform: "capitalize",
 													"& .MuiPopover-paper": {
 														height: 80,
 													},
