@@ -26,11 +26,13 @@ export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(userToken);
 	const [user, setUser] = useState(setUserObject(decodedUser));
 	const [isServerError, setIsServerError] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();
 
 	const registerUser = async (registerData) => {
 		try {
+			setIsLoading(true);
 			const finalData = {
 				username: registerData.username,
 				password: registerData.password,
@@ -42,17 +44,18 @@ export const AuthProvider = ({ children }) => {
 			if (response.status === 201) {
 				console.log("Successful registration! Log in to access token");
 				setIsServerError(false);
+				setIsLoading(false);
 				navigate("/login", { replace: true });
-			} else {
-				navigate("/register", { replace: true });
 			}
 		} catch (error) {
-			console.log(error.response.data);
+			setIsServerError(true);
+			setIsLoading(false);
 		}
 	};
 
 	const loginUser = async (loginData) => {
 		try {
+			setIsLoading(true);
 			const response = await axios.post(`${BASE_URL}/login/`, loginData);
 			if (response.status === 200) {
 				localStorage.setItem("token", JSON.stringify(response.data.access));
@@ -60,14 +63,11 @@ export const AuthProvider = ({ children }) => {
 				const loggedInUser = jwtDecode(response.data.access);
 				setUser(setUserObject(loggedInUser));
 				setIsServerError(false);
-				// navigate("/dashboard", { replace: true });
-			} else {
-				// navigate("/register", { replace: true });
 			}
+			setIsLoading(false);
 		} catch (error) {
-			console.log(error.response.data);
 			setIsServerError(true);
-			// navigate("/register");
+			setIsLoading(false);
 		}
 	};
 
@@ -87,6 +87,8 @@ export const AuthProvider = ({ children }) => {
 		logoutUser,
 		registerUser,
 		isServerError,
+		setIsServerError,
+		isLoading,
 	};
 
 	return (
