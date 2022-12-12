@@ -9,22 +9,22 @@ export const adminNavItems = [
 	{
 		icon: AdminPanelSettings,
 		key: "Dashboard",
-		path: "/admin",
+		path: "/a",
 	},
 	{
 		icon: People,
 		key: "Clients",
-		path: "clients",
+		path: "/a/clients",
 	},
 	{
 		icon: Grading,
 		key: "Check-Ins",
-		path: "checkins",
+		path: "/a/checkins",
 	},
 	{
 		icon: QuestionAnswer,
 		key: "Requests",
-		path: "requests",
+		path: "/a/requests",
 	},
 ];
 
@@ -32,21 +32,21 @@ export const userNavItems = [
 	{
 		icon: Dashboard,
 		key: "Dashboard",
-		path: "/dashboard",
+		path: "/u",
 	},
 	{
 		icon: Grading,
 		key: "Check-Ins",
-		path: "/checkins",
+		path: "/u/checkins",
 	},
 	{
 		icon: FitnessCenter,
 		key: "Workouts",
-		path: "/workouts",
+		path: "/u/workouts",
 	},
 	{
 		icon: QuestionAnswer,
 		key: "Requests",
-		path: "/requests",
+		path: "/u/requests",
 	},
 ];
