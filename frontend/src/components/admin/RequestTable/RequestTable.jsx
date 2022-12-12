@@ -7,7 +7,6 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
-import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
 import RemoveCircleOutline from "@mui/icons-material/RemoveCircleOutline";
@@ -16,7 +15,7 @@ import RequestForm from "../RequestForm/RequestForm";
 
 const RequestTable = ({ requests, fetchRequests }) => {
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
@@ -29,20 +28,16 @@ const RequestTable = ({ requests, fetchRequests }) => {
 
 	return (
 		<div>
-			<TableContainer component={Paper} sx={{ px: 2, py: 1 }}>
-				<Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
+			<TableContainer>
+				<Table aria-label="requests table">
 					<TableHead>
 						<TableRow>
-							<TableCell sx={{ color: "text.secondary" }}>Date</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>
-								Request Type
-							</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>
-								Description
-							</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>By</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>Status</TableCell>
-							<TableCell sx={{ color: "text.secondary" }}>Response</TableCell>
+							<TableCell>Date</TableCell>
+							<TableCell>Request Type</TableCell>
+							<TableCell>Description</TableCell>
+							<TableCell>By</TableCell>
+							<TableCell align="center">Status</TableCell>
+							<TableCell align="center">Responded</TableCell>
 							<TableCell></TableCell>
 						</TableRow>
 					</TableHead>
@@ -61,7 +56,7 @@ const RequestTable = ({ requests, fetchRequests }) => {
 										<TableCell align="left">{request.type}</TableCell>
 										<TableCell align="left">{request.description}</TableCell>
 										<TableCell align="left">{request.user.full_name}</TableCell>
-										<TableCell align="left">
+										<TableCell align="center">
 											{request.status_text === "open" ? (
 												<Chip
 													label={request.status_text.toUpperCase()}
@@ -74,14 +69,14 @@ const RequestTable = ({ requests, fetchRequests }) => {
 												/>
 											)}
 										</TableCell>
-										<TableCell align="left">
+										<TableCell align="center">
 											{request.response ? (
 												<CheckCircleOutline color="success" />
 											) : (
 												<RemoveCircleOutline color="warning" />
 											)}
 										</TableCell>
-										<TableCell align="left" sx={{ display: "flex" }}>
+										<TableCell align="center">
 											<RequestForm
 												requestInfo={request}
 												fetchRequests={fetchRequests}
@@ -98,7 +93,7 @@ const RequestTable = ({ requests, fetchRequests }) => {
 				</Table>
 			</TableContainer>
 			<TablePagination
-				rowsPerPageOptions={[10, 15, 25]}
+				rowsPerPageOptions={[5, 10, 15]}
 				component="div"
 				count={requests.length}
 				rowsPerPage={rowsPerPage}
