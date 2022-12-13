@@ -40,8 +40,8 @@ const CheckInDetailsPage = () => {
 		<div>
 			<PageToolbar pageTitle={`Check-In Details`} />
 			<Grid container spacing={2}>
-				<Grid item xs={6}>
-					<Card>
+				<Grid item xs={5}>
+					<Card sx={{ height: "100%" }}>
 						<Stack
 							direction="row"
 							alignItems={"center"}
@@ -78,33 +78,42 @@ const CheckInDetailsPage = () => {
 						</CardContent>
 					</Card>
 				</Grid>
-				<Grid item xs={6}>
+				<Grid item xs={7}>
+					<Card>
+						<CardHeader title={"Images"} />
+						<CardContent>
+							<Stack
+								direction="row"
+								spacing={1}
+								sx={{
+									justifyContent: "center",
+									overflow: "hidden",
+								}}
+							>
+								{checkin.images && checkin.images.length > 0 ? (
+									checkin.images.map((img, index) => (
+										<img
+											key={index}
+											src={`http://localhost:8000${img.image}`}
+											alt={img.title}
+											width="200"
+										/>
+									))
+								) : (
+									<p>No images</p>
+								)}
+							</Stack>
+						</CardContent>
+					</Card>
+				</Grid>
+				<Grid item xs={5}>
 					<Card>
 						<CardHeader title={"Trainer Feedback"} />
 						<CardContent>
 							{checkin.trainer_feedback ? (
-								<p>Trainer Feedback: {checkin.trainer_feedback}</p>
+								<p>{checkin.trainer_feedback}</p>
 							) : (
 								<p>No feedback</p>
-							)}
-						</CardContent>
-					</Card>
-				</Grid>
-				<Grid item xs={6}>
-					<Card>
-						<CardHeader title={"Images"} />
-						<CardContent>
-							{checkin.images && checkin.images.length > 0 ? (
-								checkin.images.map((img, index) => (
-									<img
-										key={index}
-										src={`http://localhost:8000${img.image}`}
-										alt={img.title}
-										width="200"
-									/>
-								))
-							) : (
-								<p>No images</p>
 							)}
 						</CardContent>
 					</Card>
