@@ -20,9 +20,9 @@ const MacrosCard = ({ plan }) => {
 					}}
 				>
 					<InfoRing text={"calories"} value={plan?.calories} />
-					<InfoRing text={"protein"} value={`${plan?.protein}g`} />
-					<InfoRing text={"carbs"} value={`${plan?.carbs}g`} />
-					<InfoRing text={"fats"} value={`${plan?.fats}g`} />
+					<InfoRing text={"protein"} value={plan?.protein} />
+					<InfoRing text={"carbs"} value={plan?.carbs} />
+					<InfoRing text={"fats"} value={plan?.fats} />
 				</Box>
 			</CardContent>
 		</Card>
