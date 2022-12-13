@@ -5,16 +5,20 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
+import Fab from "@mui/material/Fab";
+import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Add from "@mui/icons-material/Add";
+import Close from "@mui/icons-material/Close";
 
 import useAuth from "../../../hooks/useAuth";
 import ImageList from "../ImageList/ImageList";
 
 const CheckInForm = () => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [images, setImages] = useState(null);
 	const [formData, setFormData] = useState({ weight: "", weekly_review: "" });
 	const [showForm, setShowForm] = useState(false);
@@ -75,9 +79,11 @@ const CheckInForm = () => {
 
 	return (
 		<>
-			<Button variant="outlined" startIcon={<Add />} onClick={toggleForm}>
-				New
-			</Button>
+			<Tooltip title="new" placement="right" arrow>
+				<Fab color="primary" size="small" onClick={toggleForm}>
+					<Add />
+				</Fab>
+			</Tooltip>
 			<Drawer
 				anchor={"right"}
 				open={showForm}
@@ -85,23 +91,32 @@ const CheckInForm = () => {
 				sx={{ zIndex: 2000 }}
 			>
 				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+						m: 2,
+					}}
+				>
+					<Typography variant="h4">New Check-In</Typography>
+					<IconButton color="inherit" onClick={handleFormClose} edge="end">
+						<Close />
+					</IconButton>
+				</Box>
+				<Box
 					component="form"
 					onSubmit={handleFormSubmit}
 					sx={{
 						minWidth: 650,
 						display: "flex",
 						flexDirection: "column",
-						m: 4,
+						m: 2,
 						position: "relative",
 						height: "100%",
 					}}
 				>
-					<Typography component={"h1"} variant="h5">
-						New check-in
-					</Typography>
 					<TextField
 						label="Check-In Weight"
-						type="number"
 						name="weight"
 						value={formData.weight}
 						onChange={handleInputChange}
@@ -109,6 +124,8 @@ const CheckInForm = () => {
 						margin="normal"
 						required
 						InputProps={{
+							inputMode: "numeric",
+							pattern: "[0-9]*",
 							endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
 						}}
 						InputLabelProps={{
@@ -131,7 +148,7 @@ const CheckInForm = () => {
 						}}
 					/>
 					<Button
-						variant="outlined"
+						variant="contained"
 						startIcon={<PhotoCamera />}
 						component="label"
 					>
@@ -151,7 +168,7 @@ const CheckInForm = () => {
 					>
 						<Button
 							type="submit"
-							variant="outlined"
+							variant="contained"
 							color="success"
 							sx={{ my: 2, mr: 1 }}
 						>
@@ -159,7 +176,7 @@ const CheckInForm = () => {
 						</Button>
 						<Button
 							onClick={handleFormClose}
-							variant="outlined"
+							variant="contained"
 							color="error"
 							sx={{ my: 2 }}
 						>
