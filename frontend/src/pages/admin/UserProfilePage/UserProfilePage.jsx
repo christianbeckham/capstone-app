@@ -67,16 +67,13 @@ const UserProfilePage = () => {
 										/>
 										<InfoRing
 											text="protein"
-											value={`${client?.training_plan?.protein}g`}
+											value={client?.training_plan?.protein}
 										/>
 										<InfoRing
 											text="carbs"
-											value={`${client?.training_plan?.carbs}g`}
+											value={client?.training_plan?.carbs}
 										/>
-										<InfoRing
-											text="fats"
-											value={`${client?.training_plan?.fats}g`}
-										/>
+										<InfoRing text="fats" value={client?.training_plan?.fats} />
 									</Stack>
 								</CardContent>
 							</Card>
