@@ -9,7 +9,6 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -17,6 +16,7 @@ import ExitToApp from "@mui/icons-material/ExitToApp";
 
 import useAuth from "../../../hooks/useAuth";
 import PageAppBar from "../../../components/app/PageToolbar/PageToolbar";
+import InfoRing from "../../../components/app/InfoRing/InfoRing";
 
 const DashboardPage = () => {
 	const { token } = useAuth();
@@ -66,53 +66,28 @@ const DashboardPage = () => {
 			<PageAppBar pageTitle={"Admin Dashboard"} />
 			<Grid container spacing={2}>
 				<Grid item xs={4}>
-					<Card sx={{ height: "100%" }}>
+					<Card>
 						<CardHeader title={"Client Overview"} />
 						<CardContent>
-							<Stack spacing={2}>
-								<Box>
-									<Stack direction="row" justifyContent={"space-between"}>
-										<Typography
-											component="h3"
-											variant="body1"
-											color="text.secondary"
-										>
-											Total
-										</Typography>
-										<Chip label={totalClients.total} color="primary" />
-									</Stack>
-								</Box>
-								<Box>
-									<Stack direction="row" justifyContent={"space-between"}>
-										<Typography
-											component="h3"
-											variant="body1"
-											color="text.secondary"
-										>
-											Active
-										</Typography>
-										<Chip label={totalClients.active} color="success" />
-									</Stack>
-								</Box>
-								<Box>
-									<Stack direction="row" justifyContent={"space-between"}>
-										<Typography
-											component="h3"
-											variant="body1"
-											color="text.secondary"
-										>
-											Inactive
-										</Typography>
-										<Chip label={totalClients.inactive} color="warning" />
-									</Stack>
-								</Box>
+							<Stack
+								direction="row"
+								alignItems={"center"}
+								justifyContent={"space-around"}
+							>
+								<InfoRing text={"Total"} value={totalClients?.total} />
+								<InfoRing text={"Active"} value={totalClients?.active} />
+								<InfoRing text={"Inactive"} value={totalClients?.inactive} />
 							</Stack>
 						</CardContent>
 					</Card>
 				</Grid>
 				<Grid item xs={8}>
-					<Card sx={{ height: "100%" }}>
-						<Stack direction="row" justifyContent={"space-between"}>
+					<Card>
+						<Stack
+							direction="row"
+							alignItems={"center"}
+							justifyContent={"space-between"}
+						>
 							<CardHeader title={"Latest Check-Ins"} />
 							<Button
 								component={Link}
@@ -132,6 +107,7 @@ const DashboardPage = () => {
 										<Stack
 											direction="row"
 											columnGap={1}
+											alignItems={"center"}
 											justifyContent="space-between"
 										>
 											<Box>
@@ -147,6 +123,7 @@ const DashboardPage = () => {
 												to={`checkins/${c.id}`}
 												aria-label="view check-in"
 												color="primary"
+												sx={{ display: "inline-flex" }}
 											>
 												<ExitToApp />
 											</IconButton>
