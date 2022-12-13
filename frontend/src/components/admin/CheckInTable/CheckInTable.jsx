@@ -11,6 +11,7 @@ import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
 import IconButton from "@mui/material/IconButton";
 import ExitToApp from "@mui/icons-material/ExitToApp";
+import Delete from "@mui/icons-material/Delete";
 import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
 import RemoveCircleOutline from "@mui/icons-material/RemoveCircleOutline";
 
@@ -71,7 +72,7 @@ const CheckInTable = ({ checkins, fetchCheckIns }) => {
 											{new Date(check?.created_date).toLocaleDateString()}
 										</TableCell>
 										<TableCell>{check.user.full_name}</TableCell>
-										<TableCell>{check.weight}</TableCell>
+										<TableCell>{check.weight} lbs</TableCell>
 										<TableCell>
 											{check.weekly_review ? check.weekly_review : "n/a"}
 										</TableCell>
@@ -92,12 +93,12 @@ const CheckInTable = ({ checkins, fetchCheckIns }) => {
 											>
 												<ExitToApp />
 											</IconButton>
-											{/* <Button
+											<IconButton
 												color="error"
 												onClick={() => deleteCheckIn(check.id)}
 											>
-												Delete
-											</Button> */}
+												<Delete />
+											</IconButton>
 										</TableCell>
 									</TableRow>
 								))
