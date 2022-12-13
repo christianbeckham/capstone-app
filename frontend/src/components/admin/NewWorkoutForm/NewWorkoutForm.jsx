@@ -9,9 +9,11 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import MenuItem from "@mui/material/MenuItem";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -23,13 +25,14 @@ import Select from "@mui/material/Select";
 import DateRange from "@mui/icons-material/DateRange";
 import Add from "@mui/icons-material/Add";
 import Alarm from "@mui/icons-material/Alarm";
+import Delete from "@mui/icons-material/Delete";
 
 import useAuth from "../../../hooks/useAuth";
 import { apiExercises } from "../../../utils/exercisedata";
 import { weekdays } from "../../../utils/weekdays";
 
 const NewWorkoutForm = ({ planId }) => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [open, setOpen] = useState(false);
 	const [workoutDay, setWorkoutDay] = useState(weekdays[0]?.value);
 	const [exercises, setExercises] = useState([]);
@@ -175,7 +178,7 @@ const NewWorkoutForm = ({ planId }) => {
 					<Add fontSize="inherit" />
 				</IconButton>
 			</Tooltip>
-			<Dialog open={open} onClose={handleFormClose} maxWidth="md" fullWidth>
+			<Dialog open={open} onClose={handleFormClose} maxWidth="lg" fullWidth>
 				<Box component={"form"} onSubmit={handleSubmit}>
 					<DialogTitle>New Workout</DialogTitle>
 					<Divider />
@@ -201,31 +204,34 @@ const NewWorkoutForm = ({ planId }) => {
 									InputLabelProps={{
 										shrink: true,
 									}}
+									sx={{ textTransform: "capitalize" }}
 								>
 									{weekdays.map((option) => (
-										<MenuItem key={option.value} value={option.value}>
+										<MenuItem
+											key={option.value}
+											value={option.value}
+											sx={{ textTransform: "capitalize" }}
+										>
 											{option.label}
 										</MenuItem>
 									))}
 								</TextField>
 							</Grid>
-							<Grid
-								container
-								direction="row"
-								rowGap={2}
-								sx={{
-									mt: 2,
-									p: 2,
-									border: "1px solid lightgray",
-									borderRadius: 2,
-								}}
-							>
-								<Grid item xs={6}>
+							<Grid item container direction="row" xs={12} sx={{ mt: 2 }}>
+								<Grid
+									item
+									xs={7}
+									sx={{
+										borderWidth: 1,
+										borderStyle: "solid",
+										borderColor: "background.neutral",
+										borderRadius: 2,
+										p: 1,
+									}}
+								>
 									{/* FILTER BODY PART & TARGET */}
 									<Box sx={{ mb: 4 }}>
-										<DialogContentText color={"text.primary"}>
-											Filter exercises
-										</DialogContentText>
+										<Typography variant="body1">Filter Exercises</Typography>
 										<Box sx={{ mt: 2, mb: 4 }}>
 											<Stack direction={"row"} spacing={2}>
 												<FormControl sx={{ width: "100%" }}>
@@ -243,9 +249,14 @@ const NewWorkoutForm = ({ planId }) => {
 														value={selectedBodyPart || ""}
 														onChange={handleBodyPartChange}
 														variant="standard"
+														sx={{ textTransform: "capitalize" }}
 													>
 														{allBodyParts.map((option) => (
-															<MenuItem key={option} value={option}>
+															<MenuItem
+																key={option}
+																value={option}
+																sx={{ textTransform: "capitalize" }}
+															>
 																{option}
 															</MenuItem>
 														))}
@@ -267,23 +278,31 @@ const NewWorkoutForm = ({ planId }) => {
 														onChange={handleTargetChange}
 														disabled={!Boolean(selectedBodyPart)}
 														variant="standard"
+														sx={{ textTransform: "capitalize" }}
 													>
 														{allTargets.map((option) => (
-															<MenuItem key={option} value={option}>
+															<MenuItem
+																key={option}
+																value={option}
+																sx={{ textTransform: "capitalize" }}
+															>
 																{option}
 															</MenuItem>
 														))}
 													</Select>
 												</FormControl>
 											</Stack>
-											{filteredExercises.length > 0 && (
-												<p>{filteredExercises.length} exercises available</p>
-											)}
+											<Typography
+												variant="caption"
+												sx={{
+													opacity: Boolean(filteredExercises.length) ? 1 : 0,
+												}}
+											>
+												{filteredExercises.length} exercises available
+											</Typography>
 										</Box>
 										{/* ADD EXERCISE */}
-										<DialogContentText color={"text.primary"}>
-											Add exercise
-										</DialogContentText>
+										<Typography variant="body1">Add Exercise</Typography>
 										<Box sx={{ mt: 2, mb: 4 }}>
 											{/* EXERCISE ONLY */}
 											<FormControl sx={{ width: "100%" }}>
@@ -304,7 +323,7 @@ const NewWorkoutForm = ({ planId }) => {
 													onChange={handleNewExercise}
 													disabled={!Boolean(selectedTarget)}
 													variant="standard"
-													sx={{ mb: 4 }}
+													sx={{ mb: 4, textTransform: "capitalize" }}
 													MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
 												>
 													{filteredExercises.map((option, index) => (
@@ -313,6 +332,7 @@ const NewWorkoutForm = ({ planId }) => {
 															value={option.name}
 															dense
 															sx={{
+																textTransform: "capitalize",
 																"& .MuiPopover-paper": {
 																	height: 80,
 																},
@@ -437,37 +457,68 @@ const NewWorkoutForm = ({ planId }) => {
 										</Stack>
 									</Box>
 								</Grid>
-								<Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
-								<Grid item xs={3}>
-									<DialogContentText color={"text.primary"}>
-										Exercises
-									</DialogContentText>
-									<Divider />
-									{exercises?.length > 0 &&
-										exercises.map((ex, index) => (
-											<span key={index}>
-												<Typography
-													key={index}
-													variant="body2"
-													sx={{ display: "flex", my: 1 }}
-												>
-													{ex.name} {ex.sets}/{ex.reps}/{ex.rest_time}
-												</Typography>
-												<Button
-													size="small"
-													onClick={() => removeExercise(index)}
-												>
-													x
-												</Button>
-											</span>
-										))}
+								<Grid item xs={5} sx={{ px: 2 }}>
+									<Typography variant="body1">Exercises</Typography>
+									<List sx={{ maxHeight: 375, overflow: "auto" }}>
+										<Stack spacing={1} sx={{ px: 1 }} divider={<Divider />}>
+											{exercises?.length > 0 &&
+												exercises.map((ex, index) => (
+													<ListItem
+														key={index}
+														secondaryAction={
+															<IconButton
+																size="small"
+																onClick={() => removeExercise(index)}
+																sx={{ height: 28 }}
+															>
+																<Delete fontSize="inherit" />
+															</IconButton>
+														}
+													>
+														<ListItemText>
+															<Typography
+																variant="body2"
+																sx={{
+																	display: "flex",
+																	textTransform: "capitalize",
+																}}
+															>
+																{ex.name}
+															</Typography>
+															<Stack
+																direction="row"
+																divider={
+																	<Divider orientation="vertical" flexItem />
+																}
+																spacing={1}
+															>
+																<Typography variant="caption">
+																	Sets {ex.sets}
+																</Typography>
+																<Typography variant="caption">
+																	Reps {ex.reps}
+																</Typography>
+																<Typography variant="caption">
+																	Rest {ex.rest_time} {ex.time_interval}
+																</Typography>
+															</Stack>
+														</ListItemText>
+													</ListItem>
+												))}
+										</Stack>
+									</List>
 								</Grid>
 							</Grid>
 						</Grid>
 					</DialogContent>
 					<Divider />
 					<DialogActions sx={{ mb: 1, mx: 2 }}>
-						<Button type="submit" variant="contained" color="success">
+						<Button
+							type="submit"
+							variant="contained"
+							color="success"
+							disabled={!Boolean(exercises.length)}
+						>
 							Save
 						</Button>
 						<Button onClick={handleFormClose} variant="contained" color="error">
