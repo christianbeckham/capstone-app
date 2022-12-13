@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import List from "@mui/material/List";
@@ -56,43 +58,49 @@ const WorkoutList = ({ workouts }) => {
 						</Tabs>
 					</Grid>
 					<Grid item xs={6}>
-						<Card sx={{ p: 2 }}>
-							<Typography component="h2" variant="h2">
-								Exercises
-							</Typography>
-							{exercises.map((exercise) => (
-								<List key={exercise.id}>
-									<ListItem disablePadding component="div">
-										<ListItemButton
-											onClick={(_) => handleSetExercise(_, exercise)}
-										>
-											<ListItemIcon>
-												<ArrowRight />
-											</ListItemIcon>
-											<ListItemText>
-												<Typography component="p" variant="body1">
-													{exercise.name}
-												</Typography>
-												<Stack
-													direction="row"
-													divider={<Divider orientation="vertical" flexItem />}
-													spacing={2}
-												>
-													<Typography component="span" variant="caption">
-														{`Sets: ${exercise.sets}`}
+						<Card>
+							<CardHeader title={"Exercises"} />
+							<CardContent>
+								{exercises.map((exercise) => (
+									<List key={exercise.id}>
+										<ListItem disablePadding component="div">
+											<ListItemButton
+												onClick={(_) => handleSetExercise(_, exercise)}
+											>
+												<ListItemIcon>
+													<ArrowRight />
+												</ListItemIcon>
+												<ListItemText>
+													<Typography
+														component="p"
+														variant="body1"
+														sx={{ textTransform: "capitalize" }}
+													>
+														{exercise.name}
 													</Typography>
-													<Typography component="span" variant="caption">
-														{`Reps: ${exercise.reps}`}
-													</Typography>
-													<Typography component="span" variant="caption">
-														{`Rest: ${exercise.rest_time} ${exercise.time_interval}`}
-													</Typography>
-												</Stack>
-											</ListItemText>
-										</ListItemButton>
-									</ListItem>
-								</List>
-							))}
+													<Stack
+														direction="row"
+														divider={
+															<Divider orientation="vertical" flexItem />
+														}
+														spacing={2}
+													>
+														<Typography component="span" variant="caption">
+															{`Sets: ${exercise.sets}`}
+														</Typography>
+														<Typography component="span" variant="caption">
+															{`Reps: ${exercise.reps}`}
+														</Typography>
+														<Typography component="span" variant="caption">
+															{`Rest: ${exercise.rest_time} ${exercise.time_interval}`}
+														</Typography>
+													</Stack>
+												</ListItemText>
+											</ListItemButton>
+										</ListItem>
+									</List>
+								))}
+							</CardContent>
 						</Card>
 					</Grid>
 					<Grid item xs={6}>
