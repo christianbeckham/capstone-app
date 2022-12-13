@@ -41,6 +41,7 @@ export const appComponents = (theme) => ({
 	MuiCard: {
 		styleOverrides: {
 			root: {
+				height: "100%",
 				padding: theme.spacing(2),
 				borderRadius: Number(theme.shape.borderRadius) * 2,
 				position: "relative",
