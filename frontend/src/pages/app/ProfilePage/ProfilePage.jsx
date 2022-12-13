@@ -93,14 +93,16 @@ const ProfilePage = () => {
 									sx={{ mx: 1 }}
 								/>
 							</Stack>
-							<Stack direction="row" spacing={2} alignItems="center">
-								<Typography component="p" variant="h6" color="text.secondary">
-									Plan Cost:
-								</Typography>
-								<Typography component="p" variant="body1">
-									$ {profile.training_plan?.cost}
-								</Typography>
-							</Stack>
+							{profile.training_plan?.cost && (
+								<Stack direction="row" spacing={2} alignItems="center">
+									<Typography component="p" variant="h6" color="text.secondary">
+										Plan Cost:
+									</Typography>
+									<Typography component="p" variant="body1">
+										$ {profile.training_plan?.cost}
+									</Typography>
+								</Stack>
+							)}
 						</Stack>
 					</Grid>
 				</Grid>
