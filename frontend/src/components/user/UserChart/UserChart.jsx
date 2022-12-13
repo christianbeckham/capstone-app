@@ -3,11 +3,11 @@ import { Chart } from "react-google-charts";
 
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 
 const chartOptions = {
 	legend: "none",
@@ -17,6 +17,7 @@ const chartOptions = {
 	},
 	vAxis: {
 		title: "Weight (lbs)",
+		gridlines: { color: "#787878" },
 	},
 	pointSize: 10,
 };
@@ -58,11 +59,13 @@ const UserChart = ({ userCheckIns }) => {
 	}, [userCheckIns, range]);
 
 	return (
-		<Card>
-			<Stack direction={"row"} justifyContent="space-between" sx={{ mb: 1 }}>
-				<Typography component="h1" variant="h5">
-					Check-In Trends
-				</Typography>
+		<Card sx={{ position: "relative" }}>
+			<Stack
+				direction={"row"}
+				alignItems={"center"}
+				justifyContent={"space-between"}
+			>
+				<CardHeader title={"Check-In Trends"} />
 				<FormControl>
 					<Select
 						size="small"
@@ -79,14 +82,20 @@ const UserChart = ({ userCheckIns }) => {
 					</Select>
 				</FormControl>
 			</Stack>
-			<Divider />
-			<Chart
-				chartType="LineChart"
-				data={chartData}
-				options={chartOptions}
-				width="100%"
-				height="325px"
-			/>
+			<CardContent>
+				<Stack
+					direction={"row"}
+					justifyContent="flex-end"
+					sx={{ mb: 1 }}
+				></Stack>
+				<Chart
+					chartType="LineChart"
+					data={chartData}
+					options={chartOptions}
+					width="100%"
+					height="325px"
+				/>
+			</CardContent>
 		</Card>
 	);
 };
