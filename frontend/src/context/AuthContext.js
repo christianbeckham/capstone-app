@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(setUserObject(decodedUser));
 	const [isServerError, setIsServerError] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [urlPrefix, setUrlPrefix] = useState(null);
 
 	const navigate = useNavigate();
 
@@ -62,10 +61,7 @@ export const AuthProvider = ({ children }) => {
 				localStorage.setItem("token", JSON.stringify(response.data.access));
 				setToken(JSON.parse(localStorage.getItem("token")));
 				const loggedInUser = jwtDecode(response.data.access);
-				const user = setUserObject(loggedInUser);
-				const url = user?.is_admin ? "a" : user?.is_client ? "u" : null;
-				setUser(user);
-				setUrlPrefix(url);
+				setUser(setUserObject(loggedInUser));
 				setIsServerError(false);
 			}
 			setIsLoading(false);
@@ -85,7 +81,6 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const contextData = {
-		urlPrefix,
 		user,
 		token,
 		loginUser,
