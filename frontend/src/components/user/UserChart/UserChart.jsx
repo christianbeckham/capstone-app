@@ -66,35 +66,36 @@ const UserChart = ({ userCheckIns }) => {
 				justifyContent={"space-between"}
 			>
 				<CardHeader title={"Check-In Trends"} />
-				<FormControl>
-					<Select
-						size="small"
-						name="chart_range"
-						value={range}
-						onChange={handleChartRange}
-						variant="outlined"
-					>
-						{chartRange.map((option) => (
-							<MenuItem key={option} value={option}>
-								{option}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
+				{userCheckIns.length > 0 && (
+					<FormControl>
+						<Select
+							size="small"
+							name="chart_range"
+							value={range}
+							onChange={handleChartRange}
+							variant="outlined"
+						>
+							{chartRange.map((option) => (
+								<MenuItem key={option} value={option}>
+									{option}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				)}
 			</Stack>
 			<CardContent>
-				<Stack
-					direction={"row"}
-					justifyContent="flex-end"
-					sx={{ mb: 1 }}
-				></Stack>
-				<Chart
-					chartType="LineChart"
-					data={chartData}
-					options={chartOptions}
-					width="100%"
-					height="325px"
-				/>
+				{userCheckIns.length > 0 ? (
+					<Chart
+						chartType="LineChart"
+						data={chartData}
+						options={chartOptions}
+						width="100%"
+						height="325px"
+					/>
+				) : (
+					<p>No data available</p>
+				)}
 			</CardContent>
 		</Card>
 	);
