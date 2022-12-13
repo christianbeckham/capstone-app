@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useState } from "react";
+import React, { createContext, useCallback, useMemo, useState } from "react";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -33,9 +33,9 @@ export const SettingsProvider = ({ children }) => {
 		[]
 	);
 
-	const toggleMobileMenu = () => {
-		setOpenMobileMenu(!openMobileMenu);
-	};
+	const toggleMobileMenu = useCallback(() => {
+		setOpenMobileMenu((openMobileMenu) => !openMobileMenu);
+	}, []);
 
 	return (
 		<SettingsContext.Provider
