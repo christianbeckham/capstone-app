@@ -121,6 +121,7 @@ const EditWorkoutForm = ({ workoutId, fetchWorkoutsByPlan }) => {
 								<EditWorkoutItem
 									workoutInfo={workoutInfo}
 									fetchWorkout={fetchWorkout}
+									fetchWorkoutsByPlan={fetchWorkoutsByPlan}
 								/>
 							</Grid>
 							<Grid item xs={12}>
