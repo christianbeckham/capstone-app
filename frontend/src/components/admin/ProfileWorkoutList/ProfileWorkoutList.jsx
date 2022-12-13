@@ -48,7 +48,10 @@ const ProfileWorkoutList = ({ planId }) => {
 					<Typography variant="h5" color="text.primary" sx={{ my: 1 }}>
 						Workouts
 					</Typography>
-					<NewWorkoutForm planId={planId} />
+					<NewWorkoutForm
+						planId={planId}
+						fetchWorkoutsByPlan={fetchWorkoutsByPlan}
+					/>
 				</Stack>
 				<Divider />
 				{workouts?.map((w) => (
