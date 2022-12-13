@@ -48,7 +48,11 @@ const WorkoutsPage = () => {
 	return (
 		<div>
 			<PageToolbar pageTitle={"My Workouts"} />
-			<WorkoutList workouts={workouts} />
+			{workouts.length > 0 ? (
+				<WorkoutList workouts={workouts} />
+			) : (
+				<p>No workouts available</p>
+			)}
 		</div>
 	);
 };
