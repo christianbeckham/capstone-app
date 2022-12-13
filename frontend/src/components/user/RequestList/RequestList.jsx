@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -8,12 +8,9 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
 
-import useAuth from "../../../hooks/useAuth";
 import RequestListItem from "../RequestListItem/RequestListItem";
 
-const RequestList = () => {
-	const { token } = useAuth();
-	const [requests, setRequests] = useState([]);
+const RequestList = ({ requests }) => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -25,26 +22,6 @@ const RequestList = () => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
-
-	useEffect(() => {
-		const fetchRequests = async () => {
-			try {
-				const response = await axios.get(
-					"http://localhost:8000/api/requests/",
-					{
-						headers: { Authorization: `Bearer ${token}` },
-					}
-				);
-				if (response.status === 200) {
-					const data = await response.data;
-					setRequests(data);
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		fetchRequests();
-	}, []);
 
 	return (
 		<>
@@ -73,15 +50,17 @@ const RequestList = () => {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<TablePagination
-				rowsPerPageOptions={[5, 10, 15]}
-				component="div"
-				count={requests.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
-			/>
+			{requests.length > 0 && (
+				<TablePagination
+					rowsPerPageOptions={[5, 10, 15]}
+					component="div"
+					count={requests.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
+			)}
 		</>
 	);
 };
