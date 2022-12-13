@@ -8,16 +8,15 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
-import Paper from "@mui/material/Paper";
 
 import useAuth from "../../../hooks/useAuth";
 import CheckInListItem from "../CheckInListItem/CheckInListItem";
 
 const CheckInList = () => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [checkins, setCheckins] = useState([]);
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
@@ -53,8 +52,8 @@ const CheckInList = () => {
 
 	return (
 		<div>
-			<TableContainer component={Paper}>
-				<Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
+			<TableContainer>
+				<Table aria-label="check-ins table">
 					<TableHead>
 						<TableRow>
 							<TableCell>Date</TableCell>
@@ -73,7 +72,10 @@ const CheckInList = () => {
 									<CheckInListItem key={checkin.id} checkin={checkin} />
 								))
 						) : (
-							<TableRow scope="row">
+							<TableRow
+								scope="row"
+								sx={{ "& td": { bgcolor: "background.paper", border: 0 } }}
+							>
 								<TableCell>No entries...</TableCell>
 							</TableRow>
 						)}
@@ -81,7 +83,7 @@ const CheckInList = () => {
 				</Table>
 			</TableContainer>
 			<TablePagination
-				rowsPerPageOptions={[10, 15, 25]}
+				rowsPerPageOptions={[5, 10, 15]}
 				component="div"
 				count={checkins.length}
 				rowsPerPage={rowsPerPage}
