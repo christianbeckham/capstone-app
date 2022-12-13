@@ -17,7 +17,7 @@ import Close from "@mui/icons-material/Close";
 import useAuth from "../../../hooks/useAuth";
 import ImageList from "../ImageList/ImageList";
 
-const CheckInForm = () => {
+const CheckInForm = ({ fetchCheckIns }) => {
 	const { token } = useAuth();
 	const [images, setImages] = useState(null);
 	const [formData, setFormData] = useState({ weight: "", weekly_review: "" });
@@ -53,7 +53,6 @@ const CheckInForm = () => {
 			});
 		}
 
-		// console.log("form data: ", form_data.getAll('images'));
 		postCheckIn(form_data);
 		handleFormClose();
 	};
@@ -71,6 +70,7 @@ const CheckInForm = () => {
 			);
 			if (response.status === 201) {
 				console.log("Response", response.data);
+				fetchCheckIns();
 			}
 		} catch (error) {
 			console.log(error);
