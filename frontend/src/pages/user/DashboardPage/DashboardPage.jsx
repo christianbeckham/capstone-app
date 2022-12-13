@@ -31,6 +31,7 @@ const DashboardPage = () => {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.status === 200) {
+				console.log(response.data);
 				setUserInfo(response.data);
 			}
 		} catch (error) {
@@ -62,14 +63,20 @@ const DashboardPage = () => {
 			<Grid container item xs={12} spacing={2}>
 				<Grid item xs={4}>
 					<Stack spacing={2}>
-						<MacrosCard />
+						<MacrosCard plan={userInfo?.training_plan} />
 						<Card>
 							<CardHeader title={"My Training Plan"} />
 							<CardContent>
 								<Box>
-									<Typography variant="body1" color="text.secondary">
-										Goal: {userInfo?.training_plan.goal}
-									</Typography>
+									{userInfo?.training_plan?.goal ? (
+										<Typography variant="body1" color="text.secondary">
+											{userInfo?.training_plan?.goal}
+										</Typography>
+									) : (
+										<Typography variant="body1" color="text.secondary">
+											In progress
+										</Typography>
+									)}
 								</Box>
 							</CardContent>
 						</Card>
