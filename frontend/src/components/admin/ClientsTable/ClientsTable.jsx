@@ -31,7 +31,6 @@ const ClientsTable = ({ clients }) => {
 				<Table aria-label="clients table">
 					<TableHead>
 						<TableRow>
-							<TableCell>Id</TableCell>
 							<TableCell>Full Name</TableCell>
 							<TableCell>Email</TableCell>
 							<TableCell>Date Joined</TableCell>
@@ -44,7 +43,6 @@ const ClientsTable = ({ clients }) => {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((row) => (
 								<TableRow key={row.id}>
-									<TableCell>{row.id}</TableCell>
 									<TableCell>{row.full_name}</TableCell>
 									<TableCell>{row.email}</TableCell>
 									<TableCell>
