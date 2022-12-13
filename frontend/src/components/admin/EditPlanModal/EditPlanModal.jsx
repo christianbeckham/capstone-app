@@ -5,10 +5,13 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
+import Delete from "@mui/icons-material/Delete";
 
 import useAuth from "../../../hooks/useAuth";
 
@@ -53,11 +56,16 @@ const EditPlanModal = forwardRef(
 
 		const handleSubmit = (e) => {
 			e.preventDefault();
-			postUpdate(formData);
+			updatePlan(formData);
 			setOpen(false);
 		};
 
-		const postUpdate = async (data) => {
+		const handleDelete = () => {
+			deletePlan();
+			handleModalClose();
+		};
+
+		const updatePlan = async (data) => {
 			try {
 				const response = await axios.patch(
 					`http://localhost:8000/api/plans/${plan?.id}/`,
@@ -77,6 +85,25 @@ const EditPlanModal = forwardRef(
 			}
 		};
 
+		const deletePlan = async () => {
+			try {
+				const response = await axios.delete(
+					`http://localhost:8000/api/plans/${plan?.id}/`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+				if (response.status === 204) {
+					console.log(response.data);
+					fetchClientUser();
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
 		return (
 			<div>
 				<MenuItem onClick={handleOpen}>Plan</MenuItem>
@@ -87,7 +114,20 @@ const EditPlanModal = forwardRef(
 					aria-describedby="modal-modal-description"
 				>
 					<Box component={"form"} onSubmit={handleSubmit} sx={style}>
-						<h2>Edit Plan</h2>
+						<Stack
+							direction="row"
+							alignItems="center"
+							justifyContent="space-between"
+							sx={{ mb: 1 }}
+						>
+							<Typography component="h2" variant="h5">
+								Edit Plan
+							</Typography>
+							<IconButton onClick={handleDelete} size="small">
+								<Delete fontSize="inherit" />
+							</IconButton>
+						</Stack>
+
 						<Divider />
 						<Stack rowGap={2} sx={{ my: 4 }}>
 							<TextField
