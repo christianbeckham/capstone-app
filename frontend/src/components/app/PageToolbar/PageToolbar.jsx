@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/icons-material/Menu";
 
 import useSettings from "../../../hooks/useSettings";
-import AccountMenuButton from "../AccountMenuButton/AccountMenuButton";
+import AccountButton from "../AccountButton/AccountButton";
 
 const PageToolbar = ({ children, pageTitle }) => {
 	const { collapsed, toggleMobileMenu } = useSettings();
@@ -45,7 +45,7 @@ const PageToolbar = ({ children, pageTitle }) => {
 							{children}
 						</Stack>
 					</Stack>
-					<AccountMenuButton />
+					<AccountButton />
 				</Toolbar>
 			</AppBar>
 			<Toolbar sx={{ height: 100 }} />
