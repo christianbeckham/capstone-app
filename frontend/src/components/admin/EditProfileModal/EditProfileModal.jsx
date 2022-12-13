@@ -11,7 +11,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 
 import useAuth from "../../../hooks/useAuth";
 
@@ -102,10 +101,7 @@ const EditProfileModal = forwardRef(
 
 		return (
 			<div>
-				<MenuItem onClick={handleOpen}>
-					<AccountCircle />
-					Profile
-				</MenuItem>
+				<MenuItem onClick={handleOpen}>Profile</MenuItem>
 				<Modal
 					open={open}
 					onClose={handleModalClose}
