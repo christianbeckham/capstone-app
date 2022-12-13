@@ -99,7 +99,7 @@ const UserCheckInPage = () => {
 											{new Date(userCheckIn?.created_date).toLocaleDateString()}
 										</Typography>
 										<Typography component="p" variant="body1">
-											Weight: {userCheckIn?.weight}
+											Weight: {userCheckIn?.weight} lbs
 										</Typography>
 										<Typography component="p" variant="body1">
 											Review: {userCheckIn?.weekly_review}
@@ -113,7 +113,12 @@ const UserCheckInPage = () => {
 								<CardHeader title={"Images"} />
 								<CardContent>
 									{userCheckIn?.images?.length > 0 && (
-										<div>
+										<Stack
+											direction="row"
+											justifyContent={"space-around"}
+											spacing={1}
+											sx={{ overflow: "hidden" }}
+										>
 											{userCheckIn?.images.map((img) => (
 												<img
 													key={img.id}
@@ -122,7 +127,7 @@ const UserCheckInPage = () => {
 													width={200}
 												/>
 											))}
-										</div>
+										</Stack>
 									)}
 								</CardContent>
 							</Card>
@@ -133,9 +138,6 @@ const UserCheckInPage = () => {
 					<Card>
 						<CardHeader title={"Feedback"} />
 						<CardContent>
-							<Button variant="contained" onClick={toggleEditMode}>
-								Provide Feedback
-							</Button>
 							<Box component={"form"} onSubmit={handleFormSubmit}>
 								<TextField
 									disabled={!editMode}
@@ -147,30 +149,37 @@ const UserCheckInPage = () => {
 									value={formData.trainer_feedback || ""}
 									onChange={handleInputChange}
 									multiline
-									rows={4}
+									rows={12}
+									focused={editMode}
 									InputLabelProps={{
 										shrink: true,
 									}}
 								/>
 								<CardActions>
-									<Stack direction={"row"} spacing={1}>
-										<Button
-											disabled={!editMode}
-											type="submit"
-											variant="contained"
-											color="success"
-										>
-											Submit
+									{editMode ? (
+										<Stack direction={"row"} spacing={1}>
+											<Button
+												disabled={!editMode}
+												type="submit"
+												variant="contained"
+												color="success"
+											>
+												Submit
+											</Button>
+											<Button
+												disabled={!editMode}
+												variant="contained"
+												color="error"
+												onClick={handleFormCancel}
+											>
+												Cancel
+											</Button>
+										</Stack>
+									) : (
+										<Button variant="contained" onClick={toggleEditMode}>
+											{formData.trainer_feedback.length > 0 ? "Edit" : "Add"}
 										</Button>
-										<Button
-											disabled={!editMode}
-											variant="contained"
-											color="error"
-											onClick={handleFormCancel}
-										>
-											Cancel
-										</Button>
-									</Stack>
+									)}
 								</CardActions>
 							</Box>
 						</CardContent>
