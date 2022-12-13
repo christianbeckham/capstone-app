@@ -16,7 +16,11 @@ import Cancel from "@mui/icons-material/Cancel";
 import useAuth from "../../../hooks/useAuth";
 import { weekdays } from "../../../utils/weekdays";
 
-const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
+const EditWorkoutItem = ({
+	workoutInfo,
+	fetchWorkout,
+	fetchWorkoutsByPlan,
+}) => {
 	const { token } = useAuth();
 	const [editMode, setEditMode] = useState(false);
 	const [day, setDay] = useState(weekdays[0].value);
@@ -46,6 +50,7 @@ const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
 			if (response.status === 200) {
 				console.log(response.data);
 				fetchWorkout();
+				fetchWorkoutsByPlan();
 				setEditMode(false);
 			}
 		} catch (error) {
@@ -68,7 +73,7 @@ const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
 				)}
 			</Stack>
 			{editMode ? (
-				<Stack direction={"row"} sx={{ mt: 2 }}>
+				<Stack direction={"row"} alignItems={"center"} sx={{ mt: 2 }}>
 					<TextField
 						fullWidth
 						select
@@ -99,7 +104,14 @@ const EditWorkoutItem = ({ workoutInfo, fetchWorkout }) => {
 							</MenuItem>
 						))}
 					</TextField>
-					<Box sx={{ display: "flex" }}>
+					<Box
+						sx={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "space-between",
+							mx: 1,
+						}}
+					>
 						<IconButton onClick={patchUpdate}>
 							<CheckCircle color="success" fontSize="inherit" />
 						</IconButton>
