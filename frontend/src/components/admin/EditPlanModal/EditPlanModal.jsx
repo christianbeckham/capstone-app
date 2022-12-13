@@ -9,7 +9,6 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import Assignment from "@mui/icons-material/Assignment";
 
 import useAuth from "../../../hooks/useAuth";
 
@@ -80,10 +79,7 @@ const EditPlanModal = forwardRef(
 
 		return (
 			<div>
-				<MenuItem onClick={handleOpen}>
-					<Assignment />
-					Plan
-				</MenuItem>
+				<MenuItem onClick={handleOpen}>Plan</MenuItem>
 				<Modal
 					open={open}
 					onClose={handleModalClose}
