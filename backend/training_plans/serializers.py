@@ -15,8 +15,8 @@ class TrainingPlanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TrainingPlan
-        fields = ('user_id', 'id', 'goal',
-                  'weekly_workout_days', 'cost', 'workouts')
+        fields = ('user_id', 'id', 'goal', 'calories',
+                  'protein', 'carbs', 'fats', 'cost', 'workouts')
         # depth = 1
 
-    user_id = serializers.IntegerField(read_only=True)
+    user_id = serializers.IntegerField(write_only=True)
