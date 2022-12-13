@@ -16,7 +16,7 @@ import Close from "@mui/icons-material/Close";
 import useAuth from "../../../hooks/useAuth";
 import { requestTypes } from "../../../utils/requestTypes";
 
-const RequestForm = () => {
+const RequestForm = ({ fetchRequests }) => {
 	const [showForm, setShowForm] = useState(false);
 	const [formData, setFormData] = useState({
 		type: requestTypes[0],
@@ -54,6 +54,7 @@ const RequestForm = () => {
 			);
 			if (response.status === 201) {
 				console.log(response);
+				fetchRequests();
 			}
 		} catch (error) {
 			console.log(error);
