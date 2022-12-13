@@ -14,6 +14,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 import FitnessCenter from "@mui/icons-material/FitnessCenter";
@@ -108,7 +109,7 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 					</Avatar>
 					{editMode ? (
 						<>
-							<Stack direction="row" spacing={2}>
+							<Stack direction="row" spacing={1}>
 								<TextField
 									required
 									fullWidth
@@ -194,7 +195,13 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 									</Select>
 								</FormControl>
 							</Stack>
-							<Box sx={{ display: "flex" }}>
+							<Box
+								sx={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "space-between",
+								}}
+							>
 								<IconButton aria-label="edit" onClick={handleUpdate}>
 									<CheckCircle color="success" />
 								</IconButton>
@@ -211,16 +218,24 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 								flexGrow: 1,
 							}}
 						>
-							<Stack sx={{ mx: 1 }}>
+							<Stack>
 								<Typography sx={{ textTransform: "capitalize" }}>
 									{exercise.name}
 								</Typography>
-								<Stack direction={"row"} columnGap={2}>
-									<p>Sets: {exercise.sets}</p>
-									<p>Reps: {exercise.reps}</p>
-									<p>
+								<Stack
+									direction={"row"}
+									divider={<Divider orientation="vertical" flexItem />}
+									spacing={2}
+								>
+									<Typography variant="caption">
+										Sets: {exercise.sets}
+									</Typography>
+									<Typography variant="caption">
+										Reps: {exercise.reps}
+									</Typography>
+									<Typography variant="caption">
 										Rest: {exercise.rest_time} {exercise.time_interval}
-									</p>
+									</Typography>
 								</Stack>
 							</Stack>
 							<Stack direction="row" spacing={1} sx={{ my: "auto" }}>
