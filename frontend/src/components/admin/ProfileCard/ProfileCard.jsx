@@ -1,22 +1,21 @@
 import React from "react";
 
 import Card from "@mui/material/Card";
-import Box from "@mui/material/Box";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 
-const ProfileCard = ({ client }) => {
+import NewPlanModal from "../NewPlanModal/NewPlanModal";
+
+const ProfileCard = ({ client, fetchClientUser }) => {
 	return (
-		<Card sx={{ p: 2 }}>
-			<Stack rowGap={4}>
-				<Box>
-					<Typography variant="h6" color="text.primary">
-						Profile Information
-					</Typography>
-					<Divider />
-					<Stack spacing={1} sx={{ my: 2 }}>
+		<Stack spacing={2}>
+			<Card>
+				<CardHeader title={"Profile Information"} />
+				<CardContent>
+					<Stack spacing={1}>
 						<Typography variant="body2" color="text.secondary">
 							Username: {client?.username}
 						</Typography>
@@ -36,23 +35,38 @@ const ProfileCard = ({ client }) => {
 							/>
 						</Typography>
 					</Stack>
-				</Box>
-				<Box>
-					<Typography variant="h6" color="text.primary">
-						Training Plan
-					</Typography>
-					<Divider />
-					<Stack spacing={1} sx={{ my: 2 }}>
-						<Typography variant="body2" color="text.secondary">
-							Goal: {client?.training_plan.goal}
+				</CardContent>
+			</Card>
+			<Card>
+				<Stack
+					direction={"row"}
+					alignItems={"center"}
+					justifyContent={"space-between"}
+				>
+					<CardHeader title={"Training Plan"} />
+					{client?.training_plan?.cost && (
+						<Typography variant="caption" color="text.secondary">
+							$ {client?.training_plan?.cost}
 						</Typography>
-						<Typography variant="body2" color="text.secondary">
-							Cost: {client?.training_plan.cost}
-						</Typography>
+					)}
+				</Stack>
+				<CardContent>
+					<Stack spacing={1}>
+						{client?.training_plan?.goal && (
+							<Typography variant="body2" color="text.secondary">
+								{client?.training_plan?.goal}
+							</Typography>
+						)}
+						{!client?.training_plan && (
+							<NewPlanModal
+								userId={client?.id}
+								fetchClientUser={fetchClientUser}
+							/>
+						)}
 					</Stack>
-				</Box>
-			</Stack>
-		</Card>
+				</CardContent>
+			</Card>
+		</Stack>
 	);
 };
 
