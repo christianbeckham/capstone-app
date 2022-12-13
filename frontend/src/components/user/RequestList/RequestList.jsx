@@ -7,16 +7,15 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
-import Paper from "@mui/material/Paper";
 
 import useAuth from "../../../hooks/useAuth";
 import RequestListItem from "../RequestListItem/RequestListItem";
 
 const RequestList = () => {
-	const [user, token] = useAuth();
+	const { token } = useAuth();
 	const [requests, setRequests] = useState([]);
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
@@ -49,14 +48,14 @@ const RequestList = () => {
 
 	return (
 		<>
-			<TableContainer component={Paper}>
-				<Table sx={{ minWidth: 650 }} aria-label="simple table">
+			<TableContainer>
+				<Table aria-label="requests table">
 					<TableHead>
 						<TableRow>
 							<TableCell>Date</TableCell>
 							<TableCell>Request Type</TableCell>
 							<TableCell>Description</TableCell>
-							<TableCell>Status</TableCell>
+							<TableCell align="center">Status</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -75,7 +74,7 @@ const RequestList = () => {
 				</Table>
 			</TableContainer>
 			<TablePagination
-				rowsPerPageOptions={[10, 15, 25]}
+				rowsPerPageOptions={[5, 10, 15]}
 				component="div"
 				count={requests.length}
 				rowsPerPage={rowsPerPage}
