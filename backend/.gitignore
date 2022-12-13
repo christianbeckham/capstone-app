@@ -129,3 +129,4 @@ dmypy.json
 
 # Local Settings
 config/local_settings.py
+media
