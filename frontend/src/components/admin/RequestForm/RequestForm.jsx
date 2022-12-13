@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
+import Typography from "@mui/material/Typography";
 import ExitToApp from "@mui/icons-material/ExitToApp";
 import Edit from "@mui/icons-material/Edit";
 
@@ -214,8 +215,10 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 						<DialogContentText>Request Details</DialogContentText>
 						<Divider sx={{ my: 1 }} />
 						<Stack spacing={1} sx={{ my: 2 }}>
-							<p>Type: {requestInfo.type}</p>
-							<p>Description: {requestInfo.description}</p>
+							<Typography sx={{ textTransform: "capitalize" }}>
+								Type: {requestInfo.type}
+							</Typography>
+							<Typography>Description: {requestInfo.description}</Typography>
 						</Stack>
 						<Divider sx={{ my: 2 }} />
 						<Stack spacing={2} sx={{ my: 2 }}>
@@ -257,16 +260,24 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 					</DialogContent>
 					<DialogActions>
 						{editMode ? (
-							<Box>
-								<Button type="submit" color="success">
+							<Stack direction={"row"} spacing={1}>
+								<Button type="submit" variant="contained" color="success">
 									Save
 								</Button>
-								<Button onClick={handleMenuCancel} color="error">
+								<Button
+									onClick={handleMenuCancel}
+									variant="contained"
+									color="error"
+								>
 									Cancel
 								</Button>
-							</Box>
+							</Stack>
 						) : (
-							<Button onClick={handleFormClose} color="error">
+							<Button
+								onClick={handleFormClose}
+								variant="contained"
+								color="error"
+							>
 								Close
 							</Button>
 						)}
