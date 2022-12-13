@@ -4,18 +4,31 @@ import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Fab from "@mui/material/Fab";
+import Tooltip from "@mui/material/Tooltip";
+import Add from "@mui/icons-material/Add";
+import Close from "@mui/icons-material/Close";
 
 import useAuth from "../../../hooks/useAuth";
+import { requestTypes } from "../../../utils/requestTypes";
 
-const RequestForm = ({ showForm, toggleForm }) => {
-	const [formData, setFormData] = useState({ type: "", description: "" });
-	const [user, token] = useAuth();
+const RequestForm = () => {
+	const [showForm, setShowForm] = useState(false);
+	const [formData, setFormData] = useState({
+		type: requestTypes[0],
+		description: "",
+	});
+	const { token } = useAuth();
+
+	const toggleForm = () => setShowForm(!showForm);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		console.log(formData);
+		console.log(formData, name, value);
 		setFormData((prevState) => ({ ...prevState, [name]: value }));
 	};
 
@@ -53,46 +66,61 @@ const RequestForm = ({ showForm, toggleForm }) => {
 
 	return (
 		<>
+			<Tooltip title="new" placement="right" arrow>
+				<Fab color="primary" size="small" onClick={toggleForm}>
+					<Add />
+				</Fab>
+			</Tooltip>
 			<Drawer
+				variant="temporary"
 				anchor={"right"}
 				open={showForm}
 				onClose={toggleForm}
-				sx={{ zIndex: 2000 }}
 			>
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+						m: 2,
+					}}
+				>
+					<Typography variant="h4">New Request</Typography>
+					<IconButton color="inherit" onClick={handleClose} edge="end">
+						<Close />
+					</IconButton>
+				</Box>
 				<Box
 					component="form"
 					onSubmit={handleSubmit}
 					role="presentation"
-					sx={{ minWidth: 650, display: "flex", flexDirection: "column", m: 4 }}
+					sx={{ minWidth: 650, display: "flex", flexDirection: "column", m: 2 }}
 				>
-					<Typography component={"h1"} variant="h5">
-						New request
-					</Typography>
 					<Stack sx={{ display: "flex" }} spacing={2}>
 						<TextField
 							label="Type"
 							select
 							name="type"
-							value={"" || formData.type}
+							value={formData.type}
 							onChange={handleChange}
 							variant="standard"
 							margin="normal"
 							required
 							helperText="Please select an option"
-							SelectProps={{
-								native: true,
-							}}
 							InputLabelProps={{
 								shrink: true,
 							}}
+							sx={{ textTransform: "capitalize" }}
 						>
-							{["New plan", "New workout", "New exercise", "Other"].map(
-								(option, index) => (
-									<option key={index} value={option}>
-										{option}
-									</option>
-								)
-							)}
+							{requestTypes.map((option, index) => (
+								<MenuItem
+									key={index}
+									value={option}
+									sx={{ textTransform: "capitalize" }}
+								>
+									{option}
+								</MenuItem>
+							))}
 						</TextField>
 						<TextField
 							label="Description"
@@ -116,7 +144,7 @@ const RequestForm = ({ showForm, toggleForm }) => {
 					>
 						<Button
 							type="submit"
-							variant="outlined"
+							variant="contained"
 							color="success"
 							sx={{ my: 2, mr: 1 }}
 						>
@@ -124,7 +152,7 @@ const RequestForm = ({ showForm, toggleForm }) => {
 						</Button>
 						<Button
 							onClick={handleClose}
-							variant="outlined"
+							variant="contained"
 							color="error"
 							sx={{ my: 2 }}
 						>
