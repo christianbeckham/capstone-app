@@ -5,27 +5,30 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import IconButton from "@mui/material/IconButton";
 import ExitToApp from "@mui/icons-material/ExitToApp";
+import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
+import RemoveCircleOutline from "@mui/icons-material/RemoveCircleOutline";
 
 const CheckInListItem = ({ checkin }) => {
 	return (
-		<TableRow
-			key={checkin.id}
-			sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-		>
+		<TableRow key={checkin.id}>
 			<TableCell>
 				{new Date(checkin.created_date).toLocaleDateString()}
 			</TableCell>
-			<TableCell align="left">{checkin.weight}</TableCell>
-			<TableCell align="left">{checkin.weekly_review}</TableCell>
-			<TableCell align="left">{checkin.images.length}</TableCell>
-			<TableCell align="left">
-				{checkin.trainer_feedback ? "View" : "n/a"}
+			<TableCell>{checkin.weight}</TableCell>
+			<TableCell>{checkin.weekly_review}</TableCell>
+			<TableCell align="center">{checkin.images.length}</TableCell>
+			<TableCell align="center">
+				{checkin.trainer_feedback ? (
+					<CheckCircleOutline color="success" />
+				) : (
+					<RemoveCircleOutline color="warning" />
+				)}
 			</TableCell>
-			<TableCell>
+			<TableCell align="center">
 				<IconButton
 					component={Link}
 					to={`${checkin.id}`}
-					aria-label="fingerprint"
+					aria-label="view check-in"
 					color="primary"
 				>
 					<ExitToApp />
