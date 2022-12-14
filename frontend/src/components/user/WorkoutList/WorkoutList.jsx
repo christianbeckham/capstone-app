@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
@@ -16,30 +17,58 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import ArrowRight from "@mui/icons-material/ArrowRight";
 
+import useAuth from "../../../hooks/useAuth";
 import ExerciseDetails from "../ExerciseDetails/ExerciseDetails";
 
 const WorkoutList = ({ workouts }) => {
-	const [exercises, setExercises] = useState([]);
+	const { token } = useAuth();
+	const [userExercise, setUserExercise] = useState(null);
+	const [userExercises, setUserExercises] = useState([]);
+	const [exerciseDB, setExerciseDB] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [selectDay, setSelectDay] = useState(0);
-	const [exercise, setExercise] = useState(null);
+	const [dayTab, setDayTab] = useState(0);
 
 	const handleTabChange = (e, newValue) => {
-		setSelectDay(newValue);
-		setExercises(workouts[newValue].exercises);
+		setDayTab(newValue);
+		setUserExercises(workouts[newValue].exercises);
 	};
 
 	const handleSetExercise = (e, newValue) => {
-		setExercise(newValue);
+		console.log("Exercise to filter", newValue);
+		const findExercise = exerciseDB.filter((ex) => ex.name === newValue.name);
+		console.log("Exercise to view", findExercise);
+
+		if (findExercise[0]) {
+			setUserExercise(findExercise[0]);
+		} else {
+			setUserExercise(null);
+		}
+	};
+
+	const fetchExerciseDB = async () => {
+		try {
+			const response = await axios.get(
+				"http://localhost:8000/api/exercises/db/",
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			if (response.status === 200) setExerciseDB(response.data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	useEffect(() => {
 		if (workouts !== undefined) {
 			if (workouts.length > 0) {
-				setExercises(workouts[0].exercises);
+				console.log("Call API to get Exercise DB");
+				fetchExerciseDB();
+				setUserExercises(workouts[0].exercises);
 				setLoading(false);
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [workouts]);
 
 	return (
@@ -49,7 +78,7 @@ const WorkoutList = ({ workouts }) => {
 			) : workouts ? (
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
-						<Tabs value={selectDay} onChange={handleTabChange}>
+						<Tabs value={dayTab} onChange={handleTabChange}>
 							{workouts
 								.sort((a, b) => a.assigned_day - b.assigned_day)
 								.map((workout) => (
@@ -61,7 +90,7 @@ const WorkoutList = ({ workouts }) => {
 						<Card>
 							<CardHeader title={"Exercises"} />
 							<CardContent>
-								{exercises.map((exercise) => (
+								{userExercises.map((exercise) => (
 									<List key={exercise.id}>
 										<ListItem disablePadding component="div">
 											<ListItemButton
@@ -104,7 +133,7 @@ const WorkoutList = ({ workouts }) => {
 						</Card>
 					</Grid>
 					<Grid item xs={6}>
-						<ExerciseDetails exercise={exercise} />
+						<ExerciseDetails userExercise={userExercise} />
 					</Grid>
 				</Grid>
 			) : (
