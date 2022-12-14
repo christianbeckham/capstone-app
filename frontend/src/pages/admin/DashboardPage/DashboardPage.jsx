@@ -59,6 +59,7 @@ const DashboardPage = () => {
 	useEffect(() => {
 		fetchClients();
 		fetchLatestCheckins();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -98,7 +99,7 @@ const DashboardPage = () => {
 							</Button>
 						</Stack>
 						<CardContent>
-							{latestCheckins.length > 0 &&
+							{latestCheckins.length > 0 ? (
 								latestCheckins.map((c) => (
 									<Paper
 										key={c.id}
@@ -129,7 +130,12 @@ const DashboardPage = () => {
 											</IconButton>
 										</Stack>
 									</Paper>
-								))}
+								))
+							) : (
+								<Box sx={{ m: 1 }}>
+									<Typography>No check-ins available</Typography>
+								</Box>
+							)}
 						</CardContent>
 					</Card>
 				</Grid>
