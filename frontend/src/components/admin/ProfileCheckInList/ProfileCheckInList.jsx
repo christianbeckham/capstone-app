@@ -18,6 +18,7 @@ const ProfileCheckInList = ({ userId }) => {
 	const [checkins, setCheckins] = useState([]);
 
 	const [page, setPage] = useState(1);
+	// eslint-disable-next-line no-unused-vars
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	const handleChangePage = (e, newPage) => {
@@ -43,6 +44,7 @@ const ProfileCheckInList = ({ userId }) => {
 
 	useEffect(() => {
 		fetchUserCheckIns();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -51,50 +53,61 @@ const ProfileCheckInList = ({ userId }) => {
 				Check-Ins
 			</Typography>
 			<Divider />
-			{checkins
-				.slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage)
-				.map((c) => (
-					<Paper key={c.id} sx={{ p: 1, my: 1 }}>
-						<Box
-							sx={{
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "space-between",
-							}}
-						>
-							<p>{new Date(c?.created_date).toLocaleDateString()}</p>
-							<IconButton
-								component={Link}
-								to={`/a/checkins/${c.id}`}
-								aria-label="view check-in"
-								color="primary"
-								size="small"
+			{checkins.length > 0 ? (
+				checkins
+					.slice(
+						(page - 1) * rowsPerPage,
+						(page - 1) * rowsPerPage + rowsPerPage
+					)
+					.map((c) => (
+						<Paper key={c.id} sx={{ p: 1, my: 1 }}>
+							<Box
+								sx={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "space-between",
+								}}
 							>
-								<ExitToApp fontSize="inherit" />
-							</IconButton>
-						</Box>
-					</Paper>
-				))}
-			<Stack
-				direction="row"
-				alignItems={"center"}
-				justifyContent="space-between"
-			>
-				<Typography
-					variant="caption"
-					component="div"
-					color="text.secondary"
-					sx={{ mx: 2 }}
+								<p>{new Date(c?.created_date).toLocaleDateString()}</p>
+								<IconButton
+									component={Link}
+									to={`/a/checkins/${c.id}`}
+									aria-label="view check-in"
+									color="primary"
+									size="small"
+								>
+									<ExitToApp fontSize="inherit" />
+								</IconButton>
+							</Box>
+						</Paper>
+					))
+			) : (
+				<Box sx={{ m: 1 }}>
+					<Typography>No check-ins available</Typography>
+				</Box>
+			)}
+			{checkins.length > 0 && (
+				<Stack
+					direction="row"
+					alignItems={"center"}
+					justifyContent="space-between"
 				>
-					Total: {checkins.length}
-				</Typography>
-				<Pagination
-					size="small"
-					count={Math.ceil(checkins.length / rowsPerPage)}
-					page={page}
-					onChange={handleChangePage}
-				/>
-			</Stack>
+					<Typography
+						variant="caption"
+						component="div"
+						color="text.secondary"
+						sx={{ mx: 2 }}
+					>
+						Total: {checkins.length}
+					</Typography>
+					<Pagination
+						size="small"
+						count={Math.ceil(checkins.length / rowsPerPage)}
+						page={page}
+						onChange={handleChangePage}
+					/>
+				</Stack>
+			)}
 		</div>
 	);
 };
