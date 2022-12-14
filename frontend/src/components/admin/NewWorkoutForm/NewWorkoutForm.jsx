@@ -28,10 +28,9 @@ import Alarm from "@mui/icons-material/Alarm";
 import Delete from "@mui/icons-material/Delete";
 
 import useAuth from "../../../hooks/useAuth";
-import { apiExercises } from "../../../utils/exercisedata";
 import { weekdays } from "../../../utils/weekdays";
 
-const NewWorkoutForm = ({ planId }) => {
+const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 	const { token } = useAuth();
 	const [open, setOpen] = useState(false);
 	const [workoutDay, setWorkoutDay] = useState(weekdays[0]?.value);
@@ -39,14 +38,18 @@ const NewWorkoutForm = ({ planId }) => {
 	const [newExercise, setNewExercise] = useState({});
 	const [validExercise, setValidExercise] = useState(false);
 
-	const [exerciseDB, setExerciseDB] = useState(apiExercises);
+	const [exerciseDB, setExerciseDB] = useState([]);
 	const [filteredExercises, setFilteredExercises] = useState([]);
 	const [allBodyParts, setAllBodyParts] = useState([]);
 	const [selectedBodyPart, setSelectedBodyPart] = useState("");
 	const [allTargets, setAllTargets] = useState([]);
 	const [selectedTarget, setSelectedTarget] = useState("");
 
-	const handleFormOpen = () => setOpen(true);
+	const handleFormOpen = () => {
+		console.log("New Workout Form OPENED. FETCH 3rd Party API!");
+		fetchExerciseDB();
+		setOpen(true);
+	};
 
 	const handleFormClose = () => {
 		setOpen(false);
@@ -92,6 +95,7 @@ const NewWorkoutForm = ({ planId }) => {
 			);
 			if (response.status === 201) {
 				console.log(response.data);
+				fetchWorkoutsByPlan();
 			}
 		} catch (error) {
 			console.log(error);
@@ -125,12 +129,24 @@ const NewWorkoutForm = ({ planId }) => {
 		setNewExercise({});
 	};
 
+	const fetchExerciseDB = async () => {
+		try {
+			const response = await axios.get(
+				"http://localhost:8000/api/exercises/db/",
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			if (response.status === 200) setExerciseDB(response.data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
-		// API call to get ExerciseDB data
-		setExerciseDB(apiExercises);
 		const bodyParts = [...new Set(exerciseDB.map((ex) => ex.bodyPart))].sort();
 		setAllBodyParts(bodyParts);
-	}, []);
+	}, [exerciseDB]);
 
 	useEffect(() => {
 		console.log("selected body part is", selectedBodyPart);
@@ -145,6 +161,7 @@ const NewWorkoutForm = ({ planId }) => {
 			setAllTargets(target);
 			console.log("all targets are", target);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedBodyPart]);
 
 	useEffect(() => {
@@ -158,6 +175,7 @@ const NewWorkoutForm = ({ planId }) => {
 			setFilteredExercises(finalExercises);
 			console.log(finalExercises);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedBodyPart, selectedTarget]);
 
 	useEffect(() => {

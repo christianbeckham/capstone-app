@@ -18,7 +18,6 @@ import Add from "@mui/icons-material/Add";
 import Alarm from "@mui/icons-material/Alarm";
 
 import useAuth from "../../../hooks/useAuth";
-import { apiExercises } from "../../../utils/exercisedata";
 
 const style = {
 	position: "absolute",
@@ -38,14 +37,19 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 	const [newExercise, setNewExercise] = useState({});
 	const [validExercise, setValidExercise] = useState(false);
 
-	const [exerciseDB, setExerciseDB] = useState(apiExercises);
+	const [exerciseDB, setExerciseDB] = useState([]);
 	const [filteredExercises, setFilteredExercises] = useState([]);
 	const [allBodyParts, setAllBodyParts] = useState([]);
 	const [selectedBodyPart, setSelectedBodyPart] = useState("");
 	const [allTargets, setAllTargets] = useState([]);
 	const [selectedTarget, setSelectedTarget] = useState("");
 
-	const handleOpen = () => setOpen(true);
+	const handleOpen = () => {
+		console.log("Add Workout Modal OPENED. FETCH 3rd Party API!");
+		fetchExerciseDB();
+		setOpen(true);
+	};
+
 	const handleClose = () => {
 		setSelectedBodyPart("");
 		setSelectedTarget("");
@@ -97,9 +101,21 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 		setNewExercise({});
 	};
 
+	const fetchExerciseDB = async () => {
+		try {
+			const response = await axios.get(
+				"http://localhost:8000/api/exercises/db/",
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			if (response.status === 200) setExerciseDB(response.data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
-		// API call to get ExerciseDB data
-		setExerciseDB(apiExercises);
 		const bodyParts = [...new Set(exerciseDB.map((ex) => ex.bodyPart))].sort();
 		setAllBodyParts(bodyParts);
 	}, []);
@@ -117,6 +133,7 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 			setAllTargets(target);
 			console.log("all targets are", target);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedBodyPart]);
 
 	useEffect(() => {
@@ -130,6 +147,7 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 			setFilteredExercises(finalExercises);
 			console.log(finalExercises);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedBodyPart, selectedTarget]);
 
 	useEffect(() => {
