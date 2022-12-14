@@ -37,10 +37,12 @@ const WorkoutsPage = () => {
 
 	useEffect(() => {
 		fetchPlan();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		if (planId) fetchWorkouts(planId);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [planId]);
 
 	useEffect(() => {}, []);
