@@ -35,6 +35,7 @@ const ProfileWorkoutList = ({ planId }) => {
 
 	useEffect(() => {
 		if (planId !== undefined) fetchWorkoutsByPlan();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [planId]);
 
 	return (
@@ -54,25 +55,31 @@ const ProfileWorkoutList = ({ planId }) => {
 					/>
 				</Stack>
 				<Divider />
-				{workouts?.map((w) => (
-					<Paper key={w.id} sx={{ p: 1, my: 1 }}>
-						<Box
-							sx={{
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "space-between",
-							}}
-						>
-							<Typography sx={{ textTransform: "capitalize" }}>
-								Day {w.assigned_day} - {w.week_day}
-							</Typography>
-							<EditWorkoutForm
-								workoutId={w.id}
-								fetchWorkoutsByPlan={fetchWorkoutsByPlan}
-							/>
-						</Box>
-					</Paper>
-				))}
+				{workouts?.length > 0 ? (
+					workouts?.map((w) => (
+						<Paper key={w.id} sx={{ p: 1, my: 1 }}>
+							<Box
+								sx={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "space-between",
+								}}
+							>
+								<Typography sx={{ textTransform: "capitalize" }}>
+									Day {w.assigned_day} - {w.week_day}
+								</Typography>
+								<EditWorkoutForm
+									workoutId={w.id}
+									fetchWorkoutsByPlan={fetchWorkoutsByPlan}
+								/>
+							</Box>
+						</Paper>
+					))
+				) : (
+					<Box sx={{ m: 1 }}>
+						<Typography>No workouts</Typography>
+					</Box>
+				)}
 			</Grid>
 		</div>
 	);
