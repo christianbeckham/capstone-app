@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -20,7 +20,7 @@ def admin_checkins_list(request):
         limit = request.query_params.get('limit')
 
         if user_id is not None:
-            checkins = get_list_or_404(CheckIn, user__id=user_id)
+            checkins = CheckIn.objects.filter(user__id=user_id)
         else:
             checkins = CheckIn.objects.all()
 
@@ -54,7 +54,7 @@ def admin_checkin_detail(request, pk):
 @permission_classes([IsAuthenticated])
 def client_checkins_list(request):
     if request.method == 'GET':
-        client_checkins = get_list_or_404(CheckIn, user_id=request.user.id)
+        client_checkins = CheckIn.objects.filter(user_id=request.user.id)
         serializer = CheckInSerializer(client_checkins, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
