@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -9,41 +8,13 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 
-import { apiExercises } from "../../../utils/exercisedata";
-
-const ExerciseDetails = ({ exercise }) => {
-	const [apiExercise, setApiExercise] = useState(null);
-
-	useEffect(() => {
-		console.log("ex", exercise);
-		const findApiExercise = apiExercises.filter(
-			(ex) => ex.name === exercise?.name
-		);
-		console.log("find api exercise", findApiExercise[0]);
-		if (findApiExercise[0]) {
-			const res = validateObjValues(findApiExercise[0]);
-			console.log("res", res);
-			setApiExercise(findApiExercise[0]);
-		} else {
-			setApiExercise(null);
-		}
-	}, [exercise]);
-
-	const validateObjValues = (exerciseObj) => {
-		return Object.fromEntries(
-			Object.entries(exerciseObj).map((i) => {
-				if (i[1]) return i;
-				return false;
-			})
-		);
-	};
-
+const ExerciseDetails = ({ userExercise }) => {
 	return (
 		<Card>
 			<CardHeader title={"Overview"} />
 			<CardContent>
-				{exercise ? (
-					apiExercise ? (
+				{userExercise ? (
+					userExercise ? (
 						<Box
 							display="grid"
 							gridTemplateColumns="repeat(12, 1fr)"
@@ -52,37 +23,37 @@ const ExerciseDetails = ({ exercise }) => {
 						>
 							<Box gridColumn="span 4">
 								<Stack spacing={2}>
-									{apiExercise?.target && (
+									{userExercise?.target && (
 										<Stack spacing={1}>
 											<Typography component="p" variant="body1">
 												Target
 											</Typography>
 											<Chip
-												label={apiExercise?.target}
+												label={userExercise?.target}
 												variant="outlined"
 												sx={{ textTransform: "capitalize" }}
 											/>
 										</Stack>
 									)}
-									{apiExercise?.bodyPart && (
+									{userExercise?.bodyPart && (
 										<Stack spacing={1}>
 											<Typography component="p" variant="body1">
 												Body Part
 											</Typography>
 											<Chip
-												label={apiExercise?.bodyPart}
+												label={userExercise?.bodyPart}
 												variant="outlined"
 												sx={{ textTransform: "capitalize" }}
 											/>
 										</Stack>
 									)}
-									{apiExercise?.equipment && (
+									{userExercise?.equipment && (
 										<Stack spacing={1}>
 											<Typography component="p" variant="body1">
 												Equipment
 											</Typography>
 											<Chip
-												label={apiExercise?.equipment}
+												label={userExercise?.equipment}
 												variant="outlined"
 												sx={{ textTransform: "capitalize" }}
 											/>
@@ -91,13 +62,13 @@ const ExerciseDetails = ({ exercise }) => {
 								</Stack>
 							</Box>
 							<Box sx={{ mx: "auto" }} gridColumn="span 8">
-								{apiExercise?.gifUrl ? (
+								{userExercise?.gifUrl ? (
 									<Box
 										component="img"
 										height={350}
 										width={350}
-										src={apiExercise?.gifUrl}
-										alt={exercise.name}
+										src={userExercise?.gifUrl}
+										alt={userExercise.name}
 										sx={{ borderRadius: 2 }}
 									/>
 								) : (
