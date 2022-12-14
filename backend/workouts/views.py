@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -15,7 +15,7 @@ def client_workouts_list(request):
     if request.method == 'GET':
         plan_id = request.query_params.get('plan_id')
         if plan_id is not None:
-            workouts = get_list_or_404(Workout, training_plan_id=plan_id)
+            workouts = Workout.objects.filter(training_plan_id=plan_id)
             serializer = WorkoutSerializer(workouts, many=True)
             return Response(serializer.data)
     return Response(status=status.HTTP_400_BAD_REQUEST)
