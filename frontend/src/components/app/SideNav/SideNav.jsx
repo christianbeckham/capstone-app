@@ -28,6 +28,7 @@ const SideNav = ({ navItems }) => {
 					PaperProps={{
 						sx: { width: width },
 					}}
+					data-test="permanent-side-nav"
 				>
 					<SideNavItems navItems={navItems} collapsed={collapsed} />
 				</Drawer>

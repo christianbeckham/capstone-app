@@ -80,6 +80,7 @@ const SignInForm = () => {
 						margin="normal"
 						required
 						autoFocus
+						data-test="username-input"
 					/>
 					<TextField
 						label="Password"
@@ -108,6 +109,7 @@ const SignInForm = () => {
 								</InputAdornment>
 							),
 						}}
+						data-test="password-input"
 					/>
 				</Stack>
 				<Stack>
@@ -119,6 +121,7 @@ const SignInForm = () => {
 						}
 						fullWidth
 						sx={{ my: 2 }}
+						data-test="signin-form-button"
 					>
 						Sign in
 					</Button>

@@ -37,7 +37,7 @@ const CheckInList = ({ checkIns }) => {
 							<TableCell></TableCell>
 						</TableRow>
 					</TableHead>
-					<TableBody>
+					<TableBody data-test="checkin-table-body">
 						{checkIns.length > 0 ? (
 							checkIns
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

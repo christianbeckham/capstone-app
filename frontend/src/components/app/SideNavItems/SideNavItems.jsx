@@ -48,6 +48,7 @@ const SideNavItems = ({ navItems, collapsed }) => {
 										},
 									}}
 									end
+									data-test="side-nav-link"
 								>
 									<ListItemIcon>
 										<i.icon />

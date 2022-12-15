@@ -57,6 +57,7 @@ const AccountButtonMenu = ({ menuId, menuAnchor, handleMenuClose }) => {
 					},
 				},
 			}}
+			data-test="accountButton-dropdownMenu"
 		>
 			<MenuItem onClick={() => navigate(`/${url}/profile`)}>
 				<ListItemIcon>
@@ -71,7 +72,7 @@ const AccountButtonMenu = ({ menuId, menuAnchor, handleMenuClose }) => {
 				Settings
 			</MenuItem>
 			<Divider />
-			<MenuItem onClick={logoutUser}>
+			<MenuItem onClick={logoutUser} data-test="account-logout-button">
 				<ListItemIcon>
 					<Logout fontSize="small" />
 				</ListItemIcon>

@@ -80,7 +80,12 @@ const CheckInForm = ({ fetchCheckIns }) => {
 	return (
 		<>
 			<Tooltip title="new" placement="right" arrow>
-				<Fab color="primary" size="small" onClick={toggleForm}>
+				<Fab
+					color="primary"
+					size="small"
+					onClick={toggleForm}
+					data-test="new-checkin-button"
+				>
 					<Add />
 				</Fab>
 			</Tooltip>
@@ -89,6 +94,7 @@ const CheckInForm = ({ fetchCheckIns }) => {
 				open={showForm}
 				onClose={toggleForm}
 				sx={{ zIndex: 2000 }}
+				data-test="new-checkin-form"
 			>
 				<Box
 					sx={{
@@ -131,6 +137,7 @@ const CheckInForm = ({ fetchCheckIns }) => {
 						InputLabelProps={{
 							shrink: true,
 						}}
+						data-test="checkin-form-weight-field"
 					/>
 					<TextField
 						label="Weekly Review"
@@ -146,6 +153,7 @@ const CheckInForm = ({ fetchCheckIns }) => {
 						InputLabelProps={{
 							shrink: true,
 						}}
+						data-test="checkin-form-review-field"
 					/>
 					<Button
 						variant="contained"
@@ -171,6 +179,7 @@ const CheckInForm = ({ fetchCheckIns }) => {
 							variant="contained"
 							color="success"
 							sx={{ my: 2, mr: 1 }}
+							data-test="checkin-form-submit-button"
 						>
 							Submit
 						</Button>
@@ -182,7 +191,6 @@ const CheckInForm = ({ fetchCheckIns }) => {
 						>
 							Cancel
 						</Button>
-						<div></div>
 					</Stack>
 				</Box>
 			</Drawer>

@@ -27,6 +27,7 @@ const AccountButton = () => {
 					aria-label="account of current user"
 					aria-controls={menuId}
 					aria-haspopup="true"
+					data-test="account-button"
 				/>
 			) : (
 				<Chip
