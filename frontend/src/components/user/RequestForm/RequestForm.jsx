@@ -33,7 +33,7 @@ const RequestForm = ({ fetchRequests }) => {
 	};
 
 	const handleClose = () => {
-		setFormData({ type: "", description: "" });
+		setFormData({ type: requestTypes[0], description: "" });
 		toggleForm();
 	};
 
@@ -45,13 +45,9 @@ const RequestForm = ({ fetchRequests }) => {
 
 	const postRequest = async (data) => {
 		try {
-			const response = await axios.post(
-				"http://localhost:8000/api/requests/",
-				data,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.post("http://localhost:8000/api/requests/", data, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 201) {
 				console.log(response);
 				fetchRequests();
@@ -72,12 +68,7 @@ const RequestForm = ({ fetchRequests }) => {
 					<Add />
 				</Fab>
 			</Tooltip>
-			<Drawer
-				variant="temporary"
-				anchor={"right"}
-				open={showForm}
-				onClose={toggleForm}
-			>
+			<Drawer variant="temporary" anchor={"right"} open={showForm} onClose={toggleForm}>
 				<Box
 					sx={{
 						display: "flex",
@@ -114,11 +105,7 @@ const RequestForm = ({ fetchRequests }) => {
 							sx={{ textTransform: "capitalize" }}
 						>
 							{requestTypes.map((option, index) => (
-								<MenuItem
-									key={index}
-									value={option}
-									sx={{ textTransform: "capitalize" }}
-								>
+								<MenuItem key={index} value={option} sx={{ textTransform: "capitalize" }}>
 									{option}
 								</MenuItem>
 							))}
@@ -139,24 +126,11 @@ const RequestForm = ({ fetchRequests }) => {
 							}}
 						/>
 					</Stack>
-					<Stack
-						direction="row"
-						sx={{ my: 2, position: "absolute", bottom: 0 }}
-					>
-						<Button
-							type="submit"
-							variant="contained"
-							color="success"
-							sx={{ my: 2, mr: 1 }}
-						>
+					<Stack direction="row" sx={{ my: 2, position: "absolute", bottom: 0 }}>
+						<Button type="submit" variant="contained" color="success" sx={{ my: 2, mr: 1 }}>
 							Submit
 						</Button>
-						<Button
-							onClick={handleClose}
-							variant="contained"
-							color="error"
-							sx={{ my: 2 }}
-						>
+						<Button onClick={handleClose} variant="contained" color="error" sx={{ my: 2 }}>
 							Cancel
 						</Button>
 					</Stack>
