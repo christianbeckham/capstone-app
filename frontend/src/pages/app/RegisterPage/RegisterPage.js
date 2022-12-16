@@ -3,12 +3,15 @@ import React from "react";
 import Container from "@mui/material/Container";
 
 import PublicNavbar from "../../../components/app/PublicNavbar/PublicNavbar";
+import ThemeToggle from "../../../components/app/ThemeToggle/ThemeToggle";
 import SignUpForm from "../../../components/app/SignUpForm/SignUpForm";
 
 const RegisterPage = () => {
 	return (
 		<>
-			<PublicNavbar />
+			<PublicNavbar>
+				<ThemeToggle />
+			</PublicNavbar>
 			<Container
 				component={"main"}
 				maxWidth="sm"
