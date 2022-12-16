@@ -22,19 +22,24 @@ const chartOptions = {
 	pointSize: 10,
 };
 
-const chartRange = [4, 8, 12, "all"];
+const chartRange = [4, 8, 12];
 
 const UserChart = ({ userCheckIns }) => {
+	const [originalData, setOriginalData] = useState([]);
 	const [chartData, setChartData] = useState([]);
 	const [range, setRange] = useState(chartRange[0]);
+	const [dropdownNumbers, setDropdownNumbers] = useState([]);
 
-	const handleChartRange = (e) => setRange(e.target.value);
+	const handleChartRange = (e) => {
+		setRange(e.target.value);
+	};
 
 	const transformData = (checkInData) => {
 		const data = ["Date", "Weight"];
+		const reverseData = checkInData.reverse();
 		return [
 			data,
-			...checkInData.reverse().map((c) => [
+			...reverseData.map((c) => [
 				new Date(c.created_date).toLocaleDateString("en-US", {
 					year: "2-digit",
 					month: "2-digit",
@@ -46,36 +51,29 @@ const UserChart = ({ userCheckIns }) => {
 	};
 
 	useEffect(() => {
-		let dataRange = userCheckIns;
+		setOriginalData(userCheckIns);
+		const data = userCheckIns?.slice(0, chartRange[0]);
+		setChartData(transformData(data));
+		const findLessThanIndex = chartRange.findIndex((num) => num >= userCheckIns?.length);
+		const tempDNumbers = chartRange.slice(0, findLessThanIndex + 1);
+		setDropdownNumbers(tempDNumbers);
+	}, [userCheckIns]);
 
-		if (userCheckIns.length > range) {
-			dataRange = userCheckIns.slice(0, range);
-		} else {
-			dataRange = userCheckIns;
-		}
-
-		const transformedData = transformData(dataRange);
-		setChartData(transformedData);
-	}, [userCheckIns, range]);
+	useEffect(() => {
+		const newChartData = originalData.slice(0, range);
+		const newData = transformData(newChartData);
+		setChartData(newData);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [range]);
 
 	return (
 		<Card sx={{ position: "relative" }}>
-			<Stack
-				direction={"row"}
-				alignItems={"center"}
-				justifyContent={"space-between"}
-			>
+			<Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
 				<CardHeader title={"Check-In Trends"} />
-				{userCheckIns.length > 0 && (
+				{userCheckIns?.length > chartRange[0] && (
 					<FormControl>
-						<Select
-							size="small"
-							name="chart_range"
-							value={range}
-							onChange={handleChartRange}
-							variant="outlined"
-						>
-							{chartRange.map((option) => (
+						<Select size="small" name="chart_range" value={range} onChange={handleChartRange} variant="outlined">
+							{dropdownNumbers?.map((option) => (
 								<MenuItem key={option} value={option}>
 									{option}
 								</MenuItem>
@@ -86,13 +84,7 @@ const UserChart = ({ userCheckIns }) => {
 			</Stack>
 			<CardContent>
 				{userCheckIns.length > 0 ? (
-					<Chart
-						chartType="LineChart"
-						data={chartData}
-						options={chartOptions}
-						width="100%"
-						height="325px"
-					/>
+					<Chart chartType="LineChart" data={chartData} options={chartOptions} width="100%" height="325px" />
 				) : (
 					<p>No data available</p>
 				)}
