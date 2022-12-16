@@ -11,29 +11,29 @@ import Typography from "@mui/material/Typography";
 
 import useAuth from "../../../hooks/useAuth";
 import PageToolbar from "../../../components/app/PageToolbar/PageToolbar";
+import UploadImagesButton from "../../../components/user/UploadImagesButton/UploadImagesButton";
 
 const CheckInDetailsPage = () => {
 	const { token } = useAuth();
 	const { checkinId } = useParams();
 	const [checkin, setCheckin] = useState({});
 
-	useEffect(() => {
+	const fetchCheckIn = async () => {
 		try {
-			const fetchCheckIn = async () => {
-				const response = await axios.get(
-					`http://localhost:8000/api/checkins/${checkinId}/`,
-					{
-						headers: { Authorization: `Bearer ${token}` },
-					}
-				);
-				if (response.status === 200) {
-					setCheckin(response.data);
-				}
-			};
-			fetchCheckIn();
+			const response = await axios.get(`http://localhost:8000/api/checkins/${checkinId}/`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			if (response.status === 200) {
+				setCheckin(response.data);
+			}
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	useEffect(() => {
+		fetchCheckIn();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -42,19 +42,9 @@ const CheckInDetailsPage = () => {
 			<Grid container spacing={2}>
 				<Grid item xs={5}>
 					<Card sx={{ height: "100%" }}>
-						<Stack
-							direction="row"
-							alignItems={"center"}
-							justifyContent={"space-between"}
-							spacing={2}
-							sx={{ mb: 2 }}
-						>
+						<Stack direction="row" alignItems={"center"} justifyContent={"space-between"} spacing={2} sx={{ mb: 2 }}>
 							<CardHeader title={"Overview"} />
-							<Typography
-								gutterBottom
-								variant="overline"
-								sx={{ color: "text.disabled", display: "block" }}
-							>
+							<Typography gutterBottom variant="overline" sx={{ color: "text.disabled", display: "block" }}>
 								{new Date(checkin.created_date).toLocaleDateString()}
 							</Typography>
 						</Stack>
@@ -80,7 +70,10 @@ const CheckInDetailsPage = () => {
 				</Grid>
 				<Grid item xs={7}>
 					<Card>
-						<CardHeader title={"Images"} />
+						<Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
+							<CardHeader title={"Images"} />
+							<UploadImagesButton checkinId={checkinId} fetchCheckIn={fetchCheckIn} />
+						</Stack>
 						<CardContent>
 							<Stack
 								direction="row"
@@ -92,12 +85,7 @@ const CheckInDetailsPage = () => {
 							>
 								{checkin.images && checkin.images.length > 0 ? (
 									checkin.images.map((img, index) => (
-										<img
-											key={index}
-											src={`http://localhost:8000${img.image}`}
-											alt={img.title}
-											width="200"
-										/>
+										<img key={index} src={`http://localhost:8000${img.image}`} alt={img.title} width="200" />
 									))
 								) : (
 									<p>No images</p>
@@ -110,11 +98,7 @@ const CheckInDetailsPage = () => {
 					<Card>
 						<CardHeader title={"Trainer Feedback"} />
 						<CardContent>
-							{checkin.trainer_feedback ? (
-								<p>{checkin.trainer_feedback}</p>
-							) : (
-								<p>No feedback</p>
-							)}
+							{checkin.trainer_feedback ? <p>{checkin.trainer_feedback}</p> : <p>No feedback</p>}
 						</CardContent>
 					</Card>
 				</Grid>
