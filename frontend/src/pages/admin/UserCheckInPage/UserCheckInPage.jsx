@@ -49,12 +49,9 @@ const UserCheckInPage = () => {
 
 	const fetchCheckIn = async (itemId) => {
 		try {
-			const response = await axios.get(
-				`http://localhost:8000/api/checkins/all/${itemId}/`,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.get(`http://localhost:8000/api/checkins/all/${itemId}/`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) {
 				console.log(response.data);
 				setUserCheckIn(response.data);
@@ -67,13 +64,9 @@ const UserCheckInPage = () => {
 
 	const postFeedback = async (itemId, data) => {
 		try {
-			const response = await axios.patch(
-				`http://localhost:8000/api/checkins/all/${itemId}/`,
-				data,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.patch(`http://localhost:8000/api/checkins/all/${itemId}/`, data, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) {
 				console.log(response.data);
 			}
@@ -95,8 +88,7 @@ const UserCheckInPage = () => {
 											Name: {userCheckIn?.user?.full_name}
 										</Typography>
 										<Typography component="p" variant="body1">
-											Date:{" "}
-											{new Date(userCheckIn?.created_date).toLocaleDateString()}
+											Date: {new Date(userCheckIn?.created_date).toLocaleDateString()}
 										</Typography>
 										<Typography component="p" variant="body1">
 											Weight: {userCheckIn?.weight} lbs
@@ -112,22 +104,14 @@ const UserCheckInPage = () => {
 							<Card>
 								<CardHeader title={"Images"} />
 								<CardContent>
-									{userCheckIn?.images?.length > 0 && (
-										<Stack
-											direction="row"
-											justifyContent={"space-around"}
-											spacing={1}
-											sx={{ overflow: "hidden" }}
-										>
+									{userCheckIn?.images?.length > 0 ? (
+										<Stack direction="row" justifyContent={"space-around"} spacing={1} sx={{ overflow: "hidden" }}>
 											{userCheckIn?.images.map((img) => (
-												<img
-													key={img.id}
-													src={`http://localhost:8000${img.image}`}
-													alt={img.title}
-													width={200}
-												/>
+												<img key={img.id} src={`http://localhost:8000${img.image}`} alt={img.title} width={200} />
 											))}
 										</Stack>
+									) : (
+										<Typography>No images</Typography>
 									)}
 								</CardContent>
 							</Card>
@@ -158,20 +142,10 @@ const UserCheckInPage = () => {
 								<CardActions>
 									{editMode ? (
 										<Stack direction={"row"} spacing={1}>
-											<Button
-												disabled={!editMode}
-												type="submit"
-												variant="contained"
-												color="success"
-											>
+											<Button disabled={!editMode} type="submit" variant="contained" color="success">
 												Submit
 											</Button>
-											<Button
-												disabled={!editMode}
-												variant="contained"
-												color="error"
-												onClick={handleFormCancel}
-											>
+											<Button disabled={!editMode} variant="contained" color="error" onClick={handleFormCancel}>
 												Cancel
 											</Button>
 										</Stack>
