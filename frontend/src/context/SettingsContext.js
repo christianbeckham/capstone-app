@@ -21,6 +21,7 @@ export const SettingsProvider = ({ children }) => {
 				if (mode) setMode(mode);
 			},
 		}),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[]
 	);
 
@@ -30,6 +31,7 @@ export const SettingsProvider = ({ children }) => {
 				if (typeof collapsed === "boolean") setCollapsed(collapsed);
 			},
 		}),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[]
 	);
 
