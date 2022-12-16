@@ -44,10 +44,7 @@ const StyledMenu = styled((props) => (
 		borderRadius: 6,
 		marginTop: theme.spacing(1),
 		minWidth: 120,
-		color:
-			theme.palette.mode === "light"
-				? "rgb(55, 65, 81)"
-				: theme.palette.grey[300],
+		color: theme.palette.mode === "light" ? "rgb(55, 65, 81)" : theme.palette.grey[300],
 		boxShadow:
 			"rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
 		"& .MuiMenu-list": {
@@ -60,10 +57,7 @@ const StyledMenu = styled((props) => (
 				marginRight: theme.spacing(1.5),
 			},
 			"&:active": {
-				backgroundColor: alpha(
-					theme.palette.primary.main,
-					theme.palette.action.selectedOpacity
-				),
+				backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
 			},
 		},
 	},
@@ -118,20 +112,16 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 		console.log(formData);
 		postRequest(formData);
 		handleFormClose();
-		fetchRequests();
 	};
 
 	const postRequest = async (data) => {
 		try {
-			const response = await axios.patch(
-				`http://localhost:8000/api/requests/all/${requestInfo.id}/`,
-				data,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.patch(`http://localhost:8000/api/requests/all/${requestInfo.id}/`, data, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) {
 				console.log(response.data);
+				fetchRequests();
 			}
 		} catch (error) {
 			console.log(error);
@@ -140,12 +130,9 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 
 	const deleteRequest = async (itemId) => {
 		try {
-			const response = await axios.delete(
-				`http://localhost:8000/api/requests/all/${itemId}/`,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.delete(`http://localhost:8000/api/requests/all/${itemId}/`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 204) {
 				console.log(response.data);
 				setFormData({});
@@ -159,26 +146,16 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 
 	return (
 		<div>
-			<IconButton
-				onClick={handleFormOpen}
-				aria-label="open form button"
-				color="primary"
-			>
+			<IconButton onClick={handleFormOpen} aria-label="open form button" color="primary">
 				<ExitToApp />
 			</IconButton>
 			<Dialog open={open} onClose={handleFormClose} maxWidth="sm" fullWidth>
 				<Box component={"form"} onSubmit={handleSubmit}>
-					<Stack
-						direction={"row"}
-						alignItems="center"
-						justifyContent="space-between"
-					>
+					<Stack direction={"row"} alignItems="center" justifyContent="space-between">
 						{editMode ? (
 							<DialogTitle>Reply to {requestInfo.user.full_name}</DialogTitle>
 						) : (
-							<DialogTitle>
-								Request from {requestInfo.user.full_name}
-							</DialogTitle>
+							<DialogTitle>Request from {requestInfo.user.full_name}</DialogTitle>
 						)}
 						<Box sx={{ mx: 2 }}>
 							<IconButton
@@ -202,10 +179,7 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 								<MenuItem onClick={toggleEditMode} disableRipple>
 									Edit
 								</MenuItem>
-								<MenuItem
-									onClick={() => deleteRequest(requestInfo.id)}
-									disableRipple
-								>
+								<MenuItem onClick={() => deleteRequest(requestInfo.id)} disableRipple>
 									Delete
 								</MenuItem>
 							</StyledMenu>
@@ -215,9 +189,7 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 						<DialogContentText>Request Details</DialogContentText>
 						<Divider sx={{ my: 1 }} />
 						<Stack spacing={1} sx={{ my: 2 }}>
-							<Typography sx={{ textTransform: "capitalize" }}>
-								Type: {requestInfo.type}
-							</Typography>
+							<Typography sx={{ textTransform: "capitalize" }}>Type: {requestInfo.type}</Typography>
 							<Typography>Description: {requestInfo.description}</Typography>
 						</Stack>
 						<Divider sx={{ my: 2 }} />
@@ -264,20 +236,12 @@ const RequestForm = ({ requestInfo, fetchRequests }) => {
 								<Button type="submit" variant="contained" color="success">
 									Save
 								</Button>
-								<Button
-									onClick={handleMenuCancel}
-									variant="contained"
-									color="error"
-								>
+								<Button onClick={handleMenuCancel} variant="contained" color="error">
 									Cancel
 								</Button>
 							</Stack>
 						) : (
-							<Button
-								onClick={handleFormClose}
-								variant="contained"
-								color="error"
-							>
+							<Button onClick={handleFormClose} variant="contained" color="error">
 								Close
 							</Button>
 						)}
