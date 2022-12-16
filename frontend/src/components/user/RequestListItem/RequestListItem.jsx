@@ -8,10 +8,8 @@ import TableCell from "@mui/material/TableCell";
 const RequestListItem = ({ request }) => {
 	return (
 		<TableRow key={request.id}>
-			<TableCell>
-				{new Date(request.created_date).toLocaleDateString()}
-			</TableCell>
-			<TableCell>{request.type}</TableCell>
+			<TableCell>{new Date(request.created_date).toLocaleDateString()}</TableCell>
+			<TableCell sx={{ textTransform: "capitalize" }}>{request.type}</TableCell>
 			<TableCell>{request.description}</TableCell>
 			<TableCell align="center">
 				{request.status_text === "open" ? (
