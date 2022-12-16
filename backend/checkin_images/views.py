@@ -11,9 +11,8 @@ from .models import CheckInImage
 @permission_classes([IsAuthenticated])
 def upload_photo(request):
     if request.method == 'POST':
-        images = request.FILES.getlist('image')
+        images = request.FILES.getlist('images')
         user_full_name = f'{request.user.first_name}-{request.user.last_name}'
-
         for image in images:
             CheckInImage.objects.create(
                 check_in_id=request.data['check_in_id'],
