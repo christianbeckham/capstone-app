@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
@@ -25,7 +24,7 @@ class RegisterView(generics.CreateAPIView):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def admin_client_list(request):
-    clients = get_list_or_404(User, is_client=True)
+    clients = User.objects.filter(is_client=True)
 
     if request.method == 'GET':
         serializer = ClientSerializer(clients, many=True)
@@ -35,7 +34,7 @@ def admin_client_list(request):
 @api_view(['GET', 'PATCH'])
 @permission_classes([IsAdminUser])
 def admin_client_detail(request, pk):
-    client = get_object_or_404(User, pk=pk, is_client=True)
+    client = User.objects.get(pk=pk)
 
     if request.method == 'GET':
         serializer = ClientSerializer(client)
@@ -64,8 +63,35 @@ def admin_client_totals(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_detail(request):
-    user = get_object_or_404(User, id=request.user.id)
+    user = User.objects.get(id=request.user.id)
+    print(user)
 
     if request.method == 'GET':
         serializer = ClientSerializer(user)
         return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def user_validity_check(request):
+    email_param = request.query_params.get('email')
+    username_param = request.query_params.get('username')
+
+    if email_param is not None:
+        print(email_param)
+        email = User.objects.filter(email=email_param).count()
+        if request.method == 'GET':
+            if email > 0:
+                return Response(False)
+            else:
+                return Response(True)
+
+    if username_param is not None:
+        print(username_param)
+        username = User.objects.filter(username=username_param).count()
+        if request.method == 'GET':
+            if username > 0:
+                return Response(False)
+            else:
+                return Response(True)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
