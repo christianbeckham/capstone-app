@@ -26,10 +26,7 @@ const SignInForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const defaultValues = { username: "", password: "" };
-	const [formData, handleInputChange, handleSubmit] = useCustomForm(
-		defaultValues,
-		loginUser
-	);
+	const [formData, handleInputChange, handleSubmit] = useCustomForm(defaultValues, loginUser);
 
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -56,13 +53,8 @@ const SignInForm = () => {
 				open={open}
 				onClose={handleClose}
 			>
-				<Alert
-					severity="error"
-					variant="filled"
-					sx={{ width: "100%" }}
-					onClose={handleClose}
-				>
-					Unable to login.
+				<Alert severity="error" variant="filled" sx={{ width: "100%" }} onClose={handleClose}>
+					Unable to login
 				</Alert>
 			</Snackbar>
 			<Box component="form" onSubmit={handleSubmit}>
@@ -95,16 +87,8 @@ const SignInForm = () => {
 						InputProps={{
 							endAdornment: (
 								<InputAdornment position="end">
-									<IconButton
-										aria-label="toggle password visibility"
-										onClick={handleClickShowPassword}
-										size="small"
-									>
-										{showPassword ? (
-											<Visibility fontSize="inherit" />
-										) : (
-											<VisibilityOff fontSize="inherit" />
-										)}
+									<IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} size="small">
+										{showPassword ? <Visibility fontSize="inherit" /> : <VisibilityOff fontSize="inherit" />}
 									</IconButton>
 								</InputAdornment>
 							),
@@ -116,9 +100,7 @@ const SignInForm = () => {
 					<Button
 						type="submit"
 						variant="contained"
-						startIcon={
-							isLoading && <CircularProgress color="common" size={20} />
-						}
+						startIcon={isLoading && <CircularProgress color="common" size={20} />}
 						fullWidth
 						sx={{ my: 2 }}
 						data-test="signin-form-button"
@@ -127,12 +109,7 @@ const SignInForm = () => {
 					</Button>
 					<Stack direction="row" justifyContent="center" spacing={1}>
 						<Typography variant="body2">Don’t have an account? {""}</Typography>
-						<Link
-							component="button"
-							onClick={handleRegisterLink}
-							variant="subtitle2"
-							underline="hover"
-						>
+						<Link component="button" onClick={handleRegisterLink} variant="subtitle2" underline="hover">
 							Sign up
 						</Link>
 					</Stack>
