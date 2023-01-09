@@ -24,6 +24,7 @@ export const appComponents = (theme) => ({
 	},
 	MuiButton: {
 		defaultProps: {
+			variant: "contained",
 			disableElevation: true,
 		},
 		styleOverrides: {
@@ -169,7 +170,7 @@ export const appComponents = (theme) => ({
 	},
 	MuiListItem: {
 		defaultProps: {
-			disablePadding: true,
+			// disablePadding: true,
 		},
 		styleOverrides: {
 			root: {
@@ -302,6 +303,13 @@ export const appComponents = (theme) => ({
 			sizeSmall: {
 				padding: "12px 16px",
 			},
+		},
+	},
+	MuiTextField: {
+		defaultProps: {
+			variant: "standard",
+			margin: "normal",
+			InputLabelProps: { shrink: true },
 		},
 	},
 	MuiTypography: {
