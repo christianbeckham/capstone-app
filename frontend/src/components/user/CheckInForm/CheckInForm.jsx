@@ -18,10 +18,13 @@ import useAuth from "../../../hooks/useAuth";
 import ImageList from "../ImageList/ImageList";
 
 const CheckInForm = ({ fetchCheckIns }) => {
+	const initialState = { weight: "", weekly_review: "" };
+	const imageUploadLimit = 4;
 	const { token } = useAuth();
-	const [images, setImages] = useState(null);
-	const [formData, setFormData] = useState({ weight: "", weekly_review: "" });
+	const [images, setImages] = useState([]);
+	const [formData, setFormData] = useState(initialState);
 	const [showForm, setShowForm] = useState(false);
+	const [error, setError] = useState("");
 
 	const toggleForm = () => setShowForm(!showForm);
 
@@ -31,12 +34,24 @@ const CheckInForm = ({ fetchCheckIns }) => {
 	};
 
 	const handleImageUpload = (e) => {
-		setImages(e.target.files);
+		if (e.target.files.length <= imageUploadLimit) {
+			setImages(e.target.files);
+			setError("");
+		} else {
+			setError(`Maximum of ${imageUploadLimit} images allowed.`);
+		}
+	};
+
+	const handleRemoveImage = (index) => {
+		const imageArr = Array.from(images);
+		imageArr.splice(index, 1);
+		setImages(imageArr);
 	};
 
 	const handleFormClose = () => {
-		setFormData({ weight: "", weekly_review: "" });
-		setImages(null);
+		setFormData(initialState);
+		setImages([]);
+		setError("");
 		setShowForm(false);
 	};
 
@@ -59,15 +74,11 @@ const CheckInForm = ({ fetchCheckIns }) => {
 
 	const postCheckIn = async (data) => {
 		try {
-			const response = await axios.post(
-				"http://localhost:8000/api/checkins/",
-				data,
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			);
+			const response = await axios.post(`${process.env.REACT_APP_WEBSITE_URL}/api/checkins/`, data, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			if (response.status === 201) {
 				console.log("Response", response.data);
 				fetchCheckIns();
@@ -80,19 +91,14 @@ const CheckInForm = ({ fetchCheckIns }) => {
 	return (
 		<>
 			<Tooltip title="new" placement="right" arrow>
-				<Fab
-					color="primary"
-					size="small"
-					onClick={toggleForm}
-					data-test="new-checkin-button"
-				>
+				<Fab color="primary" size="small" onClick={toggleForm} data-test="new-checkin-button">
 					<Add />
 				</Fab>
 			</Tooltip>
 			<Drawer
 				anchor={"right"}
 				open={showForm}
-				onClose={toggleForm}
+				onClose={handleFormClose}
 				sx={{ zIndex: 2000 }}
 				data-test="new-checkin-form"
 			>
@@ -155,41 +161,29 @@ const CheckInForm = ({ fetchCheckIns }) => {
 						}}
 						data-test="checkin-form-review-field"
 					/>
-					<Button
-						variant="contained"
-						startIcon={<PhotoCamera />}
-						component="label"
-					>
+					<Button variant="contained" startIcon={<PhotoCamera />} component="label">
 						Upload
-						<input
-							hidden
-							accept="image/png, image/jpeg"
-							multiple
-							type="file"
-							onChange={handleImageUpload}
-						/>
+						<input hidden accept="image/png, image/jpeg" multiple type="file" onChange={handleImageUpload} />
 					</Button>
-					{images && <ImageList images={images} />}
-					<Stack
-						direction="row"
-						sx={{ my: 0, position: "absolute", bottom: 0 }}
-					>
-						<Button
-							type="submit"
-							variant="contained"
-							color="success"
-							sx={{ my: 2, mr: 1 }}
-							data-test="checkin-form-submit-button"
-						>
-							Submit
-						</Button>
-						<Button
-							onClick={handleFormClose}
-							variant="contained"
-							color="error"
-							sx={{ my: 2 }}
-						>
+					{error && (
+						<Typography color="error" sx={{ my: 2 }}>
+							Upload failed: {error}
+						</Typography>
+					)}
+					{images.length > 0 && (
+						<>
+							<Typography component={"h3"} variant="h6" sx={{ pt: 3 }}>
+								Upload Images
+							</Typography>
+							<ImageList images={images} handleRemoveImage={handleRemoveImage} />
+						</>
+					)}
+					<Stack direction="row" spacing={1} sx={{ position: "absolute", bottom: 0, right: 0, alignItems: "center" }}>
+						<Button onClick={handleFormClose} variant="outlined" color="error">
 							Cancel
+						</Button>
+						<Button type="submit" variant="contained" color="success" data-test="checkin-form-submit-button">
+							Submit
 						</Button>
 					</Stack>
 				</Box>
