@@ -17,23 +17,20 @@ import useAuth from "../../../hooks/useAuth";
 import { requestTypes } from "../../../utils/requestTypes";
 
 const RequestForm = ({ fetchRequests }) => {
+	const initialState = { type: requestTypes[0], description: "" };
 	const [showForm, setShowForm] = useState(false);
-	const [formData, setFormData] = useState({
-		type: requestTypes[0],
-		description: "",
-	});
+	const [formData, setFormData] = useState(initialState);
 	const { token } = useAuth();
 
 	const toggleForm = () => setShowForm(!showForm);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		console.log(formData, name, value);
 		setFormData((prevState) => ({ ...prevState, [name]: value }));
 	};
 
 	const handleClose = () => {
-		setFormData({ type: requestTypes[0], description: "" });
+		setFormData(initialState);
 		toggleForm();
 	};
 
@@ -45,7 +42,7 @@ const RequestForm = ({ fetchRequests }) => {
 
 	const postRequest = async (data) => {
 		try {
-			const response = await axios.post("http://localhost:8000/api/requests/", data, {
+			const response = await axios.post(`${process.env.REACT_APP_WEBSITE_URL}/api/requests/`, data, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.status === 201) {
@@ -68,7 +65,7 @@ const RequestForm = ({ fetchRequests }) => {
 					<Add />
 				</Fab>
 			</Tooltip>
-			<Drawer variant="temporary" anchor={"right"} open={showForm} onClose={toggleForm}>
+			<Drawer variant="temporary" anchor={"right"} open={showForm} onClose={handleClose}>
 				<Box
 					sx={{
 						display: "flex",
@@ -86,7 +83,7 @@ const RequestForm = ({ fetchRequests }) => {
 					component="form"
 					onSubmit={handleSubmit}
 					role="presentation"
-					sx={{ minWidth: 650, display: "flex", flexDirection: "column", m: 2 }}
+					sx={{ minWidth: 650, display: "flex", flexDirection: "column", m: 2, position: "relative", height: "100%" }}
 				>
 					<Stack sx={{ display: "flex" }} spacing={2}>
 						<TextField
@@ -95,13 +92,8 @@ const RequestForm = ({ fetchRequests }) => {
 							name="type"
 							value={formData.type}
 							onChange={handleChange}
-							variant="standard"
-							margin="normal"
 							required
 							helperText="Please select an option"
-							InputLabelProps={{
-								shrink: true,
-							}}
 							sx={{ textTransform: "capitalize" }}
 						>
 							{requestTypes.map((option, index) => (
@@ -116,22 +108,17 @@ const RequestForm = ({ fetchRequests }) => {
 							name="description"
 							value={formData.description}
 							onChange={handleChange}
-							variant="standard"
-							margin="normal"
 							required
 							multiline
 							rows={3}
-							InputLabelProps={{
-								shrink: true,
-							}}
 						/>
 					</Stack>
-					<Stack direction="row" sx={{ my: 2, position: "absolute", bottom: 0 }}>
-						<Button type="submit" variant="contained" color="success" sx={{ my: 2, mr: 1 }}>
-							Submit
-						</Button>
-						<Button onClick={handleClose} variant="contained" color="error" sx={{ my: 2 }}>
+					<Stack direction="row" spacing={1} sx={{ position: "absolute", bottom: 0, right: 0, alignItems: "center" }}>
+						<Button onClick={handleClose} variant="outlined" color="error">
 							Cancel
+						</Button>
+						<Button type="submit" color="success">
+							Submit
 						</Button>
 					</Stack>
 				</Box>
