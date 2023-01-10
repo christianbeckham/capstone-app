@@ -10,7 +10,7 @@ import useAuth from "../../../hooks/useAuth";
 
 const UploadImagesButton = ({ checkinId, fetchCheckIn }) => {
 	const { token } = useAuth();
-	const [images, setImages] = useState(null);
+	const [images, setImages] = useState([]);
 
 	const handleImages = (e) => {
 		setImages(e.target.files);
@@ -19,7 +19,7 @@ const UploadImagesButton = ({ checkinId, fetchCheckIn }) => {
 	const handleUpload = () => {
 		const form_data = new FormData();
 		form_data.append("check_in_id", checkinId);
-		if (images != null) {
+		if (images?.length > 0) {
 			Object.values(images).forEach((img) => {
 				form_data.append("images", img);
 			});
@@ -28,7 +28,7 @@ const UploadImagesButton = ({ checkinId, fetchCheckIn }) => {
 	};
 
 	const handleCancel = () => {
-		setImages(null);
+		setImages([]);
 	};
 
 	const postUpload = async (data) => {
