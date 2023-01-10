@@ -12,20 +12,18 @@ const UploadImagesButton = ({ checkinId, fetchCheckIn }) => {
 	const { token } = useAuth();
 	const [images, setImages] = useState(null);
 
-	const handleImageUpload = (e) => {
+	const handleImages = (e) => {
 		setImages(e.target.files);
 	};
 
 	const handleUpload = () => {
 		const form_data = new FormData();
 		form_data.append("check_in_id", checkinId);
-
 		if (images != null) {
 			Object.values(images).forEach((img) => {
 				form_data.append("images", img);
 			});
 		}
-
 		postUpload(form_data);
 	};
 
@@ -35,13 +33,12 @@ const UploadImagesButton = ({ checkinId, fetchCheckIn }) => {
 
 	const postUpload = async (data) => {
 		try {
-			const response = await axios.post("http://localhost:8000/api/media/upload/", data, {
+			const response = await axios.post(`${process.env.REACT_APP_WEBSITE_URL}/api/media/upload/`, data, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
 			if (response.status === 201) {
-				console.log("Response", response.data);
 				fetchCheckIn();
 				handleCancel();
 			}
@@ -53,8 +50,8 @@ const UploadImagesButton = ({ checkinId, fetchCheckIn }) => {
 	return (
 		<div>
 			{images?.length > 0 ? (
-				<ButtonGroup variant="contained" size="small" aria-label="upload button group">
-					<Button onClick={handleUpload} color="success">
+				<ButtonGroup variant="text" size="small" aria-label="upload button group">
+					<Button onClick={handleUpload} color="primary">
 						Upload {images?.length}
 					</Button>
 					<Button onClick={handleCancel} color="error">
@@ -63,7 +60,7 @@ const UploadImagesButton = ({ checkinId, fetchCheckIn }) => {
 				</ButtonGroup>
 			) : (
 				<IconButton color="primary" aria-label="upload picture" component="label">
-					<input hidden accept="image/png, image/jpeg" multiple type="file" onChange={handleImageUpload} />
+					<input hidden accept="image/png, image/jpeg" multiple type="file" onChange={handleImages} />
 					<PhotoCamera />
 				</IconButton>
 			)}
