@@ -19,10 +19,10 @@ const MacrosCard = ({ plan }) => {
 						gridTemplateColumns: "repeat(4, 1fr)",
 					}}
 				>
-					<InfoRing text={"calories"} value={plan?.calories} />
-					<InfoRing text={"protein"} value={plan?.protein} />
-					<InfoRing text={"carbs"} value={plan?.carbs} />
-					<InfoRing text={"fats"} value={plan?.fats} />
+					<InfoRing text={"calories"} value={plan?.calories.toLocaleString(undefined)} />
+					<InfoRing text={"protein"} value={plan?.protein.toLocaleString(undefined)} />
+					<InfoRing text={"carbs"} value={plan?.carbs.toLocaleString(undefined)} />
+					<InfoRing text={"fats"} value={plan?.fats.toLocaleString(undefined)} />
 				</Box>
 			</CardContent>
 		</Card>
