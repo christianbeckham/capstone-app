@@ -3,9 +3,8 @@ import axios from "axios";
 
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import List from "@mui/material/List";
@@ -47,12 +46,9 @@ const WorkoutList = ({ workouts }) => {
 
 	const fetchExerciseDB = async () => {
 		try {
-			const response = await axios.get(
-				"http://localhost:8000/api/exercises/db/",
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/exercises/db/`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) setExerciseDB(response.data);
 		} catch (error) {
 			console.log(error);
@@ -77,43 +73,30 @@ const WorkoutList = ({ workouts }) => {
 				<p>Loading...</p>
 			) : workouts ? (
 				<Grid container spacing={2}>
-					<Grid item xs={12}>
-						<Tabs value={dayTab} onChange={handleTabChange}>
-							{workouts
-								.sort((a, b) => a.assigned_day - b.assigned_day)
-								.map((workout) => (
-									<Tab key={workout.id} label={`Day ${workout.assigned_day}`} />
-								))}
-						</Tabs>
-					</Grid>
 					<Grid item xs={6}>
 						<Card>
-							<CardHeader title={"Exercises"} />
-							<CardContent>
+							<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+								<Tabs value={dayTab} onChange={handleTabChange}>
+									{workouts
+										.sort((a, b) => a.assigned_day - b.assigned_day)
+										.map((workout) => (
+											<Tab key={workout.id} label={`Day ${workout.assigned_day}`} />
+										))}
+								</Tabs>
+							</Box>
+							<div>
 								{userExercises.map((exercise) => (
 									<List key={exercise.id}>
 										<ListItem disablePadding component="div">
-											<ListItemButton
-												onClick={(_) => handleSetExercise(_, exercise)}
-											>
+											<ListItemButton onClick={(_) => handleSetExercise(_, exercise)}>
 												<ListItemIcon>
 													<ArrowRight />
 												</ListItemIcon>
 												<ListItemText>
-													<Typography
-														component="p"
-														variant="body1"
-														sx={{ textTransform: "capitalize" }}
-													>
+													<Typography component="p" variant="body1" sx={{ textTransform: "capitalize" }}>
 														{exercise.name}
 													</Typography>
-													<Stack
-														direction="row"
-														divider={
-															<Divider orientation="vertical" flexItem />
-														}
-														spacing={2}
-													>
+													<Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
 														<Typography component="span" variant="caption">
 															{`Sets: ${exercise.sets}`}
 														</Typography>
@@ -129,7 +112,7 @@ const WorkoutList = ({ workouts }) => {
 										</ListItem>
 									</List>
 								))}
-							</CardContent>
+							</div>
 						</Card>
 					</Grid>
 					<Grid item xs={6}>
