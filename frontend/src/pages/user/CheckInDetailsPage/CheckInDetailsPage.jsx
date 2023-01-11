@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 import Grid from "@mui/material/Grid";
@@ -8,19 +8,34 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 
 import useAuth from "../../../hooks/useAuth";
 import PageToolbar from "../../../components/app/PageToolbar/PageToolbar";
 import UploadImagesButton from "../../../components/user/UploadImagesButton/UploadImagesButton";
+import ImagePreviewList from "../../../components/user/ImagePreviewList/ImagePreviewList";
+
+const TabPanel = (props) => {
+	const { children, value, active, index } = props;
+	return (
+		<div role="tabpanel" hidden={value !== active} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`}>
+			{value === active && <Box sx={{ p: 3 }}>{children}</Box>}
+		</div>
+	);
+};
 
 const CheckInDetailsPage = () => {
 	const { token } = useAuth();
 	const { checkinId } = useParams();
 	const [checkin, setCheckin] = useState({});
+	const location = useLocation();
 
 	const fetchCheckIn = async () => {
 		try {
-			const response = await axios.get(`http://localhost:8000/api/checkins/${checkinId}/`, {
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/checkins/${checkinId}/`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.status === 200) {
@@ -39,62 +54,81 @@ const CheckInDetailsPage = () => {
 	return (
 		<div>
 			<PageToolbar pageTitle={`Check-In Details`} />
-			<Grid container spacing={2}>
-				<Grid item xs={5}>
-					<Card sx={{ height: "100%" }}>
-						<Stack direction="row" alignItems={"center"} justifyContent={"space-between"} spacing={2} sx={{ mb: 2 }}>
-							<CardHeader title={"Overview"} />
-							<Typography gutterBottom variant="overline" sx={{ color: "text.disabled", display: "block" }}>
-								{new Date(checkin.created_date).toLocaleDateString()}
-							</Typography>
-						</Stack>
-						<CardContent>
-							<Stack direction="row" spacing={2}>
-								<Typography component="p" variant="body1" gutterBottom>
-									Weight:
-								</Typography>
-								<Typography component="p" variant="body1" gutterBottom>
-									{checkin.weight} lbs
-								</Typography>
-							</Stack>
-							<Stack direction="row" spacing={2}>
-								<Typography component="p" variant="body1" gutterBottom>
-									Review:
-								</Typography>
-								<Typography component="p" variant="body2" gutterBottom>
-									{checkin.weekly_review}
-								</Typography>
-							</Stack>
-						</CardContent>
-					</Card>
-				</Grid>
-				<Grid item xs={7}>
+			<Grid container spacing={1}>
+				<Grid item xs={6}>
 					<Card>
-						<Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
-							<CardHeader title={"Images"} />
-							<UploadImagesButton checkinId={checkinId} fetchCheckIn={fetchCheckIn} />
-						</Stack>
-						<CardContent>
-							<Stack
-								direction="row"
-								spacing={1}
-								sx={{
-									justifyContent: "center",
-									overflow: "hidden",
-								}}
-							>
-								{checkin.images && checkin.images.length > 0 ? (
-									checkin.images.map((img, index) => (
-										<img key={index} src={`http://localhost:8000${img.image}`} alt={img.title} width="200" />
-									))
-								) : (
-									<p>No images</p>
-								)}
-							</Stack>
-						</CardContent>
+						<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+							<AppBar position="static" color="transparent">
+								<Tabs value={location.hash} aria-label="basic tabs example">
+									<Tab
+										label="Overview"
+										value=""
+										to=""
+										component={Link}
+										id={`tab-${0}`}
+										aria-controls={`tabpanel-${0}`}
+									/>
+									<Tab
+										label="Images"
+										value="#images"
+										to="#images"
+										component={Link}
+										id={`tab-${1}`}
+										aria-controls={`tabpanel-${1}`}
+									/>
+								</Tabs>
+							</AppBar>
+						</Box>
+						<TabPanel value={location.hash} active="" index={0}>
+							<div>
+								<Stack direction="row" spacing={2}>
+									<Typography component="p" variant="body1" gutterBottom>
+										Date:
+									</Typography>
+									<Typography component="p" variant="body1" gutterBottom>
+										{new Date(checkin.created_date).toLocaleDateString()}
+									</Typography>
+								</Stack>
+								<Stack direction="row" spacing={2}>
+									<Typography component="p" variant="body1" gutterBottom>
+										Weight:
+									</Typography>
+									<Typography component="p" variant="body1" gutterBottom>
+										{checkin.weight} lbs
+									</Typography>
+								</Stack>
+								<Stack direction="row" spacing={2}>
+									<Typography component="p" variant="body1" gutterBottom>
+										Review:
+									</Typography>
+									<Typography component="p" variant="body1" gutterBottom>
+										{checkin.weekly_review}
+									</Typography>
+								</Stack>
+							</div>
+						</TabPanel>
+						<TabPanel value={location.hash} active="#images" index={1}>
+							<div>
+								<UploadImagesButton checkinId={checkinId} fetchCheckIn={fetchCheckIn} />
+								<Stack
+									direction="row"
+									spacing={1}
+									sx={{
+										justifyContent: "center",
+										overflow: "hidden",
+									}}
+								>
+									{checkin?.images && checkin?.images?.length > 0 ? (
+										<ImagePreviewList images={checkin?.images} />
+									) : (
+										<p>No images</p>
+									)}
+								</Stack>
+							</div>
+						</TabPanel>
 					</Card>
 				</Grid>
-				<Grid item xs={5}>
+				<Grid item xs={6}>
 					<Card>
 						<CardHeader title={"Trainer Feedback"} />
 						<CardContent>
