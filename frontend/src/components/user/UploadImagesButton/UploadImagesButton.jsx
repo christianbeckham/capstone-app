@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 
 import useAuth from "../../../hooks/useAuth";
@@ -48,7 +48,7 @@ const UploadImagesButton = ({ checkinId, fetchCheckIn }) => {
 	};
 
 	return (
-		<div>
+		<Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
 			{images?.length > 0 ? (
 				<ButtonGroup variant="text" size="small" aria-label="upload button group">
 					<Button onClick={handleUpload} color="primary">
@@ -59,12 +59,12 @@ const UploadImagesButton = ({ checkinId, fetchCheckIn }) => {
 					</Button>
 				</ButtonGroup>
 			) : (
-				<IconButton color="primary" aria-label="upload picture" component="label">
+				<Button color="primary" aria-label="upload picture" component="label" startIcon={<PhotoCamera />}>
+					Upload
 					<input hidden accept="image/png, image/jpeg" multiple type="file" onChange={handleImages} />
-					<PhotoCamera />
-				</IconButton>
+				</Button>
 			)}
-		</div>
+		</Box>
 	);
 };
 
