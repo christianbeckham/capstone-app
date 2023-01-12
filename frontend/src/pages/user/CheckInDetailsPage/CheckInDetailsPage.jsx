@@ -59,27 +59,29 @@ const CheckInDetailsPage = () => {
 					<Card>
 						<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
 							<AppBar position="static" color="transparent">
-								<Tabs value={location.hash} aria-label="basic tabs example">
+								<Tabs value={location.search} aria-label="basic tabs example">
 									<Tab
 										label="Overview"
-										value=""
-										to=""
+										value={""}
+										to={""}
 										component={Link}
 										id={`tab-${0}`}
 										aria-controls={`tabpanel-${0}`}
+										preventScrollReset={true}
 									/>
 									<Tab
 										label="Images"
-										value="#images"
-										to="#images"
+										value={"?tab=images"}
+										to={"?tab=images"}
 										component={Link}
 										id={`tab-${1}`}
 										aria-controls={`tabpanel-${1}`}
+										preventScrollReset={true}
 									/>
 								</Tabs>
 							</AppBar>
 						</Box>
-						<TabPanel value={location.hash} active="" index={0}>
+						<TabPanel value={location.search} active={""} index={0}>
 							<div>
 								<Stack direction="row" spacing={2}>
 									<Typography component="p" variant="body1" gutterBottom>
@@ -107,17 +109,10 @@ const CheckInDetailsPage = () => {
 								</Stack>
 							</div>
 						</TabPanel>
-						<TabPanel value={location.hash} active="#images" index={1}>
+						<TabPanel value={location.search} active={"?tab=images"} index={1}>
 							<div>
 								<UploadImagesButton checkinId={checkinId} fetchCheckIn={fetchCheckIn} />
-								<Stack
-									direction="row"
-									spacing={1}
-									sx={{
-										justifyContent: "center",
-										overflow: "hidden",
-									}}
-								>
+								<Stack direction="row" spacing={1}>
 									{checkin?.images && checkin?.images?.length > 0 ? (
 										<ImagePreviewList images={checkin?.images} />
 									) : (
