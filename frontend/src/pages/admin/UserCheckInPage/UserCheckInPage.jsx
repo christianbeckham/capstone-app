@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 import Grid from "@mui/material/Grid";
@@ -12,9 +12,14 @@ import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 import useAuth from "../../../hooks/useAuth";
 import PageToolbar from "../../../components/app/PageToolbar/PageToolbar";
+import TabPanel from "../../../components/app/TabPanel/TabPanel";
+import ImagePreviewList from "../../../components/admin/ImagePreviewList/ImagePreviewList";
 
 const UserCheckInPage = () => {
 	const { token } = useAuth();
@@ -22,6 +27,7 @@ const UserCheckInPage = () => {
 	const [userCheckIn, setUserCheckIn] = useState({});
 	const [editMode, setEditMode] = useState(false);
 	const [formData, setFormData] = useState({ trainer_feedback: "" });
+	const location = useLocation();
 
 	const toggleEditMode = () => {
 		setEditMode(!editMode);
@@ -45,11 +51,12 @@ const UserCheckInPage = () => {
 
 	useEffect(() => {
 		fetchCheckIn(checkinId);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const fetchCheckIn = async (itemId) => {
 		try {
-			const response = await axios.get(`http://localhost:8000/api/checkins/all/${itemId}/`, {
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/checkins/all/${itemId}/`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.status === 200) {
@@ -76,47 +83,61 @@ const UserCheckInPage = () => {
 	return (
 		<div>
 			<PageToolbar pageTitle={"Check-In Details"} />
-			<Grid container spacing={2}>
+			<Grid container spacing={1}>
 				<Grid item xs={6}>
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<Card>
-								<CardHeader title={"Overview"} />
-								<CardContent>
-									<Stack spacing={1}>
-										<Typography component="p" variant="body1">
-											Name: {userCheckIn?.user?.full_name}
-										</Typography>
-										<Typography component="p" variant="body1">
-											Date: {new Date(userCheckIn?.created_date).toLocaleDateString()}
-										</Typography>
-										<Typography component="p" variant="body1">
-											Weight: {userCheckIn?.weight} lbs
-										</Typography>
-										<Typography component="p" variant="body1">
-											Review: {userCheckIn?.weekly_review}
-										</Typography>
-									</Stack>
-								</CardContent>
-							</Card>
-						</Grid>
-						<Grid item xs={12}>
-							<Card>
-								<CardHeader title={"Images"} />
-								<CardContent>
+					<Card>
+						<CardContent>
+							<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+								<AppBar position="static" color="transparent">
+									<Tabs value={location.search} aria-label="check-in tabs">
+										<Tab
+											label="Overview"
+											value={""}
+											to={""}
+											component={Link}
+											id={`tab-${0}`}
+											aria-controls={`tabpanel-${0}`}
+											preventScrollReset={true}
+										/>
+										<Tab
+											label="Images"
+											value={"?tab=images"}
+											to={"?tab=images"}
+											component={Link}
+											id={`tab-${1}`}
+											aria-controls={`tabpanel-${1}`}
+											preventScrollReset={true}
+										/>
+									</Tabs>
+								</AppBar>
+							</Box>
+							<TabPanel value={location.search} active={""} index={0}>
+								<Stack spacing={1}>
+									<Typography component="p" variant="body1">
+										Name: {userCheckIn?.user?.full_name}
+									</Typography>
+									<Typography component="p" variant="body1">
+										Date: {new Date(userCheckIn?.created_date).toLocaleDateString()}
+									</Typography>
+									<Typography component="p" variant="body1">
+										Weight: {userCheckIn?.weight} lbs
+									</Typography>
+									<Typography component="p" variant="body1">
+										Review: {userCheckIn?.weekly_review}
+									</Typography>
+								</Stack>
+							</TabPanel>
+							<TabPanel value={location.search} active={"?tab=images"} index={1}>
+								<div>
 									{userCheckIn?.images?.length > 0 ? (
-										<Stack direction="row" justifyContent={"space-around"} spacing={1} sx={{ overflow: "hidden" }}>
-											{userCheckIn?.images.map((img) => (
-												<img key={img.id} src={`http://localhost:8000${img.image}`} alt={img.title} width={200} />
-											))}
-										</Stack>
+										<ImagePreviewList images={userCheckIn?.images} />
 									) : (
 										<Typography>No images</Typography>
 									)}
-								</CardContent>
-							</Card>
-						</Grid>
-					</Grid>
+								</div>
+							</TabPanel>
+						</CardContent>
+					</Card>
 				</Grid>
 				<Grid item xs={6}>
 					<Card>
@@ -126,33 +147,28 @@ const UserCheckInPage = () => {
 								<TextField
 									disabled={!editMode}
 									fullWidth
-									variant="standard"
+									variant="outlined"
 									type="text"
-									label="Feedback"
+									// label="Feedback"
 									name="trainer_feedback"
 									value={formData.trainer_feedback || ""}
 									onChange={handleInputChange}
 									multiline
 									rows={12}
 									focused={editMode}
-									InputLabelProps={{
-										shrink: true,
-									}}
 								/>
 								<CardActions>
 									{editMode ? (
 										<Stack direction={"row"} spacing={1}>
-											<Button disabled={!editMode} type="submit" variant="contained" color="success">
-												Submit
-											</Button>
-											<Button disabled={!editMode} variant="contained" color="error" onClick={handleFormCancel}>
+											<Button disabled={!editMode} variant="outlined" color="error" onClick={handleFormCancel}>
 												Cancel
+											</Button>
+											<Button disabled={!editMode} type="submit" color="success">
+												Submit
 											</Button>
 										</Stack>
 									) : (
-										<Button variant="contained" onClick={toggleEditMode}>
-											{formData.trainer_feedback.length > 0 ? "Edit" : "Add"}
-										</Button>
+										<Button onClick={toggleEditMode}>{formData.trainer_feedback.length > 0 ? "Edit" : "Add"}</Button>
 									)}
 								</CardActions>
 							</Box>
