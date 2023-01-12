@@ -17,15 +17,7 @@ import useAuth from "../../../hooks/useAuth";
 import PageToolbar from "../../../components/app/PageToolbar/PageToolbar";
 import UploadImagesButton from "../../../components/user/UploadImagesButton/UploadImagesButton";
 import ImagePreviewList from "../../../components/user/ImagePreviewList/ImagePreviewList";
-
-const TabPanel = (props) => {
-	const { children, value, active, index } = props;
-	return (
-		<div role="tabpanel" hidden={value !== active} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`}>
-			{value === active && <Box sx={{ p: 3 }}>{children}</Box>}
-		</div>
-	);
-};
+import TabPanel from "../../../components/app/TabPanel/TabPanel";
 
 const CheckInDetailsPage = () => {
 	const { token } = useAuth();
@@ -57,70 +49,72 @@ const CheckInDetailsPage = () => {
 			<Grid container spacing={1}>
 				<Grid item xs={6}>
 					<Card>
-						<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-							<AppBar position="static" color="transparent">
-								<Tabs value={location.search} aria-label="basic tabs example">
-									<Tab
-										label="Overview"
-										value={""}
-										to={""}
-										component={Link}
-										id={`tab-${0}`}
-										aria-controls={`tabpanel-${0}`}
-										preventScrollReset={true}
-									/>
-									<Tab
-										label="Images"
-										value={"?tab=images"}
-										to={"?tab=images"}
-										component={Link}
-										id={`tab-${1}`}
-										aria-controls={`tabpanel-${1}`}
-										preventScrollReset={true}
-									/>
-								</Tabs>
-							</AppBar>
-						</Box>
-						<TabPanel value={location.search} active={""} index={0}>
-							<div>
-								<Stack direction="row" spacing={2}>
-									<Typography component="p" variant="body1" gutterBottom>
-										Date:
-									</Typography>
-									<Typography component="p" variant="body1" gutterBottom>
-										{new Date(checkin.created_date).toLocaleDateString()}
-									</Typography>
-								</Stack>
-								<Stack direction="row" spacing={2}>
-									<Typography component="p" variant="body1" gutterBottom>
-										Weight:
-									</Typography>
-									<Typography component="p" variant="body1" gutterBottom>
-										{checkin.weight} lbs
-									</Typography>
-								</Stack>
-								<Stack direction="row" spacing={2}>
-									<Typography component="p" variant="body1" gutterBottom>
-										Review:
-									</Typography>
-									<Typography component="p" variant="body1" gutterBottom>
-										{checkin.weekly_review}
-									</Typography>
-								</Stack>
-							</div>
-						</TabPanel>
-						<TabPanel value={location.search} active={"?tab=images"} index={1}>
-							<div>
-								<UploadImagesButton checkinId={checkinId} fetchCheckIn={fetchCheckIn} />
-								<Stack direction="row" spacing={1}>
-									{checkin?.images && checkin?.images?.length > 0 ? (
-										<ImagePreviewList images={checkin?.images} />
-									) : (
-										<p>No images</p>
-									)}
-								</Stack>
-							</div>
-						</TabPanel>
+						<CardContent>
+							<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+								<AppBar position="static" color="transparent">
+									<Tabs value={location.search} aria-label="check-in tabs">
+										<Tab
+											label="Overview"
+											value={""}
+											to={""}
+											component={Link}
+											id={`tab-${0}`}
+											aria-controls={`tabpanel-${0}`}
+											preventScrollReset={true}
+										/>
+										<Tab
+											label="Images"
+											value={"?tab=images"}
+											to={"?tab=images"}
+											component={Link}
+											id={`tab-${1}`}
+											aria-controls={`tabpanel-${1}`}
+											preventScrollReset={true}
+										/>
+									</Tabs>
+								</AppBar>
+							</Box>
+							<TabPanel value={location.search} active={""} index={0}>
+								<div>
+									<Stack direction="row" spacing={2}>
+										<Typography component="p" variant="body1" gutterBottom>
+											Date:
+										</Typography>
+										<Typography component="p" variant="body1" gutterBottom>
+											{new Date(checkin.created_date).toLocaleDateString()}
+										</Typography>
+									</Stack>
+									<Stack direction="row" spacing={2}>
+										<Typography component="p" variant="body1" gutterBottom>
+											Weight:
+										</Typography>
+										<Typography component="p" variant="body1" gutterBottom>
+											{checkin.weight} lbs
+										</Typography>
+									</Stack>
+									<Stack direction="row" spacing={2}>
+										<Typography component="p" variant="body1" gutterBottom>
+											Review:
+										</Typography>
+										<Typography component="p" variant="body1" gutterBottom>
+											{checkin.weekly_review}
+										</Typography>
+									</Stack>
+								</div>
+							</TabPanel>
+							<TabPanel value={location.search} active={"?tab=images"} index={1}>
+								<div>
+									<UploadImagesButton checkinId={checkinId} fetchCheckIn={fetchCheckIn} />
+									<Stack direction="row" spacing={1}>
+										{checkin?.images && checkin?.images?.length > 0 ? (
+											<ImagePreviewList images={checkin?.images} />
+										) : (
+											<p>No images</p>
+										)}
+									</Stack>
+								</div>
+							</TabPanel>
+						</CardContent>
 					</Card>
 				</Grid>
 				<Grid item xs={6}>
