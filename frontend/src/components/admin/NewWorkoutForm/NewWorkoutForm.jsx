@@ -17,7 +17,6 @@ import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -86,13 +85,9 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 
 	const postWorkout = async (data) => {
 		try {
-			const response = await axios.post(
-				"http://localhost:8000/api/workouts/all/",
-				data,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.post(`${process.env.REACT_APP_WEBSITE_URL}/api/workouts/all/`, data, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 201) {
 				console.log(response.data);
 				fetchWorkoutsByPlan();
@@ -131,12 +126,9 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 
 	const fetchExerciseDB = async () => {
 		try {
-			const response = await axios.get(
-				"http://localhost:8000/api/exercises/db/",
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/exercises/db/`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) setExerciseDB(response.data);
 		} catch (error) {
 			console.log(error);
@@ -152,11 +144,7 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 		console.log("selected body part is", selectedBodyPart);
 		if (selectedBodyPart !== "") {
 			const target = [
-				...new Set(
-					exerciseDB
-						.filter((ex) => ex.bodyPart === selectedBodyPart)
-						.map((ex) => ex.target)
-				),
+				...new Set(exerciseDB.filter((ex) => ex.bodyPart === selectedBodyPart).map((ex) => ex.target)),
 			].sort();
 			setAllTargets(target);
 			console.log("all targets are", target);
@@ -167,10 +155,7 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 	useEffect(() => {
 		if (selectedBodyPart !== "" && selectedTarget !== "") {
 			const finalExercises = exerciseDB
-				.filter(
-					(ex) =>
-						ex.bodyPart === selectedBodyPart && ex.target === selectedTarget
-				)
+				.filter((ex) => ex.bodyPart === selectedBodyPart && ex.target === selectedTarget)
 				.sort();
 			setFilteredExercises(finalExercises);
 			console.log(finalExercises);
@@ -191,11 +176,9 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 
 	return (
 		<div>
-			<Tooltip title="New" placement="top" arrow>
-				<IconButton size="small" onClick={handleFormOpen}>
-					<Add fontSize="inherit" />
-				</IconButton>
-			</Tooltip>
+			<Button onClick={handleFormOpen} startIcon={<Add />}>
+				New
+			</Button>
 			<Dialog open={open} onClose={handleFormClose} maxWidth="lg" fullWidth>
 				<Box component={"form"} onSubmit={handleSubmit}>
 					<DialogTitle>New Workout</DialogTitle>
@@ -207,7 +190,6 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 								<TextField
 									fullWidth
 									select
-									variant="standard"
 									label="Day"
 									name="assigned_day"
 									value={workoutDay || weekdays[0]?.value}
@@ -219,17 +201,10 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 											</InputAdornment>
 										),
 									}}
-									InputLabelProps={{
-										shrink: true,
-									}}
 									sx={{ textTransform: "capitalize" }}
 								>
 									{weekdays.map((option) => (
-										<MenuItem
-											key={option.value}
-											value={option.value}
-											sx={{ textTransform: "capitalize" }}
-										>
+										<MenuItem key={option.value} value={option.value}>
 											{option.label}
 										</MenuItem>
 									))}
@@ -253,11 +228,7 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 										<Box sx={{ mt: 2, mb: 4 }}>
 											<Stack direction={"row"} spacing={2}>
 												<FormControl sx={{ width: "100%" }}>
-													<InputLabel
-														id="bodyPartSelect"
-														shrink
-														variant="standard"
-													>
+													<InputLabel id="bodyPartSelect" shrink variant="standard">
 														Body Part
 													</InputLabel>
 													<Select
@@ -266,26 +237,16 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 														name="body_part"
 														value={selectedBodyPart || ""}
 														onChange={handleBodyPartChange}
-														variant="standard"
-														sx={{ textTransform: "capitalize" }}
 													>
 														{allBodyParts.map((option) => (
-															<MenuItem
-																key={option}
-																value={option}
-																sx={{ textTransform: "capitalize" }}
-															>
+															<MenuItem key={option} value={option}>
 																{option}
 															</MenuItem>
 														))}
 													</Select>
 												</FormControl>
 												<FormControl sx={{ width: "100%" }}>
-													<InputLabel
-														id="targetSelect"
-														shrink
-														variant="standard"
-													>
+													<InputLabel id="targetSelect" shrink variant="standard">
 														Target
 													</InputLabel>
 													<Select
@@ -295,15 +256,9 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 														value={selectedTarget || ""}
 														onChange={handleTargetChange}
 														disabled={!Boolean(selectedBodyPart)}
-														variant="standard"
-														sx={{ textTransform: "capitalize" }}
 													>
 														{allTargets.map((option) => (
-															<MenuItem
-																key={option}
-																value={option}
-																sx={{ textTransform: "capitalize" }}
-															>
+															<MenuItem key={option} value={option}>
 																{option}
 															</MenuItem>
 														))}
@@ -324,12 +279,7 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 										<Box sx={{ mt: 2, mb: 4 }}>
 											{/* EXERCISE ONLY */}
 											<FormControl sx={{ width: "100%" }}>
-												<InputLabel
-													id="exerciseSelect"
-													shrink
-													variant="standard"
-													required
-												>
+												<InputLabel id="exerciseSelect" shrink variant="standard" required>
 													Exercise
 												</InputLabel>
 												<Select
@@ -340,8 +290,7 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 													value={newExercise.name || ""}
 													onChange={handleNewExercise}
 													disabled={!Boolean(selectedTarget)}
-													variant="standard"
-													sx={{ mb: 4, textTransform: "capitalize" }}
+													sx={{ mb: 4 }}
 													MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
 												>
 													{filteredExercises.map((option, index) => (
@@ -350,7 +299,6 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 															value={option.name}
 															dense
 															sx={{
-																textTransform: "capitalize",
 																"& .MuiPopover-paper": {
 																	height: 80,
 																},
@@ -366,7 +314,6 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 												<TextField
 													required
 													fullWidth
-													variant="standard"
 													label="Sets"
 													name="sets"
 													value={newExercise.sets || ""}
@@ -380,14 +327,10 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 															</InputAdornment>
 														),
 													}}
-													InputLabelProps={{
-														shrink: true,
-													}}
 												/>
 												<TextField
 													fullWidth
 													required
-													variant="standard"
 													type="number"
 													label="Reps"
 													name="reps"
@@ -401,14 +344,10 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 															</InputAdornment>
 														),
 													}}
-													InputLabelProps={{
-														shrink: true,
-													}}
 												/>
 												<TextField
 													fullWidth
 													required
-													variant="standard"
 													type="number"
 													label="Rest"
 													name="rest_time"
@@ -422,23 +361,14 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 															</InputAdornment>
 														),
 													}}
-													InputLabelProps={{
-														shrink: true,
-													}}
 												/>
 												<FormControl sx={{ width: "100%" }}>
-													<InputLabel
-														id="timeIntervalSelect"
-														shrink
-														variant="standard"
-														required
-													>
+													<InputLabel id="timeIntervalSelect" shrink variant="standard" required>
 														Time Interval
 													</InputLabel>
 													<Select
 														required
 														labelId="timeIntervalSelect"
-														variant="standard"
 														label="Time Interval"
 														name="time_interval"
 														value={newExercise.time_interval || ""}
@@ -459,18 +389,15 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 									<Box sx={{ float: "right" }}>
 										<Stack direction="row" spacing={1}>
 											<Button
-												onClick={addExercise}
-												variant="contained"
-												disabled={!validExercise}
-											>
-												Add
-											</Button>
-											<Button
 												onClick={clearExerciseFields}
-												variant="contained"
+												variant="outlined"
 												color="warning"
+												disabled={!selectedBodyPart}
 											>
 												Clear
+											</Button>
+											<Button onClick={addExercise} disabled={!validExercise}>
+												Add
 											</Button>
 										</Stack>
 									</Box>
@@ -484,11 +411,7 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 													<ListItem
 														key={index}
 														secondaryAction={
-															<IconButton
-																size="small"
-																onClick={() => removeExercise(index)}
-																sx={{ height: 28 }}
-															>
+															<IconButton size="small" onClick={() => removeExercise(index)} sx={{ height: 28 }}>
 																<Delete fontSize="inherit" />
 															</IconButton>
 														}
@@ -503,19 +426,9 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 															>
 																{ex.name}
 															</Typography>
-															<Stack
-																direction="row"
-																divider={
-																	<Divider orientation="vertical" flexItem />
-																}
-																spacing={1}
-															>
-																<Typography variant="caption">
-																	Sets {ex.sets}
-																</Typography>
-																<Typography variant="caption">
-																	Reps {ex.reps}
-																</Typography>
+															<Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={1}>
+																<Typography variant="caption">Sets {ex.sets}</Typography>
+																<Typography variant="caption">Reps {ex.reps}</Typography>
 																<Typography variant="caption">
 																	Rest {ex.rest_time} {ex.time_interval}
 																</Typography>
@@ -531,16 +444,11 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 					</DialogContent>
 					<Divider />
 					<DialogActions sx={{ mb: 1, mx: 2 }}>
-						<Button
-							type="submit"
-							variant="contained"
-							color="success"
-							disabled={!Boolean(exercises.length)}
-						>
-							Save
-						</Button>
-						<Button onClick={handleFormClose} variant="contained" color="error">
+						<Button onClick={handleFormClose} variant="outlined" color="error">
 							Cancel
+						</Button>
+						<Button type="submit" color="success" disabled={!Boolean(exercises.length)}>
+							Save
 						</Button>
 					</DialogActions>
 				</Box>
