@@ -31,7 +31,7 @@ const ImagePreviewModal = ({ image }) => {
 					id="img-preview-dialog-title"
 					sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
 				>
-					<Typography variant="h4">{`${image.image.split("/").slice(-1)}`}</Typography>
+					<Typography component="p" variant="h4">{`${image.image.split("/").slice(-1)}`}</Typography>
 					<IconButton color="inherit" onClick={handleClose}>
 						<Close />
 					</IconButton>
