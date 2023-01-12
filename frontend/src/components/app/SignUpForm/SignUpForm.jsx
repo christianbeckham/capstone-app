@@ -75,7 +75,9 @@ const SignUpForm = () => {
 
 	const checkUserValidity = async (param, value, stateFunc) => {
 		try {
-			const response = await axios.get(`http://localhost:8000/api/auth/user_validity/?${param}=${value}`);
+			const response = await axios.get(
+				`${process.env.REACT_APP_WEBSITE_URL}/api/auth/user_validity/?${param}=${value}`
+			);
 			if (response.status === 200) {
 				console.log("Validity API call for", param, response.data);
 				stateFunc(response.data);
@@ -183,7 +185,7 @@ const SignUpForm = () => {
 						size="small"
 						disabled={!emailIsValid}
 						onClick={handleContinueRegister}
-						sx={{ bgcolor: `${emailIsValid ? "background.neutral" : "inherit"}`, color: "#fff" }}
+						sx={{ bgcolor: `${emailIsValid ? "success.main" : "inherit"}`, color: "#fff" }}
 					>
 						<East fontSize="inheri" />
 					</IconButton>
@@ -228,7 +230,12 @@ const SignUpForm = () => {
 						InputProps={{
 							endAdornment: (
 								<InputAdornment position="end">
-									<IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} size="small">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										size="small"
+										disabled={!usernameIsValid}
+									>
 										{showPassword ? <Visibility fontSize="inherit" /> : <VisibilityOff fontSize="inherit" />}
 									</IconButton>
 								</InputAdornment>
