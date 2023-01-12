@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Divider from "@mui/material/Divider";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from "@mui/material/MenuItem";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import DateRange from "@mui/icons-material/DateRange";
-import Add from "@mui/icons-material/Add";
-import Alarm from "@mui/icons-material/Alarm";
-import Delete from "@mui/icons-material/Delete";
+import {
+	Grid,
+	Box,
+	Stack,
+	Dialog,
+	TextField,
+	InputAdornment,
+	Button,
+	IconButton,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
+	List,
+	ListItem,
+	ListItemText,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+	Typography,
+	Divider,
+} from "@mui/material";
+import { Add, Alarm, DateRange, Delete } from "@mui/icons-material";
 
 import useAuth from "../../../hooks/useAuth";
 import { weekdays } from "../../../utils/weekdays";
@@ -45,7 +43,6 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 	const [selectedTarget, setSelectedTarget] = useState("");
 
 	const handleFormOpen = () => {
-		console.log("New Workout Form OPENED. FETCH 3rd Party API!");
 		fetchExerciseDB();
 		setOpen(true);
 	};
@@ -89,7 +86,6 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.status === 201) {
-				console.log(response.data);
 				fetchWorkoutsByPlan();
 			}
 		} catch (error) {
@@ -141,13 +137,11 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 	}, [exerciseDB]);
 
 	useEffect(() => {
-		console.log("selected body part is", selectedBodyPart);
 		if (selectedBodyPart !== "") {
 			const target = [
 				...new Set(exerciseDB.filter((ex) => ex.bodyPart === selectedBodyPart).map((ex) => ex.target)),
 			].sort();
 			setAllTargets(target);
-			console.log("all targets are", target);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedBodyPart]);
@@ -158,7 +152,6 @@ const NewWorkoutForm = ({ planId, fetchWorkoutsByPlan }) => {
 				.filter((ex) => ex.bodyPart === selectedBodyPart && ex.target === selectedTarget)
 				.sort();
 			setFilteredExercises(finalExercises);
-			console.log(finalExercises);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedBodyPart, selectedTarget]);
