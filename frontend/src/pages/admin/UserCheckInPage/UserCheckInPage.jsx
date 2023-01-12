@@ -19,7 +19,7 @@ import Tab from "@mui/material/Tab";
 import useAuth from "../../../hooks/useAuth";
 import PageToolbar from "../../../components/app/PageToolbar/PageToolbar";
 import TabPanel from "../../../components/app/TabPanel/TabPanel";
-import ImagePreviewList from "../../../components/admin/ImagePreviewList/ImagePreviewList";
+import CheckInImageList from "../../../components/admin/CheckInImageList/CheckInImageList";
 
 const UserCheckInPage = () => {
 	const { token } = useAuth();
@@ -130,7 +130,7 @@ const UserCheckInPage = () => {
 							<TabPanel value={location.search} active={"?tab=images"} index={1}>
 								<div>
 									{userCheckIn?.images?.length > 0 ? (
-										<ImagePreviewList images={userCheckIn?.images} />
+										<CheckInImageList images={userCheckIn?.images} />
 									) : (
 										<Typography>No images</Typography>
 									)}
