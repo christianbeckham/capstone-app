@@ -39,14 +39,10 @@ const EditWorkoutForm = ({ workoutId, fetchWorkoutsByPlan }) => {
 
 	const fetchWorkout = async () => {
 		try {
-			const response = await axios.get(
-				`http://localhost:8000/api/workouts/${workoutId}/`,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/workouts/${workoutId}/`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) {
-				console.log("workout info", response.data);
 				setWorkoutInfo(response.data);
 				setExercises(response.data.exercises);
 			}
@@ -57,14 +53,10 @@ const EditWorkoutForm = ({ workoutId, fetchWorkoutsByPlan }) => {
 
 	const fetchExercises = async () => {
 		try {
-			const response = await axios.get(
-				`http://localhost:8000/api/exercises/?workout_id=${workoutId}`,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/exercises/?workout_id=${workoutId}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) {
-				console.log("exercises", response.data);
 				setExercises(response.data);
 			}
 		} catch (error) {
@@ -73,21 +65,16 @@ const EditWorkoutForm = ({ workoutId, fetchWorkoutsByPlan }) => {
 	};
 
 	const handleWorkoutDelete = () => {
-		console.log("deleting workout id:", workoutId);
 		deleteWorkout();
 		handleFormClose();
 	};
 
 	const deleteWorkout = async () => {
 		try {
-			const response = await axios.delete(
-				`http://localhost:8000/api/workouts/all/${workoutId}/`,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.delete(`${process.env.REACT_APP_WEBSITE_URL}/api/workouts/all/${workoutId}/`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 204) {
-				console.log(response.status);
 				fetchWorkoutsByPlan();
 			}
 		} catch (error) {
@@ -129,25 +116,18 @@ const EditWorkoutForm = ({ workoutId, fetchWorkoutsByPlan }) => {
 									<Typography variant="h6" color="text.primary" sx={{ my: 1 }}>
 										Exercises
 									</Typography>
-									<AddExerciseModal
-										workoutId={workoutId}
-										fetchExercises={fetchExercises}
-									/>
+									<AddExerciseModal workoutId={workoutId} fetchExercises={fetchExercises} />
 								</Stack>
 								<Stack rowGap={2}>
 									{exercises?.map((ex) => (
-										<EditExerciseItem
-											key={ex.id}
-											exercise={ex}
-											fetchExercises={fetchExercises}
-										/>
+										<EditExerciseItem key={ex.id} exercise={ex} fetchExercises={fetchExercises} />
 									))}
 								</Stack>
 							</Grid>
 						</Grid>
 					</DialogContent>
 					<DialogActions sx={{ mb: 1, mx: 2 }}>
-						<Button onClick={handleFormClose} variant="contained" color="error">
+						<Button onClick={handleFormClose} variant="outlined" color="error">
 							Close
 						</Button>
 					</DialogActions>
