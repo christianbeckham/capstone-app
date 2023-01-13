@@ -1,31 +1,22 @@
 import React from "react";
+import { Grid, Stack, Typography, Chip } from "@mui/material";
 
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
-
-import NewPlanModal from "../NewPlanModal/NewPlanModal";
-
-const ProfileCard = ({ client, fetchClientUser }) => {
+const ProfileCard = ({ client }) => {
 	return (
-		<Stack spacing={2}>
-			<Card>
-				<CardHeader title={"Profile Information"} />
-				<CardContent>
+		<>
+			<Grid container>
+				<Grid item>
 					<Stack spacing={1}>
-						<Typography variant="body2" color="text.secondary">
+						<Typography variant="1" color="text.secondary">
 							Username: {client?.username}
 						</Typography>
-						<Typography variant="body2" color="text.secondary">
+						<Typography variant="body1" color="text.secondary">
 							Email: {client?.email}
 						</Typography>
-						<Typography variant="body2" color="text.secondary">
+						<Typography variant="body1" color="text.secondary">
 							Date Joined: {new Date(client?.date_joined).toLocaleDateString()}
 						</Typography>
-						<Typography variant="body2" color="text.secondary" component="div">
+						<Typography variant="body1" color="text.secondary" component="div">
 							Status:
 							<Chip
 								label={client?.is_active ? "Active" : "Inactive"}
@@ -35,38 +26,9 @@ const ProfileCard = ({ client, fetchClientUser }) => {
 							/>
 						</Typography>
 					</Stack>
-				</CardContent>
-			</Card>
-			<Card>
-				<Stack
-					direction={"row"}
-					alignItems={"center"}
-					justifyContent={"space-between"}
-				>
-					<CardHeader title={"Training Plan"} />
-					{client?.training_plan?.cost && (
-						<Typography variant="caption" color="text.secondary">
-							$ {client?.training_plan?.cost}
-						</Typography>
-					)}
-				</Stack>
-				<CardContent>
-					<Stack spacing={1}>
-						{client?.training_plan?.goal && (
-							<Typography variant="body2" color="text.secondary">
-								{client?.training_plan?.goal}
-							</Typography>
-						)}
-						{!client?.training_plan && (
-							<NewPlanModal
-								userId={client?.id}
-								fetchClientUser={fetchClientUser}
-							/>
-						)}
-					</Stack>
-				</CardContent>
-			</Card>
-		</Stack>
+				</Grid>
+			</Grid>
+		</>
 	);
 };
 
