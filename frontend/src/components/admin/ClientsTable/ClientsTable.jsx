@@ -14,7 +14,7 @@ import ExitToApp from "@mui/icons-material/ExitToApp";
 
 const ClientsTable = ({ clients }) => {
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
 
 	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
@@ -24,6 +24,8 @@ const ClientsTable = ({ clients }) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
+
+	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clients.length) : 0;
 
 	return (
 		<>
@@ -39,39 +41,35 @@ const ClientsTable = ({ clients }) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{clients
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((row) => (
-								<TableRow key={row.id}>
-									<TableCell>{row.full_name}</TableCell>
-									<TableCell>{row.email}</TableCell>
-									<TableCell>
-										{new Date(row?.date_joined).toLocaleDateString()}
-									</TableCell>
-									<TableCell align="center">
-										{row.is_active ? (
-											<Chip label="Active" color="success" />
-										) : (
-											<Chip label="Inactive" color="warning" />
-										)}
-									</TableCell>
-									<TableCell align="center">
-										<IconButton
-											component={Link}
-											to={`${row.id}`}
-											aria-label="view client user"
-											color="primary"
-										>
-											<ExitToApp />
-										</IconButton>
-									</TableCell>
-								</TableRow>
-							))}
+						{clients.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+							<TableRow key={row.id}>
+								<TableCell>{row.full_name}</TableCell>
+								<TableCell>{row.email}</TableCell>
+								<TableCell>{new Date(row?.date_joined).toLocaleDateString()}</TableCell>
+								<TableCell align="center">
+									{row.is_active ? (
+										<Chip size="small" label="Active" color="success" />
+									) : (
+										<Chip size="small" label="Inactive" color="warning" />
+									)}
+								</TableCell>
+								<TableCell align="center">
+									<IconButton component={Link} to={`${row.id}`} aria-label="view client user" color="primary">
+										<ExitToApp />
+									</IconButton>
+								</TableCell>
+							</TableRow>
+						))}
+						{emptyRows > 0 && (
+							<TableRow sx={{ height: 55 * emptyRows, "& td": { backgroundColor: "transparent" } }}>
+								<TableCell colSpan={6} />
+							</TableRow>
+						)}
 					</TableBody>
 				</Table>
 			</TableContainer>
 			<TablePagination
-				rowsPerPageOptions={[5, 10, 15]}
+				rowsPerPageOptions={[10, 15, 25]}
 				component="div"
 				count={clients.length}
 				rowsPerPage={rowsPerPage}
