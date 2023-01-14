@@ -5,14 +5,16 @@ import useAuth from "../../../hooks/useAuth";
 import PageToolbar from "../../../components/app/PageToolbar/PageToolbar";
 import CheckInForm from "../../../components/user/CheckInForm/CheckInForm";
 import CheckInList from "../../../components/user/CheckInList/CheckInList";
+import TableSkeleton from "../../../components/app/TableSkeleton/TableSkeleton";
 
 const CheckInsPage = () => {
 	const { token } = useAuth();
 	const [checkIns, setCheckIns] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	const fetchCheckIns = async () => {
 		try {
-			const response = await axios.get("http://localhost:8000/api/checkins/", {
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/checkins/`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -20,6 +22,7 @@ const CheckInsPage = () => {
 			if (response.status === 200) {
 				const data = await response.data;
 				setCheckIns(data);
+				setLoading(false);
 			}
 		} catch (e) {
 			console.log({ error: e });
@@ -28,7 +31,7 @@ const CheckInsPage = () => {
 
 	useEffect(() => {
 		fetchCheckIns();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -36,7 +39,13 @@ const CheckInsPage = () => {
 			<PageToolbar pageTitle="My Check-Ins">
 				<CheckInForm fetchCheckIns={fetchCheckIns} />
 			</PageToolbar>
-			<CheckInList checkIns={checkIns} />
+			{loading ? (
+				<TableSkeleton />
+			) : (
+				<>
+					<CheckInList checkIns={checkIns} />
+				</>
+			)}
 		</div>
 	);
 };
