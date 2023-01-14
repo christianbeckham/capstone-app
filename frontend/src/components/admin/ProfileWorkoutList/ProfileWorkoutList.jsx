@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
+import { Grid, Box, Typography, Paper } from "@mui/material";
 
 import useAuth from "../../../hooks/useAuth";
 import NewWorkoutForm from "../NewWorkoutForm/NewWorkoutForm";
@@ -18,14 +12,10 @@ const ProfileWorkoutList = ({ planId }) => {
 
 	const fetchWorkoutsByPlan = async () => {
 		try {
-			const response = await axios.get(
-				`http://localhost:8000/api/workouts/?plan_id=${planId}`,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/workouts/?plan_id=${planId}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) {
-				console.log("workout info", response.data);
 				setWorkouts(response.data);
 			}
 		} catch (error) {
@@ -39,49 +29,37 @@ const ProfileWorkoutList = ({ planId }) => {
 	}, [planId]);
 
 	return (
-		<div>
-			<Grid item xs={12}>
-				<Stack
-					direction="row"
-					alignItems={"center"}
-					justifyContent={"space-between"}
-				>
-					<Typography variant="h5" color="text.primary" sx={{ my: 1 }}>
-						Workouts
-					</Typography>
-					<NewWorkoutForm
-						planId={planId}
-						fetchWorkoutsByPlan={fetchWorkoutsByPlan}
-					/>
-				</Stack>
-				<Divider />
-				{workouts?.length > 0 ? (
-					workouts?.map((w) => (
-						<Paper key={w.id} sx={{ p: 1, my: 1 }}>
-							<Box
-								sx={{
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "space-between",
-								}}
-							>
-								<Typography sx={{ textTransform: "capitalize" }}>
-									Day {w.assigned_day} - {w.week_day}
-								</Typography>
-								<EditWorkoutForm
-									workoutId={w.id}
-									fetchWorkoutsByPlan={fetchWorkoutsByPlan}
-								/>
-							</Box>
-						</Paper>
-					))
-				) : (
-					<Box sx={{ m: 1 }}>
-						<Typography>No workouts</Typography>
-					</Box>
-				)}
+		<>
+			<Grid container>
+				<Grid item xs={1} md={2}>
+					<NewWorkoutForm planId={planId} fetchWorkoutsByPlan={fetchWorkoutsByPlan} />
+				</Grid>
+				<Grid item xs={1} md={10}>
+					{workouts?.length > 0 ? (
+						workouts?.map((w) => (
+							<Paper key={w.id} sx={{ p: 1, border: 1, borderColor: "divider" }}>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "space-between",
+									}}
+								>
+									<Typography sx={{ textTransform: "capitalize" }}>
+										Day {w.assigned_day} - {w.week_day}
+									</Typography>
+									<EditWorkoutForm workoutId={w.id} fetchWorkoutsByPlan={fetchWorkoutsByPlan} />
+								</Box>
+							</Paper>
+						))
+					) : (
+						<Box sx={{ m: 1 }}>
+							<Typography>No workouts available</Typography>
+						</Box>
+					)}
+				</Grid>
 			</Grid>
-		</div>
+		</>
 	);
 };
 
