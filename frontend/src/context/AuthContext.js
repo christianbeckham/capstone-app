@@ -19,7 +19,6 @@ const setUserObject = (user) => {
 };
 
 export const AuthProvider = ({ children }) => {
-	const BASE_URL = "http://127.0.0.1:8000/api/auth";
 	const userToken = JSON.parse(localStorage.getItem("token"));
 	const decodedUser = userToken ? jwtDecode(userToken) : null;
 
@@ -40,12 +39,12 @@ export const AuthProvider = ({ children }) => {
 				first_name: registerData.firstName,
 				last_name: registerData.lastName,
 			};
-			const response = await axios.post(`${BASE_URL}/register/`, finalData);
+			const response = await axios.post(`${process.env.REACT_APP_WEBSITE_URL}/api/auth/register/`, finalData);
 			if (response.status === 201) {
 				console.log("Successful registration! Log in to access token");
 				setIsServerError(false);
 				setIsLoading(false);
-				navigate("/login", { replace: true });
+				navigate("/", { replace: true });
 			}
 		} catch (error) {
 			setIsServerError(true);
@@ -56,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 	const loginUser = async (loginData) => {
 		try {
 			setIsLoading(true);
-			const response = await axios.post(`${BASE_URL}/login/`, loginData);
+			const response = await axios.post(`${process.env.REACT_APP_WEBSITE_URL}/api/auth/login/`, loginData);
 			if (response.status === 200) {
 				localStorage.setItem("token", JSON.stringify(response.data.access));
 				setToken(JSON.parse(localStorage.getItem("token")));
@@ -91,7 +90,5 @@ export const AuthProvider = ({ children }) => {
 		isLoading,
 	};
 
-	return (
-		<AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>;
 };
