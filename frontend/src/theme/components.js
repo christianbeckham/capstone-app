@@ -77,6 +77,9 @@ export const appComponents = (theme) => ({
 		},
 	},
 	MuiChip: {
+		defaultProps: {
+			size: "small",
+		},
 		styleOverrides: {
 			label: {
 				fontWeight: theme.typography.fontWeightMedium,
@@ -139,6 +142,11 @@ export const appComponents = (theme) => ({
 			},
 		},
 	},
+	MuiIconButton: {
+		defaultProps: {
+			size: "small",
+		},
+	},
 	MuiInputBase: {
 		styleOverrides: {
 			root: {
@@ -170,7 +178,7 @@ export const appComponents = (theme) => ({
 	},
 	MuiListItem: {
 		defaultProps: {
-			// disablePadding: true,
+			disablePadding: true,
 		},
 		styleOverrides: {
 			root: {
@@ -185,7 +193,7 @@ export const appComponents = (theme) => ({
 		styleOverrides: {
 			root: {
 				height: 48,
-				borderRadius: 8,
+				borderRadius: 4,
 				justifyContent: "center",
 			},
 		},
@@ -210,6 +218,7 @@ export const appComponents = (theme) => ({
 			root: {
 				paddingTop: 12,
 				paddingBottom: 12,
+				textTransform: "capitalize",
 			},
 		},
 	},
@@ -242,6 +251,21 @@ export const appComponents = (theme) => ({
 			},
 		},
 	},
+	MuiSelect: {
+		defaultProps: {
+			variant: "standard",
+		},
+		styleOverrides: {
+			root: {
+				textTransform: "capitalize",
+			},
+		},
+	},
+	MuiSvgIcon: {
+		defaultProps: {
+			fontSize: "small",
+		},
+	},
 	MuiTab: {
 		styleOverrides: {
 			root: {
@@ -268,7 +292,7 @@ export const appComponents = (theme) => ({
 			root: {
 				minWidth: 650,
 				borderCollapse: "separate",
-				borderSpacing: "0 1rem",
+				borderSpacing: "0 0.25em",
 				bgcolor: "transparent",
 			},
 		},
@@ -277,15 +301,16 @@ export const appComponents = (theme) => ({
 		styleOverrides: {
 			root: {
 				radius: 8,
+				backgroundColor: theme.palette.background.paper,
 				"& th": { border: 0 },
-				"& td": { backgroundColor: theme.palette.background.paper, border: 0 },
+				"& td": { border: 0 },
 				"& td:first-of-type": {
-					borderTopLeftRadius: 8,
-					borderBottomLeftRadius: 8,
+					borderTopLeftRadius: 4,
+					borderBottomLeftRadius: 4,
 				},
 				"& td:last-child": {
-					borderTopRightRadius: 8,
-					borderBottomRightRadius: 8,
+					borderTopRightRadius: 4,
+					borderBottomRightRadius: 4,
 				},
 			},
 		},
@@ -294,21 +319,19 @@ export const appComponents = (theme) => ({
 		styleOverrides: {
 			root: {
 				borderBottom: `1px solid ${theme.palette.divider}`,
-				padding: "24px 16px",
 			},
 			head: {
 				color: theme.palette.text.secondary,
 				backgroundColor: theme.palette.background.default,
 			},
 			sizeSmall: {
-				padding: "12px 16px",
+				alignItems: "center",
 			},
 		},
 	},
 	MuiTextField: {
 		defaultProps: {
 			variant: "standard",
-			margin: "normal",
 			InputLabelProps: { shrink: true },
 		},
 	},
