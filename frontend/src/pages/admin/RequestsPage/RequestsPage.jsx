@@ -11,12 +11,9 @@ const RequestsPage = () => {
 
 	const fetchRequests = async () => {
 		try {
-			const response = await axios.get(
-				"http://localhost:8000/api/requests/all/",
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/requests/all/`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) {
 				const data = await response.data;
 				setRequests(data);
@@ -28,6 +25,7 @@ const RequestsPage = () => {
 
 	useEffect(() => {
 		fetchRequests();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

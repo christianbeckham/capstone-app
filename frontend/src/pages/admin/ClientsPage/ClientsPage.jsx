@@ -12,28 +12,22 @@ const ClientsPage = () => {
 	useEffect(() => {
 		try {
 			const fetchClients = async () => {
-				const response = await axios.get(
-					"http://localhost:8000/api/auth/clients/",
-					{
-						headers: { Authorization: `Bearer ${token}` },
-					}
-				);
+				const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/auth/clients/`, {
+					headers: { Authorization: `Bearer ${token}` },
+				});
 				if (response.status === 200) {
 					setClients(response.data);
 				}
 			};
 			fetchClients();
 		} catch (error) {}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
 		<div>
 			<PageAppBar pageTitle={"Clients"} />
-			{clients.length > 0 ? (
-				<ClientsTable clients={clients} />
-			) : (
-				<p>No clients</p>
-			)}
+			{clients.length > 0 ? <ClientsTable clients={clients} /> : <p>No clients</p>}
 		</div>
 	);
 };
