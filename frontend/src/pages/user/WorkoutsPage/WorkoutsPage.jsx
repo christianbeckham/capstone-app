@@ -12,7 +12,7 @@ const WorkoutsPage = () => {
 
 	const fetchPlan = async () => {
 		try {
-			const response = await axios.get("http://localhost:8000/api/plans/", {
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/plans/`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.status === 200) setPlanId(response.data[0].id);
@@ -23,12 +23,9 @@ const WorkoutsPage = () => {
 
 	const fetchWorkouts = async (itemId) => {
 		try {
-			const response = await axios.get(
-				`http://localhost:8000/api/workouts/?plan_id=${itemId}`,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/workouts/?plan_id=${itemId}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) setWorkouts(response.data);
 		} catch (error) {
 			console.log(error);
@@ -37,12 +34,12 @@ const WorkoutsPage = () => {
 
 	useEffect(() => {
 		fetchPlan();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		if (planId) fetchWorkouts(planId);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [planId]);
 
 	useEffect(() => {}, []);
@@ -50,11 +47,7 @@ const WorkoutsPage = () => {
 	return (
 		<div>
 			<PageToolbar pageTitle={"My Workouts"} />
-			{workouts.length > 0 ? (
-				<WorkoutList workouts={workouts} />
-			) : (
-				<p>No workouts available</p>
-			)}
+			{workouts.length > 0 ? <WorkoutList workouts={workouts} /> : <p>No workouts available</p>}
 		</div>
 	);
 };
