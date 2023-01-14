@@ -97,9 +97,9 @@ const RequestTable = ({ requests, fetchRequests }) => {
 					/>
 				</>
 			) : (
-				<TableRow scope="row">
-					<TableCell>No requests</TableCell>
-				</TableRow>
+				<div>
+					<p>No requests</p>
+				</div>
 			)}
 		</>
 	);
