@@ -9,6 +9,7 @@ import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
 
 import RequestListItem from "../RequestListItem/RequestListItem";
+import NoDataOverlay from "../../app/NoDataOverlay/NoDataOverlay";
 
 const RequestList = ({ requests }) => {
 	const [page, setPage] = useState(0);
@@ -25,41 +26,39 @@ const RequestList = ({ requests }) => {
 
 	return (
 		<>
-			<TableContainer>
-				<Table aria-label="requests table">
-					<TableHead>
-						<TableRow>
-							<TableCell>Date</TableCell>
-							<TableCell>Request Type</TableCell>
-							<TableCell>Description</TableCell>
-							<TableCell align="center">Status</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{requests.length > 0 ? (
-							requests
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((request) => (
+			{requests.length > 0 ? (
+				<>
+					<TableContainer>
+						<Table aria-label="requests table">
+							{requests.length > 0 && (
+								<TableHead>
+									<TableRow>
+										<TableCell>Date</TableCell>
+										<TableCell>Request Type</TableCell>
+										<TableCell>Description</TableCell>
+										<TableCell align="center">Status</TableCell>
+									</TableRow>
+								</TableHead>
+							)}
+							<TableBody>
+								{requests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((request) => (
 									<RequestListItem key={request.id} request={request} />
-								))
-						) : (
-							<TableRow scope="row">
-								<TableCell>No requests</TableCell>
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
-			</TableContainer>
-			{requests.length > 0 && (
-				<TablePagination
-					rowsPerPageOptions={[5, 10, 15]}
-					component="div"
-					count={requests.length}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+					<TablePagination
+						rowsPerPageOptions={[5, 10, 15]}
+						component="div"
+						count={requests.length}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						onPageChange={handleChangePage}
+						onRowsPerPageChange={handleChangeRowsPerPage}
+					/>
+				</>
+			) : (
+				<NoDataOverlay message={"No requests available"} />
 			)}
 		</>
 	);
