@@ -51,15 +51,10 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 
 	const patchUpdate = async (data) => {
 		try {
-			const response = await axios.patch(
-				`http://localhost:8000/api/exercises/${exercise.id}/`,
-				data,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.patch(`${process.env.REACT_APP_WEBSITE_URL}/api/exercises/${exercise.id}/`, data, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 200) {
-				console.log(response.data);
 				fetchExercises();
 				setError(null);
 				handleEditMode();
@@ -72,12 +67,9 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 
 	const deleteExercise = async () => {
 		try {
-			const response = await axios.delete(
-				`http://localhost:8000/api/exercises/${exercise.id}/`,
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
+			const response = await axios.delete(`${process.env.REACT_APP_WEBSITE_URL}/api/exercises/${exercise.id}/`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			if (response.status === 204) {
 				fetchExercises();
 			}
@@ -100,7 +92,10 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 					display: "flex",
 					alignItems: "center",
 					justifyContent: "space-between",
-					p: 1,
+					py: 0.5,
+					px: 1,
+					border: 1,
+					borderColor: "divider",
 				}}
 			>
 				<Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
@@ -113,7 +108,6 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 								<TextField
 									required
 									fullWidth
-									variant="standard"
 									label="Sets"
 									name="sets"
 									value={data.sets || ""}
@@ -126,14 +120,10 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 											</InputAdornment>
 										),
 									}}
-									InputLabelProps={{
-										shrink: true,
-									}}
 								/>
 								<TextField
 									fullWidth
 									required
-									variant="standard"
 									type="number"
 									label="Reps"
 									name="reps"
@@ -146,14 +136,10 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 											</InputAdornment>
 										),
 									}}
-									InputLabelProps={{
-										shrink: true,
-									}}
 								/>
 								<TextField
 									fullWidth
 									required
-									variant="standard"
 									type="number"
 									label="Rest"
 									name="rest_time"
@@ -166,23 +152,14 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 											</InputAdornment>
 										),
 									}}
-									InputLabelProps={{
-										shrink: true,
-									}}
 								/>
 								<FormControl sx={{ width: "100%" }}>
-									<InputLabel
-										id="timeIntervalSelect"
-										shrink
-										variant="standard"
-										required
-									>
+									<InputLabel id="timeIntervalSelect" shrink variant="standard" required>
 										Time Interval
 									</InputLabel>
 									<Select
 										required
 										labelId="timeIntervalSelect"
-										variant="standard"
 										name="time_interval"
 										value={data.time_interval || ""}
 										onChange={handleUpdateChange}
@@ -219,40 +196,20 @@ const EditExerciseItem = ({ exercise, fetchExercises }) => {
 							}}
 						>
 							<Stack>
-								<Typography sx={{ textTransform: "capitalize" }}>
-									{exercise.name}
-								</Typography>
-								<Stack
-									direction={"row"}
-									divider={<Divider orientation="vertical" flexItem />}
-									spacing={2}
-								>
-									<Typography variant="caption">
-										Sets: {exercise.sets}
-									</Typography>
-									<Typography variant="caption">
-										Reps: {exercise.reps}
-									</Typography>
+								<Typography sx={{ textTransform: "capitalize" }}>{exercise.name}</Typography>
+								<Stack direction={"row"} divider={<Divider orientation="vertical" flexItem />} spacing={2}>
+									<Typography variant="caption">Sets: {exercise.sets}</Typography>
+									<Typography variant="caption">Reps: {exercise.reps}</Typography>
 									<Typography variant="caption">
 										Rest: {exercise.rest_time} {exercise.time_interval}
 									</Typography>
 								</Stack>
 							</Stack>
 							<Stack direction="row" spacing={1} sx={{ my: "auto" }}>
-								<IconButton
-									aria-label="edit"
-									size="small"
-									onClick={handleEditMode}
-									sx={{ height: 28 }}
-								>
+								<IconButton aria-label="edit" onClick={handleEditMode} sx={{ height: 28 }}>
 									<Edit fontSize="inherit" />
 								</IconButton>
-								<IconButton
-									aria-label="delete"
-									size="small"
-									onClick={deleteExercise}
-									sx={{ height: 28 }}
-								>
+								<IconButton aria-label="delete" onClick={deleteExercise} sx={{ height: 28 }}>
 									<Delete fontSize="inherit" />
 								</IconButton>
 							</Stack>
