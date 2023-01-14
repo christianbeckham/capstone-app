@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -23,7 +22,7 @@ def admin_requests_list(request):
 @api_view(['GET', 'PATCH', 'DELETE'])
 @permission_classes([IsAdminUser])
 def admin_requests_detail(request, pk):
-    req = get_object_or_404(ClientRequest, pk=pk)
+    req = ClientRequest.objects.get(pk=pk)
 
     if request.method == 'GET':
         serializer = ClientRequestSerializer(req)
@@ -44,7 +43,7 @@ def admin_requests_detail(request, pk):
 @permission_classes([IsAuthenticated])
 def requests_list(request):
     if request.method == 'GET':
-        requests = get_list_or_404(ClientRequest, user_id=request.user.id)
+        requests = ClientRequest.objects.filter(user_id=request.user.id)
         serializer = ClientRequestSerializer(requests, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -59,7 +58,7 @@ def requests_list(request):
 @api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def requests_detail(request, pk):
-    req = get_object_or_404(ClientRequest, pk=pk, user_id=request.user.id)
+    req = ClientRequest.objects.get(pk=pk, user_id=request.user.id)
 
     if request.method == 'GET':
         serializer = ClientRequestSerializer(req)
