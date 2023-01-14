@@ -129,6 +129,7 @@ const EditPlanModal = forwardRef(({ plan, fetchClientUser, handleClose }, ref) =
 							/>
 						</Stack>
 					</DialogContent>
+					<Divider />
 					<DialogActions>
 						<Button variant="outlined" color="error" onClick={handleModalClose}>
 							Cancel

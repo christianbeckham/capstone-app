@@ -139,6 +139,7 @@ const EditProfileModal = forwardRef(({ client, fetchClientUser, handleClose }, r
 							</FormGroup>
 						</Stack>
 					</DialogContent>
+					<Divider />
 					<DialogActions>
 						<Button variant="outlined" color="error" onClick={handleModalClose}>
 							Cancel
