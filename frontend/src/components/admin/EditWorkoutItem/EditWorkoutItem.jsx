@@ -16,11 +16,7 @@ import Cancel from "@mui/icons-material/Cancel";
 import useAuth from "../../../hooks/useAuth";
 import { weekdays } from "../../../utils/weekdays";
 
-const EditWorkoutItem = ({
-	workoutInfo,
-	fetchWorkout,
-	fetchWorkoutsByPlan,
-}) => {
+const EditWorkoutItem = ({ workoutInfo, fetchWorkout, fetchWorkoutsByPlan }) => {
 	const { token } = useAuth();
 	const [editMode, setEditMode] = useState(false);
 	const [day, setDay] = useState(weekdays[0].value);
@@ -33,7 +29,6 @@ const EditWorkoutItem = ({
 	};
 
 	const handleDateChange = (e) => {
-		console.log(e.target.value);
 		setDay(e.target.value);
 	};
 
@@ -41,14 +36,13 @@ const EditWorkoutItem = ({
 		try {
 			const finalData = { assigned_day: day };
 			const response = await axios.patch(
-				`http://localhost:8000/api/workouts/all/${workoutInfo.id}/`,
+				`${process.env.REACT_APP_WEBSITE_URL}/api/workouts/all/${workoutInfo.id}/`,
 				finalData,
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				}
 			);
 			if (response.status === 200) {
-				console.log(response.data);
 				fetchWorkout();
 				fetchWorkoutsByPlan();
 				setEditMode(false);
@@ -59,76 +53,51 @@ const EditWorkoutItem = ({
 	};
 
 	return (
-		<div>
+		<Box>
 			<Stack direction="row" spacing={1}>
-				<Typography variant="h6">Details</Typography>
-				{!editMode && (
-					<IconButton
-						size="small"
-						onClick={handleEditMode}
-						sx={{ bgcolor: "background.default" }}
-					>
-						<Edit fontSize="inherit" />
-					</IconButton>
-				)}
+				<Typography variant="h6">Day</Typography>
 			</Stack>
-			{editMode ? (
-				<Stack direction={"row"} alignItems={"center"} sx={{ mt: 2 }}>
-					<TextField
-						fullWidth
-						select
-						variant="standard"
-						label="Day"
-						name="assigned_day"
-						value={day}
-						onChange={handleDateChange}
-						sx={{ textTransform: "capitalize" }}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<DateRange />
-								</InputAdornment>
-							),
-						}}
-						InputLabelProps={{
-							shrink: true,
-						}}
-					>
-						{weekdays.map((option) => (
-							<MenuItem
-								key={option.value}
-								value={option.value}
-								sx={{ textTransform: "capitalize" }}
-							>
-								{option.label}
-							</MenuItem>
-						))}
-					</TextField>
-					<Box
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "space-between",
-							mx: 1,
-						}}
-					>
-						<IconButton onClick={patchUpdate}>
-							<CheckCircle color="success" fontSize="inherit" />
+			<Stack direction={"row"} alignItems={"center"} sx={{ mt: 1 }}>
+				<TextField
+					disabled={!editMode}
+					fullWidth
+					select
+					name="assigned_day"
+					value={day}
+					onChange={handleDateChange}
+					sx={{ textTransform: "capitalize" }}
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position="start">
+								<DateRange />
+							</InputAdornment>
+						),
+					}}
+				>
+					{weekdays.map((option) => (
+						<MenuItem key={option.value} value={option.value}>
+							{option.label}
+						</MenuItem>
+					))}
+				</TextField>
+				<Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", width: "10%" }}>
+					{editMode ? (
+						<Stack direction="row">
+							<IconButton onClick={patchUpdate}>
+								<CheckCircle color="success" fontSize="inherit" />
+							</IconButton>
+							<IconButton onClick={handleCancel}>
+								<Cancel color="error" fontSize="inherit" />
+							</IconButton>
+						</Stack>
+					) : (
+						<IconButton onClick={handleEditMode} sx={{ bgcolor: "background.default" }}>
+							<Edit fontSize="inherit" />
 						</IconButton>
-						<IconButton onClick={handleCancel}>
-							<Cancel color="error" fontSize="inherit" />
-						</IconButton>
-					</Box>
-				</Stack>
-			) : (
-				<Stack direction="row" spacing={1} sx={{ mt: 2 }}>
-					<Typography variant="body1">Set Day:</Typography>
-					<Typography variant="body1" sx={{ textTransform: "capitalize" }}>
-						{workoutInfo?.week_day}
-					</Typography>
-				</Stack>
-			)}
-		</div>
+					)}
+				</Box>
+			</Stack>
+		</Box>
 	);
 };
 
