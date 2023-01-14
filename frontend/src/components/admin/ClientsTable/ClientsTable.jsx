@@ -33,7 +33,7 @@ const ClientsTable = ({ clients }) => {
 				<Table aria-label="clients table">
 					<TableHead>
 						<TableRow>
-							<TableCell>Full Name</TableCell>
+							<TableCell>Name</TableCell>
 							<TableCell>Email</TableCell>
 							<TableCell>Date Joined</TableCell>
 							<TableCell align="center">Status</TableCell>
@@ -47,11 +47,7 @@ const ClientsTable = ({ clients }) => {
 								<TableCell>{row.email}</TableCell>
 								<TableCell>{new Date(row?.date_joined).toLocaleDateString()}</TableCell>
 								<TableCell align="center">
-									{row.is_active ? (
-										<Chip size="small" label="Active" color="success" />
-									) : (
-										<Chip size="small" label="Inactive" color="warning" />
-									)}
+									{row.is_active ? <Chip label="Active" color="success" /> : <Chip label="Inactive" color="warning" />}
 								</TableCell>
 								<TableCell align="center">
 									<IconButton component={Link} to={`${row.id}`} aria-label="view client user" color="primary">
