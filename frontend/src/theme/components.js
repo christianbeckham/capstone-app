@@ -298,6 +298,9 @@ export const appComponents = (theme) => ({
 		},
 	},
 	MuiTableRow: {
+		defaultProps: {
+			hover: true,
+		},
 		styleOverrides: {
 			root: {
 				radius: 8,
@@ -326,6 +329,7 @@ export const appComponents = (theme) => ({
 			},
 			sizeSmall: {
 				alignItems: "center",
+				padding: theme.spacing(0.5, 2),
 			},
 		},
 	},
