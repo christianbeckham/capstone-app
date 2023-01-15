@@ -18,6 +18,7 @@ const DashboardPage = () => {
 	const { user, token } = useAuth();
 	const [userInfo, setUserInfo] = useState(null);
 	const [userCheckIns, setUserCheckIns] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		fetchUserInfo();
@@ -27,7 +28,7 @@ const DashboardPage = () => {
 
 	const fetchUserInfo = async () => {
 		try {
-			const response = await axios.get("http://localhost:8000/api/auth/me/", {
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/auth/me/`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.status === 200) {
@@ -41,11 +42,12 @@ const DashboardPage = () => {
 
 	const fetchCheckIns = async () => {
 		try {
-			const response = await axios.get("http://localhost:8000/api/checkins/", {
+			const response = await axios.get(`${process.env.REACT_APP_WEBSITE_URL}/api/checkins/`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.status === 200) {
 				setUserCheckIns(response.data);
+				setLoading(false);
 			}
 		} catch (error) {
 			console.log(error);
@@ -85,7 +87,7 @@ const DashboardPage = () => {
 				<Grid item xs={8}>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
-							<UserChart userCheckIns={userCheckIns} />
+							<UserChart userCheckIns={userCheckIns} loading={loading} />
 						</Grid>
 					</Grid>
 				</Grid>
