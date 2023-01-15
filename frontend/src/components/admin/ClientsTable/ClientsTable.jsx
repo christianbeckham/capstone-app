@@ -14,14 +14,14 @@ import ExitToApp from "@mui/icons-material/ExitToApp";
 
 const ClientsTable = ({ clients }) => {
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(15);
 
 	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
 	};
 
 	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
+		setRowsPerPage(parseInt(event.target.value));
 		setPage(0);
 	};
 
@@ -57,8 +57,19 @@ const ClientsTable = ({ clients }) => {
 							</TableRow>
 						))}
 						{emptyRows > 0 && (
-							<TableRow sx={{ height: 55 * emptyRows, "& td": { backgroundColor: "transparent" } }}>
-								<TableCell colSpan={6} />
+							<TableRow
+								sx={{
+									height: 41 * emptyRows,
+									bgcolor: "transparent",
+									"& td": { backgroundColor: "transparent" },
+									"&.MuiTableRow-hover": {
+										"&:hover": {
+											backgroundColor: "transparent",
+										},
+									},
+								}}
+							>
+								<TableCell colSpan={12} />
 							</TableRow>
 						)}
 					</TableBody>

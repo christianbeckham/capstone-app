@@ -20,7 +20,7 @@ import useAuth from "../../../hooks/useAuth";
 const CheckInTable = ({ checkins, fetchCheckIns }) => {
 	const { token } = useAuth();
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(15);
 
 	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
@@ -93,15 +93,26 @@ const CheckInTable = ({ checkins, fetchCheckIns }) => {
 									</TableRow>
 								))}
 								{emptyRows > 0 && (
-									<TableRow sx={{ height: 55 * emptyRows, "& td": { backgroundColor: "transparent" } }}>
-										<TableCell colSpan={6} />
+									<TableRow
+										sx={{
+											height: 41 * emptyRows,
+											bgcolor: "transparent",
+											"& td": { backgroundColor: "transparent" },
+											"&.MuiTableRow-hover": {
+												"&:hover": {
+													backgroundColor: "transparent",
+												},
+											},
+										}}
+									>
+										<TableCell colSpan={12} />
 									</TableRow>
 								)}
 							</TableBody>
 						</Table>
 					</TableContainer>
 					<TablePagination
-						rowsPerPageOptions={[5, 10, 15]}
+						rowsPerPageOptions={[10, 15, 25]}
 						component="div"
 						count={checkins.length}
 						rowsPerPage={rowsPerPage}

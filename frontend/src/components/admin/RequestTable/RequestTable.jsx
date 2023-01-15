@@ -15,7 +15,7 @@ import RequestForm from "../RequestForm/RequestForm";
 
 const RequestTable = ({ requests, fetchRequests }) => {
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(15);
 
 	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
@@ -79,7 +79,18 @@ const RequestTable = ({ requests, fetchRequests }) => {
 									</TableRow>
 								))}
 								{emptyRows > 0 && (
-									<TableRow sx={{ height: 55 * emptyRows, "& td": { backgroundColor: "transparent" } }}>
+									<TableRow
+										sx={{
+											height: 41 * emptyRows,
+											bgcolor: "transparent",
+											"& td": { backgroundColor: "transparent" },
+											"&.MuiTableRow-hover": {
+												"&:hover": {
+													backgroundColor: "transparent",
+												},
+											},
+										}}
+									>
 										<TableCell colSpan={6} />
 									</TableRow>
 								)}
