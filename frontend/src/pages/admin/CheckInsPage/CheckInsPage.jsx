@@ -4,10 +4,12 @@ import axios from "axios";
 import useAuth from "../../../hooks/useAuth";
 import PageAppBar from "../../../components/app/PageToolbar/PageToolbar";
 import CheckInTable from "../../../components/admin/CheckInTable/CheckInTable";
+import TableSkeleton from "../../../components/app/TableSkeleton/TableSkeleton";
 
 const CheckInsPage = () => {
 	const { token } = useAuth();
 	const [checkins, setCheckins] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	const fetchCheckIns = async () => {
 		try {
@@ -18,6 +20,7 @@ const CheckInsPage = () => {
 				const data = await response.data;
 				setCheckins(data);
 			}
+			setLoading(false);
 		} catch (error) {
 			console.log(error);
 		}
@@ -31,7 +34,13 @@ const CheckInsPage = () => {
 	return (
 		<div>
 			<PageAppBar pageTitle={"Check-Ins"} />
-			<CheckInTable checkins={checkins} fetchCheckIns={fetchCheckIns} />
+			{loading ? (
+				<TableSkeleton />
+			) : (
+				<>
+					<CheckInTable checkins={checkins} fetchCheckIns={fetchCheckIns} />
+				</>
+			)}
 		</div>
 	);
 };

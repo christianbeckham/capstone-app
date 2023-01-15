@@ -4,10 +4,12 @@ import axios from "axios";
 import useAuth from "../../../hooks/useAuth";
 import PageAppBar from "../../../components/app/PageToolbar/PageToolbar";
 import RequestTable from "../../../components/admin/RequestTable/RequestTable";
+import TableSkeleton from "../../../components/app/TableSkeleton/TableSkeleton";
 
 const RequestsPage = () => {
 	const { token } = useAuth();
 	const [requests, setRequests] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	const fetchRequests = async () => {
 		try {
@@ -18,6 +20,7 @@ const RequestsPage = () => {
 				const data = await response.data;
 				setRequests(data);
 			}
+			setLoading(false);
 		} catch (error) {
 			console.log(error);
 		}
@@ -31,7 +34,13 @@ const RequestsPage = () => {
 	return (
 		<div>
 			<PageAppBar pageTitle={"Requests"} />
-			<RequestTable requests={requests} fetchRequests={fetchRequests} />
+			{loading ? (
+				<TableSkeleton />
+			) : (
+				<>
+					<RequestTable requests={requests} fetchRequests={fetchRequests} />
+				</>
+			)}
 		</div>
 	);
 };

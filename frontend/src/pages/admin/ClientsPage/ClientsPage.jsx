@@ -4,10 +4,12 @@ import axios from "axios";
 import useAuth from "../../../hooks/useAuth";
 import PageAppBar from "../../../components/app/PageToolbar/PageToolbar";
 import ClientsTable from "../../../components/admin/ClientsTable/ClientsTable";
+import TableSkeleton from "../../../components/app/TableSkeleton/TableSkeleton";
 
 const ClientsPage = () => {
 	const { token } = useAuth();
 	const [clients, setClients] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		try {
@@ -18,6 +20,7 @@ const ClientsPage = () => {
 				if (response.status === 200) {
 					setClients(response.data);
 				}
+				setLoading(false);
 			};
 			fetchClients();
 		} catch (error) {}
@@ -27,7 +30,7 @@ const ClientsPage = () => {
 	return (
 		<div>
 			<PageAppBar pageTitle={"Clients"} />
-			{clients.length > 0 ? <ClientsTable clients={clients} /> : <p>No clients</p>}
+			{loading ? <TableSkeleton /> : <>{clients.length > 0 ? <ClientsTable clients={clients} /> : <p>No clients</p>}</>}
 		</div>
 	);
 };
