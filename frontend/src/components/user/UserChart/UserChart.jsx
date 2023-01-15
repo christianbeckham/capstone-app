@@ -8,6 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { Box, CircularProgress } from "@mui/material";
 
 const chartOptions = {
 	legend: "none",
@@ -24,7 +25,7 @@ const chartOptions = {
 
 const chartRange = [4, 8, 12];
 
-const UserChart = ({ userCheckIns }) => {
+const UserChart = ({ userCheckIns, loading }) => {
 	const [originalData, setOriginalData] = useState([]);
 	const [chartData, setChartData] = useState([]);
 	const [range, setRange] = useState(chartRange[0]);
@@ -68,27 +69,35 @@ const UserChart = ({ userCheckIns }) => {
 
 	return (
 		<Card sx={{ position: "relative" }}>
-			<Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
-				<CardHeader title={"Check-In Trends"} />
-				{userCheckIns?.length > chartRange[0] && (
-					<FormControl>
-						<Select size="small" name="chart_range" value={range} onChange={handleChartRange} variant="outlined">
-							{dropdownNumbers?.map((option) => (
-								<MenuItem key={option} value={option}>
-									{option}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-				)}
-			</Stack>
-			<CardContent>
-				{userCheckIns.length > 0 ? (
-					<Chart chartType="LineChart" data={chartData} options={chartOptions} width="100%" height="325px" />
-				) : (
-					<p>No data available</p>
-				)}
-			</CardContent>
+			{loading ? (
+				<Box sx={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+					<CircularProgress />
+				</Box>
+			) : (
+				<>
+					<Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
+						<CardHeader title={"Check-In Trends"} />
+						{userCheckIns?.length > chartRange[0] && (
+							<FormControl>
+								<Select size="small" name="chart_range" value={range} onChange={handleChartRange} variant="outlined">
+									{dropdownNumbers?.map((option) => (
+										<MenuItem key={option} value={option}>
+											{option}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						)}
+					</Stack>
+					<CardContent>
+						{userCheckIns.length > 0 ? (
+							<Chart chartType="LineChart" data={chartData} options={chartOptions} width="100%" height="325px" />
+						) : (
+							<p>No data available</p>
+						)}
+					</CardContent>
+				</>
+			)}
 		</Card>
 	);
 };
