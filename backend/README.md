@@ -2,8 +2,6 @@
 
 This README file includes instructions on how to set up the backend environment.
 
-</br>
-
 ## Prerequisites
 
 Generate a secret key and add it to the .env file (\*command requires Python 3.6 & above)
@@ -13,15 +11,13 @@ $ python -c "import secrets; print(secrets.token_urlsafe())"
 ```
 
 Add database configuration settings to the .env file
-- Create and setup a MySQL database (or a database of your choice)
 
+- Create and setup a MySQL database (or a database of your choice)
 
 Add or update other configuration settings in the .env file, if necessary
 
 - Setup an email account to send email notifications
 - Register and obtain an [ExerciseDB](https://rapidapi.com/justin-WFnsXH_t6/api/exercisedb) API key
-
-</br>
 
 ## Setup
 
@@ -44,8 +40,6 @@ The following commands use [pipenv](https://pipenv.pypa.io/en/latest/) (you may 
    $ pipenv shell
    ```
 
-</br>
-
 ## Installation
 
 Install dependencies
@@ -53,8 +47,6 @@ Install dependencies
 ```sh
 $ pipenv install -r requirements.txt
 ```
-
-</br>
 
 ## Usage
 

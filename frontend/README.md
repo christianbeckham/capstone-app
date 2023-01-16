@@ -2,13 +2,9 @@
 
 This README file includes instructions on how to set up the frontend environment.
 
-</br>
-
 ## Prerequisites
 
 Review and update the .env file, if necessary
-
-</br>
 
 ## Install
 
