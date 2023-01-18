@@ -140,7 +140,7 @@ const AddExerciseModal = ({ workoutId, fetchExercises }) => {
 			<IconButton size="small" onClick={handleOpen} sx={{ bgcolor: "background.default" }}>
 				<Add fontSize="inherit" />
 			</IconButton>
-			<Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+			<Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
 				<DialogTitle>Add Exercise</DialogTitle>
 				<Divider />
 				<DialogContent>
