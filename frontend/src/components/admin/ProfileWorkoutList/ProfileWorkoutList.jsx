@@ -37,7 +37,7 @@ const ProfileWorkoutList = ({ planId }) => {
 				<Grid item xs={1} md={10}>
 					{workouts?.length > 0 ? (
 						workouts?.map((w) => (
-							<Paper key={w.id} sx={{ p: 1, border: 1, borderColor: "divider" }}>
+							<Paper key={w.id} sx={{ mb: 1, p: 1, border: 1, borderColor: "divider" }}>
 								<Box
 									sx={{
 										display: "flex",
