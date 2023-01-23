@@ -1,19 +1,14 @@
 import React from "react";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import { Box, IconButton, List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
+import { RemoveCircle } from "@mui/icons-material";
+
+import EditImageDialog from "../EditImageDialog/EditImageDialog";
 
 const ImageList = ({ images, handleRemoveImage }) => {
 	return (
 		<List
 			sx={{
 				width: "100%",
-				maxWidth: 360,
 				bgcolor: "background.paper",
 			}}
 		>
@@ -22,9 +17,12 @@ const ImageList = ({ images, handleRemoveImage }) => {
 					<div key={img.name}>
 						<ListItem
 							secondaryAction={
-								<IconButton edge="end" aria-label="delete" color="error" onClick={() => handleRemoveImage(index)}>
-									<RemoveCircleIcon />
-								</IconButton>
+								<Box sx={{ display: "flex" }}>
+									<EditImageDialog image={img} />
+									<IconButton edge="end" aria-label="delete" color="error" onClick={() => handleRemoveImage(index)}>
+										<RemoveCircle />
+									</IconButton>
+								</Box>
 							}
 						>
 							<ListItemAvatar>
