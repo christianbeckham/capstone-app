@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
 import {
 	Box,
@@ -21,10 +21,9 @@ const EditImageDialog = ({ image }) => {
 	const [open, setOpen] = useState(false);
 	const [imgSrc, setImgSrc] = useState("");
 	const [crop, setCrop] = useState();
-	const imgRef = useRef(null);
 	const [aspect, setAspect] = useState(16 / 9);
-
-	console.log("image", image);
+	const [output, setOutput] = useState(null);
+	const [imageRef, setImageRef] = useState(null);
 
 	const handleOpenDialog = () => {
 		setOpen(true);
@@ -36,23 +35,17 @@ const EditImageDialog = ({ image }) => {
 	};
 
 	const onEditSelect = () => {
-		setCrop(undefined);
-		const reader = new FileReader();
-		reader.onload = () => {
-			setImgSrc(reader.result);
-		};
-		reader.readAsDataURL(image);
+		setImgSrc(URL.createObjectURL(image));
 	};
 
 	const onImageLoaded = (e) => {
 		const { naturalWidth: width, naturalHeight: height } = e.currentTarget;
-		console.log(e.currentTarget, width, height);
 
 		const crop = centerCrop(
 			makeAspectCrop(
 				{
 					unit: "%",
-					width: 90,
+					width: 50,
 				},
 				aspect,
 				width,
@@ -62,6 +55,37 @@ const EditImageDialog = ({ image }) => {
 			height
 		);
 		setCrop(crop);
+		setImageRef(e.currentTarget);
+	};
+
+	const cropImageNow = () => {
+		const canvas = document.createElement("canvas");
+		const scaleX = imageRef?.naturalWidth / imageRef?.width;
+		const scaleY = imageRef?.naturalHeight / imageRef?.height;
+		canvas.width = crop.width;
+		canvas.height = crop.height;
+		const ctx = canvas.getContext("2d");
+
+		const pixelRatio = window.devicePixelRatio;
+		canvas.width = crop.width * pixelRatio;
+		canvas.height = crop.height * pixelRatio;
+		ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+		ctx.imageSmoothingQuality = "high";
+
+		ctx.drawImage(
+			imageRef,
+			crop.x * scaleX,
+			crop.y * scaleY,
+			crop.width * scaleX,
+			crop.height * scaleY,
+			0,
+			0,
+			crop.width,
+			crop.height
+		);
+
+		const base64Image = canvas.toDataURL("image/jpeg");
+		setOutput(base64Image);
 	};
 
 	return (
@@ -81,16 +105,18 @@ const EditImageDialog = ({ image }) => {
 				</AppBar>
 				<Divider />
 				<DialogContent>
-					<Box sx={{ bgcolor: "red", maxWidth: 900 }}>
+					<Box sx={{ maxWidth: 900 }}>
 						<ReactCrop
 							crop={crop}
-							onChange={(_, percentCrop) => setCrop(percentCrop)}
+							onChange={setCrop}
 							ruleOfThirds={true}
 							// aspect={aspect}
 						>
-							<Box component="img" ref={imgRef} src={`${imgSrc}`} alt={image.name} onLoad={onImageLoaded} />
+							<Box component="img" src={`${imgSrc}`} alt={image.name} onLoad={onImageLoaded} />
 						</ReactCrop>
 					</Box>
+					<Button onClick={cropImageNow}>Crop</Button>
+					<div>{output && <img src={output} alt={image.name} />}</div>
 				</DialogContent>
 				<Divider />
 				<DialogActions>
