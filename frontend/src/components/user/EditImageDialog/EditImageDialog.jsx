@@ -13,8 +13,12 @@ import {
 	Toolbar,
 	Typography,
 	Slide,
+	Menu,
+	MenuItem,
+	ListItemIcon,
+	ButtonGroup,
 } from "@mui/material";
-import { Close, Edit } from "@mui/icons-material";
+import { Close, Crop169, CropSquare, CropFree, Edit, ExpandMore } from "@mui/icons-material";
 import "react-image-crop/dist/ReactCrop.css";
 
 const EditImageDialog = ({ image }) => {
@@ -24,6 +28,12 @@ const EditImageDialog = ({ image }) => {
 	const [aspect, setAspect] = useState(16 / 9);
 	const [output, setOutput] = useState(null);
 	const [imageRef, setImageRef] = useState(null);
+	const [anchorEl, setAnchorEl] = useState(null);
+	const openMenu = Boolean(anchorEl);
+
+	const handleMenuClick = (e) => setAnchorEl(e.currentTarget);
+
+	const handleMenuClose = () => setAnchorEl(null);
 
 	const handleOpenDialog = () => {
 		setOpen(true);
@@ -45,7 +55,7 @@ const EditImageDialog = ({ image }) => {
 			makeAspectCrop(
 				{
 					unit: "%",
-					width: 50,
+					width: 90,
 				},
 				aspect,
 				width,
@@ -105,17 +115,56 @@ const EditImageDialog = ({ image }) => {
 				</AppBar>
 				<Divider />
 				<DialogContent>
-					<Box sx={{ maxWidth: 900 }}>
-						<ReactCrop
-							crop={crop}
-							onChange={setCrop}
-							ruleOfThirds={true}
-							// aspect={aspect}
+					<ButtonGroup size="small" disableRipple sx={{ mb: 1 }}>
+						<Button
+							id="dd-button"
+							aria-controls={openMenu ? "dd-menu" : undefined}
+							aria-haspopup="true"
+							aria-expanded={openMenu ? "true" : undefined}
+							onClick={handleMenuClick}
+							endIcon={<ExpandMore />}
+							disableRipple
 						>
+							Aspect Ratio
+						</Button>
+						<Menu
+							id="dd-menu"
+							anchorEl={anchorEl}
+							open={openMenu}
+							onClose={handleMenuClose}
+							MenuListProps={{
+								"aria-labelledby": "dd-button",
+							}}
+							sx={{
+								zIndex: 3000,
+							}}
+						>
+							<MenuItem onClick={() => setAspect(16 / 9)}>
+								<ListItemIcon>
+									<Crop169 />
+								</ListItemIcon>
+								Landscape
+							</MenuItem>
+							<MenuItem onClick={() => setAspect(1)}>
+								<ListItemIcon>
+									<CropSquare />
+								</ListItemIcon>
+								Square
+							</MenuItem>
+							<MenuItem onClick={() => setAspect(undefined)}>
+								<ListItemIcon>
+									<CropFree />
+								</ListItemIcon>
+								Free-form
+							</MenuItem>
+						</Menu>
+						<Button onClick={cropImageNow}>Crop</Button>
+					</ButtonGroup>
+					<Box sx={{ maxWidth: 900 }}>
+						<ReactCrop crop={crop} onChange={setCrop} ruleOfThirds={true} aspect={aspect}>
 							<Box component="img" src={`${imgSrc}`} alt={image.name} onLoad={onImageLoaded} />
 						</ReactCrop>
 					</Box>
-					<Button onClick={cropImageNow}>Crop</Button>
 					<div>{output && <img src={output} alt={image.name} />}</div>
 				</DialogContent>
 				<Divider />
