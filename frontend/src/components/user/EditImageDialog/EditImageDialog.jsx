@@ -1,39 +1,33 @@
 import React, { useState } from "react";
-import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
+import ReactCrop from "react-image-crop";
 import {
 	Box,
+	Stack,
 	Button,
 	IconButton,
 	Dialog,
 	DialogActions,
 	DialogContent,
-	DialogTitle,
 	Divider,
 	AppBar,
 	Toolbar,
 	Typography,
 	Slide,
-	Menu,
-	MenuItem,
-	ListItemIcon,
+	ToggleButtonGroup,
+	ToggleButton,
 	ButtonGroup,
 } from "@mui/material";
-import { Close, Crop169, CropSquare, CropFree, Edit, ExpandMore } from "@mui/icons-material";
+import { Close, Crop169, CropSquare, CropFree, Edit } from "@mui/icons-material";
 import "react-image-crop/dist/ReactCrop.css";
 
 const EditImageDialog = ({ image }) => {
+	const aspectTypes = { landscape: 16 / 9, square: 1, free: undefined };
 	const [open, setOpen] = useState(false);
 	const [imgSrc, setImgSrc] = useState("");
 	const [crop, setCrop] = useState();
-	const [aspect, setAspect] = useState(16 / 9);
+	const [aspect, setAspect] = useState("square");
 	const [output, setOutput] = useState(null);
 	const [imageRef, setImageRef] = useState(null);
-	const [anchorEl, setAnchorEl] = useState(null);
-	const openMenu = Boolean(anchorEl);
-
-	const handleMenuClick = (e) => setAnchorEl(e.currentTarget);
-
-	const handleMenuClose = () => setAnchorEl(null);
 
 	const handleOpenDialog = () => {
 		setOpen(true);
@@ -49,22 +43,6 @@ const EditImageDialog = ({ image }) => {
 	};
 
 	const onImageLoaded = (e) => {
-		const { naturalWidth: width, naturalHeight: height } = e.currentTarget;
-
-		const crop = centerCrop(
-			makeAspectCrop(
-				{
-					unit: "%",
-					width: 90,
-				},
-				aspect,
-				width,
-				height
-			),
-			width,
-			height
-		);
-		setCrop(crop);
 		setImageRef(e.currentTarget);
 	};
 
@@ -94,8 +72,12 @@ const EditImageDialog = ({ image }) => {
 			crop.height
 		);
 
-		const base64Image = canvas.toDataURL("image/jpeg");
+		const base64Image = canvas.toDataURL("image/jpeg", 1);
 		setOutput(base64Image);
+	};
+
+	const handleAspectChange = (e, newAspect) => {
+		setAspect(newAspect);
 	};
 
 	return (
@@ -115,57 +97,40 @@ const EditImageDialog = ({ image }) => {
 				</AppBar>
 				<Divider />
 				<DialogContent>
-					<ButtonGroup size="small" disableRipple sx={{ mb: 1 }}>
-						<Button
-							id="dd-button"
-							aria-controls={openMenu ? "dd-menu" : undefined}
-							aria-haspopup="true"
-							aria-expanded={openMenu ? "true" : undefined}
-							onClick={handleMenuClick}
-							endIcon={<ExpandMore />}
-							disableRipple
-						>
-							Aspect Ratio
-						</Button>
-						<Menu
-							id="dd-menu"
-							anchorEl={anchorEl}
-							open={openMenu}
-							onClose={handleMenuClose}
-							MenuListProps={{
-								"aria-labelledby": "dd-button",
-							}}
-							sx={{
-								zIndex: 3000,
-							}}
-						>
-							<MenuItem onClick={() => setAspect(16 / 9)}>
-								<ListItemIcon>
-									<Crop169 />
-								</ListItemIcon>
-								Landscape
-							</MenuItem>
-							<MenuItem onClick={() => setAspect(1)}>
-								<ListItemIcon>
-									<CropSquare />
-								</ListItemIcon>
-								Square
-							</MenuItem>
-							<MenuItem onClick={() => setAspect(undefined)}>
-								<ListItemIcon>
-									<CropFree />
-								</ListItemIcon>
-								Free-form
-							</MenuItem>
-						</Menu>
-						<Button onClick={cropImageNow}>Crop</Button>
-					</ButtonGroup>
-					<Box sx={{ maxWidth: 900 }}>
-						<ReactCrop crop={crop} onChange={setCrop} ruleOfThirds={true} aspect={aspect}>
-							<Box component="img" src={`${imgSrc}`} alt={image.name} onLoad={onImageLoaded} />
-						</ReactCrop>
+					<Stack direction={"row"} spacing={2} sx={{ mb: 1 }}>
+						<ToggleButtonGroup size="small" value={aspect} exclusive onChange={handleAspectChange}>
+							<ToggleButton value="landscape">
+								<Crop169 />
+							</ToggleButton>
+							<ToggleButton value="square">
+								<CropSquare />
+							</ToggleButton>
+							<ToggleButton value="free">
+								<CropFree />
+							</ToggleButton>
+						</ToggleButtonGroup>
+						<ButtonGroup size="small">
+							<Button disabled={!Boolean(crop)} onClick={cropImageNow}>
+								Crop
+							</Button>
+							<Button>
+								Reset
+							</Button>
+						</ButtonGroup>
+					</Stack>
+					<Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>
+						<Box gridColumn="span 8">
+							<Box sx={{ maxWidth: 900 }}>
+								<ReactCrop crop={crop} onChange={setCrop} ruleOfThirds={true} aspect={aspectTypes[aspect]}>
+									<Box component="img" src={`${imgSrc}`} alt={image.name} onLoad={onImageLoaded} />
+								</ReactCrop>
+							</Box>
+						</Box>
+						<Box gridColumn="span 4">
+							<Typography>Preview</Typography>
+							<div>{output && <img src={output} alt={image.name} />}</div>
+						</Box>
 					</Box>
-					<div>{output && <img src={output} alt={image.name} />}</div>
 				</DialogContent>
 				<Divider />
 				<DialogActions>
